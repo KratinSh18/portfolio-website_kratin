@@ -1,0 +1,95 @@
+{
+    "educations": [
+        {
+            "id": "edu-1",
+            "school": "Indian Institute of Technology Ropar",
+            "degree": "Bachelors in Metallurgical And Materials Engineering",
+            "duration": "Aug 2022 - May 2026 (Graduated)",
+            "content": [
+                
+                "Courses: Financial Risk Management, Machine Learning in Materials, Foundation of Data Science, Differential Equations, Advanced Linear Algebra and Integral Transforms, Data Structure & Algorithms, Probability & Statistic processes, Tinkering Lab,Micro & Macro Economics, Managerial Sciences, English Language Skills, Industrial Management, Human Geography & Social Needs, Professional Ethics"
+            ]
+        },
+        {
+            "id": "edu-2",
+            "school": "Disha Delphi Public School",
+            "degree": "Senior Secondary (CBSE)",
+            "duration": "2021",
+            "content": [
+                "Percentage : 91"
+            ]
+        }, 
+        {
+            "id": "edu-3",
+            "school": "Disha Delphi Public School",
+            "degree": "Secondary (CBSE)",
+            "duration": "2019",
+            "content": [
+                "Percentage : 90.4"
+            ]
+        }
+        
+    ],
+    "experiences": [
+        {
+            "id": "exp-1",
+            "company": "KukuFm's WoWTV",
+            "position": "Performance Marketing Manager",
+            "duration": "June 2026 - Present",
+            "description": [
+                "Manage and optimize all Google Ads campaigns for WoWTV, driving performance marketing strategy across the platform with focus on measurable business outcomes",
+                "Monitor and analyze key performance metrics including Customer Acquisition Cost (CAC), conversion funnels (D0-D7), recovery metrics, and other critical KPIs to optimize campaign performance and ROI",
+                "Execute data-driven campaign scaling and descaling strategies based on real-time performance analysis and market trends to maximize efficiency and revenue generation",
+                "Leverage advanced analytics and performance data to inform strategic decisions and continuously improve marketing effectiveness across all channels"
+            ]
+        },
+        {
+            "id": "exp-2",
+            "company": "Medinos (Taskar)",
+            "position": "Product Manager Intern",
+            "duration": "May 2025 - June 2025",
+            "description": [
+                "Led user-centric UI/UX improvements by providing critical design feedback that shaped a more intuitive and engaging mobile application, while also influencing the product roadmap by reworking information architecture for both web and mobile platforms to improve user flow.​",
+                "Owned product data integrity by collecting, validating, and enriching market information through web crawling, ensuring accurate and reliable product details for end users"
+                
+            ]
+        }
+        
+    ],
+    "skills": [
+        {
+            "title": "Programming Languages & Concepts",
+            "tools": [
+                "C/C++",
+                "SQL",
+                "Python",
+                "Data Structures & Algorithms",
+                "Classification",
+                "Data Preprocessing",
+                "Feature Engineering",
+                "Time Complexity Analysis",
+                " Monte Carlo Simulation",
+                ""
+            ]
+        },
+        {
+            "title": "Frameworks/Libraries",
+            "tools": ["Pandas", " NumPy","Scikit-learn","Matplotlib", "Seaborn", "Tensorflow", "Statsmodels", "Jupyter Notebook"]
+        },
+        {
+            "title": "Tools/Platforms",
+            "tools": ["Git", "Github", "Google Ads", "Canva",  "VSCode", "Google Colab", "Spyder", "Anaconda", "MATLAB" ]
+        },
+
+        {
+            "title": "Key courses",
+            "tools": ["Data Structure & Algorithms", "Financial Risk Management", "Machine Learning in Materials", "Foundation of Science" , "Differential Equations", "Advanced Linear Algebra and Integral Transforms", "Probability & Statistic processes", "Tinkerin Lab","Micro & Macro Economics", "Managerial Sciences","English Language Skills", "Industrial Management", "Human Geography & Social Needs", "Professional Ethics" ]
+        },
+        {
+            "title": "Soft Skills",
+            "tools": [" Leadership", "Teamwork" ,"Communication","Problem Solving","Time Management","Networking","Negotiation"]
+        }
+    ]
+}
+    
+

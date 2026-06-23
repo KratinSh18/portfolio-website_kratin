@@ -1,0 +1,30 @@
+{
+    "name": "Kratin Sharma",
+    "logoType": {
+        "mobile": "KS",
+        "desktop": "Kratin Sharma"
+    },
+    "mainPicture": "/assets/KS.jpeg",
+    "mainPictureJPG": "/assets/KS.jpeg",
+    "pronunciation": "",
+    "audioFile": "",
+    "cssVarPrefix": "KS",
+    "email": "kratinsh18@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/kratin-sharma-07018225b/",
+    "github": "https://github.com/KratinSh18",
+    "resume": "https://drive.google.com/drive/folders/1tlP9U7-yVgKyPJgxaHvwYt028jv-vERB",
+    "socials": [
+        {
+            "type": "linkedin",
+            "link": "https://www.linkedin.com/in/kratin-sharma-07018225b/"
+        },
+        {
+            "type": "github",
+            "link": "https://github.com/KratinSh18"
+        },
+        {
+            "type": "mail",
+            "link": "mailto:kratinsh18@gmail.com"
+        }
+    ]
+}

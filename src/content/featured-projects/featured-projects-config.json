@@ -1,0 +1,52 @@
+[
+    {
+        "id": "featured-project-trackcta",
+        "title": "Portfolio Optimization & Risk Management (NIFTY 50)",
+        "year": "",
+        "location": "",
+        "github": "https://github.com/KratinSh18/Portfolio-Optimization-and-Risk-Management-using-Rolling-Backtests-on-NIFTY-50",
+        "tags": ["Python", "Machine Learning", "Finance", "Portfolio Optimization", "Risk Management", "Backtesting"],
+        "description": "Developed a portfolio optimization and risk management system using rolling backtests on NIFTY 50 stocks. Implemented quantitative strategies to evaluate portfolio performance over time, focusing on risk-adjusted returns, volatility control, and realistic backtesting to simulate real-market investment scenarios.",
+        "report": "https://drive.google.com/drive/folders/1Uqy7amU00qws2U0sOrNvkOrrHwfXSZBC",
+        "image": "/assets/featured-projects/FRM.webp",
+        "jpg": "/assets/featured-projects/FRM.webp"
+    },
+    {
+        "id": "featured-project-trackcta",
+        "title": "Sector-Wise Volatility Clustering",
+"year": "",
+"location": "",
+"github": "https://github.com/KratinSh18/Sector-Wise-Volatility-Clustering",
+"tags": ["Python", "Finance", "Volatility Analysis", "Data Visualization", "Time Series"],
+"description": "Analyzed and visualized volatility clustering patterns across different market sectors using financial time series data. Implemented data processing, statistical analysis, and visual insights to identify sector-specific volatility behaviors and trends, aiding deeper understanding of risk dynamics.",
+        "report": "https://drive.google.com/drive/folders/1xFf1LktP8DN9UaqvRT1D_7gnBnqO0wn9",
+        "image": "/assets/featured-projects/FDS.png",
+        "jpg": "/assets/featured-projects/FDS.png"
+    },
+    {
+        "id": "featured-project-asctb-reporter",
+        "title": "Loan Prediction Model",
+"year": "",
+"location": "",
+"github": "https://github.com/KratinSh18/loan_prediction",
+"tags": ["Python", "Machine Learning", "Data Science", "Classification", "Pandas", "Scikit-Learn"],
+"description":"Built a loan approval prediction system using supervised machine learning models including Logistic Regression, Decision Tree, and Random Forest. Performed data cleaning, feature engineering, and model comparison to evaluate classification performance, with Random Forest achieving the best overall results based on accuracy and generalization.",
+
+        
+        "image": "/assets/featured-projects/Loan_prediction.webp",
+        "jpg": "/assets/featured-projects/Loan_prediction.webp"
+    },
+    {
+        "id": "featured-project-scrapbook",
+        "title": "Pay-Protect (Fraud Detection System)",
+"year": "",
+"location": "",
+"github": "https://github.com/KratinSh18/Pay-Protect",
+"tags": ["Python", "Machine Learning", "Data Science", "Fraud Detection", "Classification", "Imbalanced Data"],
+"description": "Built a payment fraud detection system using machine learning models including Logistic Regression, Random Forest, and XGBoost with techniques for handling imbalanced data. Performed data preprocessing, feature engineering, model training, and evaluation to detect fraudulent transactions and improve classification accuracy."
+,
+        "image": "/assets/featured-projects/Pay_protect.png",
+        "jpg": "/assets/featured-projects/Pay_protect.png"
+    }
+    
+]

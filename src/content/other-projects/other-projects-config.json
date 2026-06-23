@@ -1,0 +1,51 @@
+[
+    {
+        "id": "other-project-post",
+        "title": "Syntax Checker",
+"year": "",
+"location": "",
+"github": "https://github.com/KratinSh18/syntax_checker",
+"tags": ["C++", "Compiler Design", "Data Structures", "Parsing"],
+"description": "Developed a syntax checker in C++ to validate structured code expressions using stack-based parsing techniques. Implemented logic to detect syntax errors such as unmatched brackets and improper nesting, strengthening understanding of compiler design fundamentals.",
+        "image": "/assets/other-projects/syntax_checker.webp",
+        "jpg": "/assets/other-projects/syntax_checker.webp"
+
+    },
+    {
+        "id": "other-project-noq",
+        "title": "Face Mask Detection System",
+"year": "",
+"location": "",
+"github": "https://github.com/KratinSh18/face_mask_detection",
+"tags": ["Python", "Machine Learning", "Computer Vision", "OpenCV", "Deep Learning"],
+"description": "Built a real-time face mask detection system using computer vision and deep learning techniques. Implemented image preprocessing, face detection, and classification to identify masked and unmasked faces, demonstrating practical application of ML in public safety use cases.",
+        "image": "/assets/other-projects/FMD.webp",
+        "jpg": "/assets/other-projects/FMD.webp"
+    },
+    {
+        "id": "other-project-bank-compare",
+        "title": "Music Recommendation System",
+"year": "",
+"location": "",
+
+"github": "https://github.com/KratinSh18/music_recommendation",
+"tags": ["Python", "Machine Learning", "Recommendation Systems", "Data Analysis"],
+"description": "Developed a music recommendation system using machine learning techniques to suggest songs based on user preferences and listening patterns. Performed data preprocessing, similarity analysis, and model-based recommendations to enhance personalized user experience."
+,
+        "image": "/assets/other-projects/Music.webp",
+        "jpg": "/assets/other-projects/Music.webp"
+    },
+    {
+        "id": "",
+        "title": "Piano Write",
+"year": "",
+"location": "",
+"github": "https://github.com/KratinSh18/piano_write",
+"tags": ["C", "File Handling", "Music", "System Programming"],
+"description": "Created a C-based application to record and store piano key inputs using file handling techniques. Focused on low-level programming concepts to map musical notes to keyboard input, enabling basic music composition and playback functionality."
+,
+        "image": "/assets/other-projects/PW.webp",
+        "jpg": "/assets/other-projects/PW.webp"
+    }
+    
+]
