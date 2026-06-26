@@ -18,19 +18,20 @@ const LinksToIconMapper: Record<string, JSX.Element> = {
 interface Props {
     resume?: boolean;
     exclude?: Array<string>;
+    /** Kept for call-site compatibility; entrance timing is now owned by Float3D. */
     delay?: number;
 }
 
-export const Socials: FC<Props> = ({ resume = true, exclude, delay = 800 }) => {
+export const Socials: FC<Props> = ({ resume = true, exclude }) => {
     return (
         <HStack spacing="5">
             {resume && (
-                <Button data-aos="fade" data-aos-delay={delay} size="lg" borderRadius="xl" mr="2" onClick={onResumeOpen}>
+                <Button size="lg" borderRadius="xl" mr="2" onClick={onResumeOpen}>
                     Resume
                 </Button>
             )}
             {configs.common.socials.map(
-                (social, idx) =>
+                (social) =>
                     !exclude?.includes(social.type) && (
                         <Tooltip key={social.type} label={social.type} textTransform="capitalize">
                             <Button
@@ -38,8 +39,6 @@ export const Socials: FC<Props> = ({ resume = true, exclude, delay = 800 }) => {
                                 aria-label={`${social.type}-button`}
                                 as={IconButton}
                                 variant="icon"
-                                data-aos="fade"
-                                data-aos-delay={idx * 100 + delay}
                                 fontSize={social.type === "mail" ? "24pt" : "20pt"}
                                 icon={LinksToIconMapper[social.type]}
                                 onClick={() => open(social.link)}

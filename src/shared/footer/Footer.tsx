@@ -29,7 +29,7 @@ export const Footer: FC = () => {
                 If you want to know more about my experiences and journey, or just talk in general, get in touch! ✌️
             </Text>
             <Box pt="16">
-                <Socials delay={100} exclude={["mail"]} />
+                <Socials delay={100} exclude={["mail"]} resume={false} />
             </Box>
             <Flex
                 pt="4"

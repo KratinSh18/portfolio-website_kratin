@@ -1,0 +1,73 @@
+.stage {
+    position: relative;
+}
+
+.pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding-top: 144px; // clear the fixed navbar
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    perspective: 1500px;
+    perspective-origin: 50% 45%;
+    contain: layout paint;
+}
+
+.track {
+    display: flex;
+    align-items: center;
+    will-change: transform;
+    transform-style: preserve-3d;
+}
+
+.float-card {
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+.float-card__bob,
+.float-card__tilt {
+    width: 100%;
+    height: 100%;
+}
+
+.float-card__bob {
+    animation: floatBob 7s ease-in-out infinite;
+    will-change: transform;
+}
+
+.float-card:nth-child(2n) .float-card__bob {
+    animation-duration: 8s;
+    animation-delay: -2.5s;
+}
+
+.float-card:nth-child(3n) .float-card__bob {
+    animation-delay: -4s;
+}
+
+.float-card__glare {
+    mix-blend-mode: soft-light;
+}
+
+@keyframes floatBob {
+    0%,
+    100% {
+        transform: translateY(0) rotateZ(0deg);
+    }
+    50% {
+        transform: translateY(-12px) rotateZ(0.5deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .float-card,
+    .float-card__bob,
+    .float-card__tilt {
+        animation: none !important;
+        transform: none !important;
+    }
+}

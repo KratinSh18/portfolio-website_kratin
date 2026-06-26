@@ -1,0 +1,235 @@
+.xptl {
+    position: relative;
+}
+
+.xptl__track {
+    display: flex;
+    align-items: flex-start; // cards size to their own content (one can expand alone)
+    gap: 28px;
+    overflow-x: auto;
+    padding: 8px 4px 28px;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: relative;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    &:focus-visible {
+        outline: 2px solid var(--fx-accent);
+        outline-offset: 4px;
+        border-radius: 12px;
+    }
+}
+
+// the spine that threads through every node
+.xptl__track::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 38px;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(221, 0, 4, 0.55) 12%,
+        rgba(139, 148, 167, 0.5) 88%,
+        transparent
+    );
+}
+
+.xptl__item {
+    position: relative;
+    flex: 0 0 auto;
+    width: 420px;
+    max-width: 86vw;
+    scroll-snap-align: center;
+    padding-top: 64px;
+}
+
+// ---- node: a clickable button on the spine ----
+.xptl__node {
+    position: absolute;
+    top: 29px;
+    left: 26px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    appearance: none;
+    font-size: 0;
+    cursor: pointer;
+    background: var(--fx-accent);
+    box-shadow: 0 0 0 4px rgba(221, 0, 4, 0.16), var(--fx-glow-accent);
+    z-index: 2;
+    transition: transform 0.25s var(--fx-ease-out), box-shadow 0.25s var(--fx-ease-out);
+}
+.xptl__node:hover {
+    transform: scale(1.25);
+}
+.xptl__node:focus-visible {
+    outline: 2px solid var(--fx-accent);
+    outline-offset: 4px;
+}
+.xptl__item:nth-child(2n) .xptl__node {
+    background: var(--fx-slate);
+    box-shadow: 0 0 0 4px rgba(139, 148, 167, 0.16);
+}
+// open node = filled ring emphasis
+.xptl__item.is-open .xptl__node {
+    transform: scale(1.3);
+    box-shadow: 0 0 0 5px rgba(221, 0, 4, 0.22), 0 0 18px rgba(221, 0, 4, 0.6);
+}
+
+// short connector linking the node down to its card
+.xptl__node::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 18px;
+    background: linear-gradient(var(--fx-accent), transparent);
+    opacity: 0.7;
+}
+
+// gentle "present role" ping on the first node
+.xptl__item:first-child .xptl__node::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 1px solid var(--fx-accent);
+    animation: fxNodePing 2.6s ease-out infinite;
+    pointer-events: none;
+}
+@keyframes fxNodePing {
+    0% {
+        transform: scale(0.85);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+// ---- card ----
+.xptl__card {
+    padding: 1.4rem 1.5rem;
+    transition: transform 0.45s var(--fx-ease-out), border-color 0.45s var(--fx-ease-out),
+        box-shadow 0.45s var(--fx-ease-out);
+}
+.xptl__card:hover,
+.xptl__item.is-open .xptl__card {
+    transform: translateY(-4px);
+    border-color: var(--fx-glass-border-hot);
+    box-shadow: var(--fx-glass-shadow), var(--fx-glow-accent);
+}
+
+.xptl__date {
+    color: var(--fx-accent);
+    font-size: 0.7rem;
+}
+.xptl__company {
+    margin-top: 0.5rem;
+    line-height: 1.1;
+}
+.xptl__role {
+    color: var(--fx-text-soft);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.xptl__body {
+    margin-top: 0.9rem;
+}
+
+// collapsed: one-line brief (2-line clamp)
+.xptl__brief {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: inherit;
+    opacity: 0.85;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// expanded: full bullet list
+.xptl__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+.xptl__list li {
+    list-style: none;
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.9rem;
+    color: inherit;
+    opacity: 0.88;
+    line-height: 1.45;
+}
+.xptl__list li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: var(--fx-accent);
+}
+
+// ---- toggle ("View details" / "Show less") ----
+.xptl__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 1rem;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--fx-accent);
+    transition: gap 0.2s var(--fx-ease-out), opacity 0.2s var(--fx-ease-out);
+}
+.xptl__toggle:hover {
+    gap: 0.6rem;
+    opacity: 0.85;
+}
+.xptl__chev {
+    display: inline-flex;
+    transition: transform 0.3s var(--fx-ease-out);
+}
+.xptl__item.is-open .xptl__chev {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 600px) {
+    .xptl__item {
+        width: 82vw;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .xptl__track {
+        scroll-behavior: auto;
+    }
+    .xptl__card,
+    .xptl__node,
+    .xptl__chev {
+        transition: none;
+    }
+    .xptl__item:first-child .xptl__node::after {
+        animation: none;
+        opacity: 0;
+    }
+}

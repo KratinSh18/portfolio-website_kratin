@@ -4,24 +4,40 @@ import { Box, Button, Container, Flex, HStack, useColorModeValue } from "@chakra
 
 import { configs } from "shared/content/Content";
 import { LogoType } from "shared/navbar/logo-type/LogoType";
-import { bgDark, bgLight } from "theme";
 import { onResumeOpen } from "utils/Functions";
 import { AboutPageId, useScroll, WorkPageId } from "utils/useScroll";
+import { useReducedMotion } from "shared/motion/useReducedMotion";
 import { MenuDrawer } from "./drawer/Drawer";
 import { ColorModeButton } from "shared/color-mode-button/ColorModeButton";
 
 export const Navbar: FC = () => {
-    const bg = useColorModeValue(bgLight, bgDark);
     const navItemColor = useColorModeValue("gray.800", "white");
+    const navBg = useColorModeValue("rgba(246, 247, 249, 0.7)", "rgba(12, 14, 19, 0.6)");
+    const navBorder = useColorModeValue("rgba(15,23,42,0.08)", "rgba(255,255,255,0.08)");
+    const navShadow = useColorModeValue("0 8px 30px rgba(15,23,42,0.08)", "0 8px 30px rgba(0,0,0,0.35)");
     const currentPage = useScroll();
+    const reduced = useReducedMotion();
 
     const toSection = (section: string) => {
-        document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+        document.getElementById(section)?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
     };
 
     return (
-        <Box bg={bg} position="fixed" top="0" w="100%" left="50%" transform="translate(-50%)" zIndex="10">
-            <Container py="4" px="4" data-aos="fade-down" data-aos-duration="500" data-aos-delay="100">
+        <Box
+            position="fixed"
+            top="0"
+            w="100%"
+            left="50%"
+            transform="translate(-50%)"
+            zIndex="20"
+            bg={navBg}
+            borderBottom="1px solid"
+            borderColor={navBorder}
+            boxShadow={navShadow}
+            overflowX="clip"
+            sx={{ backdropFilter: "blur(14px) saturate(140%)", WebkitBackdropFilter: "blur(14px) saturate(140%)" }}
+        >
+            <Container py="4" px="4">
                 <Flex justifyContent="space-between" alignItems="center">
                     <LogoType text={configs.common.logoType} />
                     <Flex alignItems="center" display={{ base: "none", md: "flex" }}>
@@ -33,8 +49,6 @@ export const Navbar: FC = () => {
                                 textDecorationThickness="2px"
                                 textDecorationColor={currentPage === WorkPageId ? "primary.500" : "transparent"}
                                 onClick={() => toSection(WorkPageId)}
-                                data-aos="fade"
-                                data-aos-delay="200"
                             >
                                 Work
                             </Button>
@@ -45,12 +59,10 @@ export const Navbar: FC = () => {
                                 textDecorationThickness="2px"
                                 textDecorationColor="primary.500"
                                 onClick={() => toSection(AboutPageId)}
-                                data-aos="fade"
-                                data-aos-delay="300"
                             >
                                 About
                             </Button>
-                            <Button variant="link" onClick={onResumeOpen} data-aos="fade" data-aos-delay="400">
+                            <Button variant="link" onClick={onResumeOpen}>
                                 Resume
                             </Button>
                         </HStack>

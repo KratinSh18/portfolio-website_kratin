@@ -24,8 +24,6 @@ interface Props extends GitHubButtonProps, ReadMoreProps, LiveDemoProps {}
 export const ReadMore: FC<ReadMoreProps> = ({ readMore }) => {
     return readMore ? (
         <Button
-            data-aos="fade"
-            data-aos-offset="200"
             variant="link"
             colorScheme="black"
             rightIcon={<ArrowRightIcon fontSize="16pt" />}
@@ -41,8 +39,6 @@ export const GitHubButton: FC<GitHubButtonProps> = ({ github, display }) => {
 
     return github ? (
         <Button
-            data-aos="fade"
-            data-aos-delay="400"
             as={as}
             variant="secondary"
             py="5"
@@ -61,8 +57,6 @@ export const LiveDemo: FC<LiveDemoProps> = ({ demo, display }) => {
 
     return demo ? (
         <Button
-            data-aos="fade"
-            data-aos-delay="200"
             as={as}
             display={display}
             leftIcon={<LinkIcon fontSize="14pt" />}

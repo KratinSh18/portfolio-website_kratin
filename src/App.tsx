@@ -1,13 +1,15 @@
-import { FC, useEffect, lazy, Suspense } from "react";
+import { FC, lazy, Suspense } from "react";
 
 import { Box, Container, Center, Spinner } from "@chakra-ui/react";
-import AOS from "aos";
 
 import { NavbarHeight } from "theme";
+import { Float3D } from "shared/motion/Float3D";
+import { AuroraBackground } from "shared/fx/AuroraBackground";
+import { BodyColorMode } from "shared/fx/BodyColorMode";
+import { ScrollProgress } from "shared/fx/ScrollProgress";
 import { AboutPageId, WorkPageId } from "utils/useScroll";
 
 import "./App.scss";
-import "aos/dist/aos.css";
 
 const Navbar = lazy(() => import("shared/navbar/Navbar").then((module) => ({ default: module.Navbar })));
 const Landing = lazy(() => import("pages/landing/Landing").then((module) => ({ default: module.Landing })));
@@ -25,6 +27,11 @@ const OtherProjects = lazy(() =>
         default: module.OtherProjects,
     })),
 );
+const ExperienceTimeline = lazy(() =>
+    import("pages/about/experience/ExperienceTimeline").then((module) => ({
+        default: module.ExperienceTimeline,
+    })),
+);
 const About = lazy(() => import("pages/about/About").then((module) => ({ default: module.About })));
 
 const Loader: FC = () => (
@@ -34,27 +41,41 @@ const Loader: FC = () => (
 );
 
 export const App: FC = () => {
-    useEffect(() => {
-        AOS.init({ once: true });
-    }, []);
-
     return (
         <Suspense fallback={<Loader />}>
-            <Container h="100%" px={{ base: 6, md: 6, lg: 4 }}>
+            <BodyColorMode />
+            <AuroraBackground />
+            <ScrollProgress />
+            <Container h="100%" px={{ base: 6, md: 6, lg: 4 }} position="relative" zIndex={1}>
                 <Navbar />
 
                 <Box mt={{ base: "96px", md: NavbarHeight }}>
                     <Landing />
+
+                    {/* id boxes stay in normal flow and untransformed so offsetTop /
+                        scrollIntoView / useScroll keep working. The pinned stage's
+                        transforms live only on its inner pin / track / cards. */}
                     <Box id={WorkPageId}>
-                        <PageHeader label="Featured Projects" />
+                        <Float3D direction="up">
+                            <PageHeader label="Work Experience" />
+                        </Float3D>
+                        <ExperienceTimeline />
+
+                        <Float3D direction="up">
+                            <PageHeader label="Featured Projects" />
+                        </Float3D>
                         <FeaturedProjects />
 
-                        <PageHeader id="page-other-projects" label="Other Projects" />
+                        <Float3D direction="up">
+                            <PageHeader id="page-other-projects" label="Other Projects" />
+                        </Float3D>
                         <OtherProjects />
                     </Box>
 
                     <Box id={AboutPageId}>
-                        <PageHeader label="About Me" />
+                        <Float3D direction="up">
+                            <PageHeader label="About Me" />
+                        </Float3D>
                         <About />
                     </Box>
                 </Box>

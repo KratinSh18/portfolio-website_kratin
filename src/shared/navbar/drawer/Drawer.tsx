@@ -70,8 +70,6 @@ export const MenuDrawer: FC<Props> = ({ onSectionClick, currentPage, ...props })
                                         onSectionClick(WorkPageId);
                                     }, 250);
                                 }}
-                                data-aos="fade"
-                                data-aos-delay="200"
                                 fontWeight="600"
                                 fontSize="2xl"
                             >
@@ -89,8 +87,6 @@ export const MenuDrawer: FC<Props> = ({ onSectionClick, currentPage, ...props })
                                         onSectionClick(AboutPageId);
                                     }, 250);
                                 }}
-                                data-aos="fade"
-                                data-aos-delay="300"
                                 fontWeight="600"
                                 fontSize="2xl"
                             >
@@ -100,8 +96,6 @@ export const MenuDrawer: FC<Props> = ({ onSectionClick, currentPage, ...props })
                                 variant="link"
                                 color="primary.500"
                                 onClick={onResumeOpen}
-                                data-aos="fade"
-                                data-aos-delay="400"
                                 fontWeight="600"
                                 fontSize="2xl"
                             >

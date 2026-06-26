@@ -1,0 +1,75 @@
+// Subtle, professional ambient backdrop. Soft brand-tinted gradient clouds that
+// drift slowly, plus a faint grid for depth. Adapts to light / dark. Purely
+// decorative and pointer-transparent — content always sits above it.
+.fx-aurora {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+// drifting colour clouds (dark defaults)
+.fx-aurora__clouds {
+    position: absolute;
+    inset: -25%;
+    background:
+        radial-gradient(38% 38% at 18% 22%, rgba(221, 0, 4, 0.14), transparent 70%),
+        radial-gradient(42% 42% at 82% 28%, rgba(120, 134, 160, 0.12), transparent 72%),
+        radial-gradient(46% 46% at 62% 88%, rgba(221, 0, 4, 0.1), transparent 70%);
+    filter: blur(10px);
+    animation: fxAuroraDrift 30s ease-in-out infinite alternate;
+}
+
+// faint engineering grid — calm, low contrast
+.fx-aurora__grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(140, 150, 170, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(140, 150, 170, 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(120% 90% at 50% 30%, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(120% 90% at 50% 30%, #000 30%, transparent 80%);
+}
+
+// gently deepen the edges in dark mode
+.fx-aurora__vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(130% 90% at 50% 35%, transparent 45%, rgba(5, 7, 12, 0.55) 100%);
+}
+
+// ---- light mode: softer, lighter washes ----
+.chakra-ui-light {
+    .fx-aurora__clouds {
+        background:
+            radial-gradient(40% 40% at 16% 20%, rgba(221, 0, 4, 0.08), transparent 72%),
+            radial-gradient(44% 44% at 84% 26%, rgba(120, 134, 160, 0.1), transparent 74%),
+            radial-gradient(48% 48% at 64% 90%, rgba(221, 0, 4, 0.05), transparent 72%);
+    }
+    .fx-aurora__grid {
+        background-image: linear-gradient(rgba(80, 90, 110, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(80, 90, 110, 0.05) 1px, transparent 1px);
+    }
+    .fx-aurora__vignette {
+        background: radial-gradient(130% 90% at 50% 35%, transparent 55%, rgba(180, 186, 198, 0.25) 100%);
+    }
+}
+
+@keyframes fxAuroraDrift {
+    0% {
+        transform: translate3d(-2%, -1%, 0) scale(1);
+    }
+    50% {
+        transform: translate3d(2%, 2%, 0) scale(1.06);
+    }
+    100% {
+        transform: translate3d(-1%, 1%, 0) scale(1.02);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fx-aurora__clouds {
+        animation: none;
+    }
+}

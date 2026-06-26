@@ -23,21 +23,18 @@ interface Props {
     jpg: string;
 }
 
-const ImagePositionLayoutMapper: Record<ImagePosition, "row" | "row-reverse"> = {
+const LayoutMapper: Record<ImagePosition, "row" | "row-reverse"> = {
     [ImagePosition.Right]: "row",
     [ImagePosition.Left]: "row-reverse",
 };
 
-const ImagePositionPaddingRightMapper: Record<ImagePosition, string> = {
-    [ImagePosition.Right]: "8",
-    [ImagePosition.Left]: "0",
-};
-
-const ImagePositionPaddingLeftMapper: Record<ImagePosition, string> = {
-    [ImagePosition.Right]: "0",
-    [ImagePosition.Left]: "8",
-};
-
+/**
+ * Compact "featured project" card used inside the pinned horizontal stage.
+ *
+ * Deliberately landscape + height-bounded: the description is line-clamped and
+ * the cover image is height-capped, so a card can never grow taller than the
+ * pinned viewport (which previously cut the card off top/bottom).
+ */
 export const FeaturedProjectCard: FC<Props> = ({
     id,
     title,
@@ -54,82 +51,78 @@ export const FeaturedProjectCard: FC<Props> = ({
 }) => {
     return (
         <Flex
-            justifyContent="space-between"
+            className="fx-scanlines"
             id="featured-project-card"
-            py={{ base: "12", md: "12", lg: '28' }}
-            direction={{ base: "column-reverse", lg: ImagePositionLayoutMapper[imagePosition] }}
+            p={{ base: "5", lg: "6" }}
+            gap={{ base: 5, lg: 7 }}
+            align="center"
+            direction={{ base: "column", lg: LayoutMapper[imagePosition] }}
+            bg="var(--fx-glass-strong)"
+            border="1px solid var(--fx-glass-border)"
+            borderRadius="1.4rem"
+            boxShadow="var(--fx-glass-shadow)"
         >
-            <Flex
-                h="auto"
-                pr={{ base: "0", lg: ImagePositionPaddingRightMapper[imagePosition] }}
-                pl={{ base: "0", lg: ImagePositionPaddingLeftMapper[imagePosition] }}
-                direction="column"
-                justifyContent="space-between"
-                flex={{ base: 1, lg: 0.6 }}
-            >
-                <Box>
-                    <Heading data-aos="fade-down" data-aos-offset="200" fontSize="4xl" lineHeight="1">
-                        {title}
-                    </Heading>
-                    <Text
-                        pt="2"
-                        fontSize="sm"
-                        fontWeight="600"
-                        opacity="0.6"
-                        data-aos="fade"
-                        data-aos-delay="100"
-                        data-aos-offset="200"
-                    >
-                        {year} • {location}
+            {/* ---- text ---- */}
+            <Flex direction="column" justifyContent="center" flex={{ base: 1, lg: 0.52 }} minW={0} w="100%">
+                <Heading
+                    className="fx-gradient-text"
+                    fontSize={{ base: "2xl", lg: "3xl" }}
+                    lineHeight="1.1"
+                    display="inline-block"
+                >
+                    {title}
+                </Heading>
+
+                {(year || location) && (
+                    <Text className="fx-mono" pt="2" fontSize="0.66rem" color="primary.400">
+                        {year} {year && location ? "·" : ""} {location}
                     </Text>
+                )}
 
-                    <Box
-                        py="4"
-                        display={{ base: "inherit", lg: "none" }}
-                        data-aos="fade-up"
-                        data-aos-offset="200"
-                        data-aos-delay="200"
-                    >
-                        <Image borderRadius="xl" src={image} />
-                    </Box>
+                <Text
+                    fontSize={{ base: "sm", lg: "md" }}
+                    pt="3"
+                    color="var(--fx-text-soft)"
+                    lineHeight="1.55"
+                    sx={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: "6",
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                    }}
+                >
+                    {description}
+                </Text>
 
-                    <Text
-                        fontSize="lg"
-                        pt={{ base: 0, lg: "2" }}
-                        data-aos="fade-up"
-                        data-aos-offset="200"
-                        data-aos-delay="200"
-                        borderRadius="xl"
-                        pb="2"
-                    >
-                        {description}
-                    </Text>
-
-                    <Tags tags={tags} id={id} />
+                <Box pt="3">
+                    <Tags tags={tags} id={id} size="xs" />
                 </Box>
 
                 <ProjectCardFooter readMore={readMore} github={github} demo={demo} />
             </Flex>
 
-            <Box
-                data-aos="fade-up"
-                data-aos-offset="200"
-                display={{ base: "none", lg: "block" }}
-                flex={{ base: 1, lg: 0.6 }}
-                pl={{ base: "0", lg: ImagePositionPaddingRightMapper[imagePosition] }}
-                pr={{ base: "0", lg: ImagePositionPaddingLeftMapper[imagePosition] }}
-            >
-                <picture>
-                    <source type="image/webp" srcSet={image}></source>
-                    <source type="image/jpeg" srcSet={jpg}></source>
-                    <Image
-                        borderRadius="xl"
-                        src={jpg}
-                        alt={`${title}-cover-image`}
-                        transition="all 0.4s ease-in-out"
-                        _hover={{ boxShadow: "0px 20px 60px rgb(77 77 77 / 10%)", transform: "scale(1.01)" }}
-                    />
-                </picture>
+            {/* ---- cover image (height-capped, zooms on hover) ---- */}
+            <Box flex={{ base: 1, lg: 0.48 }} minW={0} w="100%">
+                <Box
+                    overflow="hidden"
+                    borderRadius="1rem"
+                    border="1px solid var(--fx-glass-border)"
+                    sx={{ "&:hover img": { transform: "scale(1.06)" } }}
+                >
+                    <picture>
+                        <source type="image/webp" srcSet={image} />
+                        <source type="image/jpeg" srcSet={jpg} />
+                        <Image
+                            src={jpg}
+                            alt={`${title} preview`}
+                            w="100%"
+                            h={{ base: "200px", lg: "300px" }}
+                            objectFit="cover"
+                            display="block"
+                            transition="transform 0.5s var(--fx-ease-out)"
+                        />
+                    </picture>
+                </Box>
             </Box>
         </Flex>
     );

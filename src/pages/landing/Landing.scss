@@ -1,0 +1,100 @@
+// ---------------------------------------------------------------------------
+//  Hero — "liquid glass", professional
+// ---------------------------------------------------------------------------
+.hero {
+    position: relative;
+    min-height: 76vh;
+    // the soft halo bleeds past the photo; clip horizontally so it never widens
+    // the page (clip avoids creating a scroll container → safe for sticky).
+    overflow-x: clip;
+}
+
+// hero name — premium animated red sheen sweeping across white (dark mode),
+// solid near-black in light mode.
+.hero__name {
+    background: linear-gradient(100deg, #fff 0%, #fff 26%, var(--fx-accent) 50%, #fff 74%, #fff 100%);
+    background-size: 230% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: heroSheen 7.5s ease-in-out infinite;
+}
+.chakra-ui-light .hero__name {
+    background: none;
+    -webkit-text-fill-color: #14181f;
+    color: #14181f;
+    animation: none;
+}
+@keyframes heroSheen {
+    0%,
+    100% {
+        background-position: 100% 0;
+    }
+    50% {
+        background-position: 0% 0;
+    }
+}
+
+.hero__kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--fx-text-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero__name {
+        animation: none;
+        background-position: 60% 0;
+    }
+}
+.hero__kicker .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--fx-accent);
+    box-shadow: 0 0 8px rgba(221, 0, 4, 0.6);
+}
+
+// refined credential pills (moved off the photo, into the text column)
+.hero__creds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+// the framed portrait
+.hero__photo {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    margin-inline: auto;
+}
+.hero__frame {
+    position: relative;
+    padding: 10px;
+    border-radius: 1.4rem;
+}
+.hero__frame-inner {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+// bouncing scroll cue
+.hero__cue {
+    animation: fxFloat 2.6s ease-in-out infinite;
+}
+
+@media (max-width: 991px) {
+    .hero__photo {
+        max-width: 300px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero__cue {
+        animation: none !important;
+    }
+}

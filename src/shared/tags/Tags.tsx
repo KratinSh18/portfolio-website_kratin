@@ -12,16 +12,22 @@ interface Props {
 export const Tags: FC<Props> = ({ id, tags, size = "sm" }) => {
     return (
         <Flex py="2" wrap="wrap" gap="4">
-            {tags.map((tag, idx) => (
-                <Box data-aos="flip-left" data-aos-delay={idx * 50} key={`${id}-tag-${tag}`}>
+            {tags.map((tag) => (
+                <Box key={`${id}-tag-${tag}`}>
                     <Badge
-                        transition="0.2s ease-in-out"
-                        transitionProperty="background, color"
-                        _hover={{ color: "white", bg: "primary.500" }}
+                        transition="0.25s ease-in-out"
+                        transitionProperty="background, color, box-shadow, border-color"
+                        bg="var(--fx-glass)"
+                        color="inherit"
+                        border="1px solid var(--fx-glass-border)"
+                        _hover={{
+                            color: "primary.400",
+                            borderColor: "var(--fx-glass-border-hot)",
+                            transform: "translateY(-1px)",
+                        }}
                         textTransform="none"
-                        colorScheme="gray"
-                        borderRadius="md"
-                        px="8px"
+                        borderRadius="full"
+                        px="10px"
                         py="4px"
                         fontSize={size}
                         fontWeight="600"

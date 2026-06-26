@@ -66,7 +66,6 @@ export const Content: FC<Props> = ({ children, ...rest }) => {
                         return (
                             <UnorderedList
                                 {...rest}
-                                data-aos="fade"
                                 listStylePosition="inside"
                                 display="grid"
                                 gridTemplateColumns="repeat(2, 1fr)"
@@ -78,7 +77,7 @@ export const Content: FC<Props> = ({ children, ...rest }) => {
                     li: ({ node, ...props }) => {
                         const { ordered, ...rest } = props;
 
-                        return <li data-aos="flip-up" data-aos-delay={props.index * 100 + 400} {...rest} />;
+                        return <li {...rest} />;
                     },
                 }}
             >

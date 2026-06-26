@@ -1,19 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap");
 @import "src/theme/fonts/font.scss";
+@import "src/shared/fx/fx.scss";
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
 body,
 #root {
   height: 100%;
-  cursor: url(./utils/assets/cursor.svg) 20 20, auto !important;
+}
 
-  *::selection {
-    background: var(--hp-colors-orange-200);
-    transition: all 0.25s ease-in-out !important;
-  }
+// The page background + text colour are handled by Chakra's reactive global
+// (white / gray.800), so the light/dark toggle just works. The <AuroraBackground>
+// layers subtle brand tint on top.
+::selection {
+  background: rgba(221, 0, 4, 0.28);
 }
 
 .autograph__path {

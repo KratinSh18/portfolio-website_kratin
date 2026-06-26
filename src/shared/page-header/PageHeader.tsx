@@ -1,33 +1,31 @@
 import { FC } from "react";
 
-import { Box, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 
 interface Props {
     id?: string;
     label: string;
 }
-export const PageHeader: FC<Props> = ({ id, label }) => {
-    const borderColor = "gray.500";
 
+export const PageHeader: FC<Props> = ({ id, label }) => {
     return (
-        <Box
-            id={id}
-            pt={{ base: "24", md: "32" }}
-            pb="16"
-            _before={{
-                display: "inline-block",
-                content: "''",
-                borderBottom: "2px solid ",
-                borderColor,
-                width: "5rem",
-                margin: "auto",
-                marginRight: "0.5rem",
-                transform: "translateY(-0.35rem)",
-            }}
-            textTransform="uppercase"
-            fontSize="xl"
-        >
-            <Text as="span" color={borderColor} fontWeight="700">
+        <Box id={id} pt={{ base: "24", md: "32" }} pb="10">
+            <HStack spacing="3" mb="3" className="fx-mono" color="primary.400" fontSize="xs">
+                <Box w="2.5rem" h="2px" bg="primary.500" borderRadius="full" />
+                <Text as="span" letterSpacing="0.22em">
+                    Section
+                </Text>
+            </HStack>
+            <Text
+                as="span"
+                className="fx-gradient-text"
+                fontSize={{ base: "4xl", md: "6xl" }}
+                fontFamily="heading"
+                fontWeight="800"
+                lineHeight="1"
+                textTransform="capitalize"
+                display="inline-block"
+            >
                 {label}
             </Text>
         </Box>

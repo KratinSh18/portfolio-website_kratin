@@ -33,15 +33,16 @@ export const useScroll = () => {
     };
 
     useEffect(() => {
-        setTimeout(() => {
-            scrollHandler();
-        }, 100);
+        const timeout = setTimeout(scrollHandler, 100);
 
-        document.addEventListener("scroll", scrollHandler);
+        document.addEventListener("scroll", scrollHandler, { passive: true });
 
         return () => {
-            document.removeEventListener("scroll", () => {});
+            clearTimeout(timeout);
+            // remove the SAME reference (the old code removed a fresh () => {}, leaking the listener)
+            document.removeEventListener("scroll", scrollHandler);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return page;

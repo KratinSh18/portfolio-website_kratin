@@ -16,15 +16,16 @@ export const PrimaryColors: ColorHues = {
     900: "#870002",
 };
 
+// Cool, professional slate neutrals (replaces the previous warm/brownish grays).
 export const PrimaryDarkColors: ColorHues = {
-    50: "#F5F5F5",
-    100: "#F0EEEE",
-    200: "#ECE7E7",
-    300: "#D5CCCD",
-    400: "#706868",
-    500: "#807777",
-    600: "#50494A",
-    700: "#2A2727",
-    800: "#131212",
-    900: "#0A0909",
+    50: "#F6F7F9",
+    100: "#ECEEF2",
+    200: "#DDE1E8",
+    300: "#C2C8D2",
+    400: "#8A93A3",
+    500: "#697184",
+    600: "#4A5160",
+    700: "#2B313C",
+    800: "#161A22",
+    900: "#0C0E13",
 };

@@ -8,7 +8,7 @@ interface Props extends StyleProps {
 
 export const ArticleTitle: FC<Props> = ({ title, ...props }) => {
     return (
-        <Heading fontSize="2xl" fontWeight="bold" {...props} data-aos="fade-down">
+        <Heading fontSize="2xl" fontWeight="bold" {...props}>
             {title}
         </Heading>
     );
@@ -16,7 +16,7 @@ export const ArticleTitle: FC<Props> = ({ title, ...props }) => {
 
 export const SectionTitle: FC<Props> = ({ title, ...props }) => {
     return (
-        <Text fontWeight="semibold" fontSize="lg" {...props} data-aos="fade-down">
+        <Text fontWeight="semibold" fontSize="lg" {...props}>
             {title}
         </Text>
     );
