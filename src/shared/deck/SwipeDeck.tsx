@@ -57,7 +57,10 @@ export const SwipeDeck: FC<Props> = ({ ariaLabel = "Carousel", children }) => {
                     scrollSnapType: reduced ? "none" : "x mandatory",
                     scrollBehavior: reduced ? "auto" : "smooth",
                     WebkitOverflowScrolling: "touch",
-                    touchAction: "pan-x",
+                    // Allow BOTH axes: horizontal swipe pans the deck, vertical
+                    // swipe scrolls the page even when the finger starts on a card
+                    // (pan-x alone trapped vertical scroll over the cards).
+                    touchAction: "pan-x pan-y",
                     perspective: "1200px",
                     scrollbarWidth: "none",
                     "&::-webkit-scrollbar": { display: "none" },
