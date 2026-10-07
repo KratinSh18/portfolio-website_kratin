@@ -33,18 +33,20 @@ export const Expandable: FC<Props> = ({ expanded, id, idx, title, subTitle, date
     const canExpand = content.length > 1 || isOverflowing;
     const toggle = () => onChange(isExpanded ? expanded.filter((e) => e !== idx) : [...expanded, idx]);
 
+    // Is the truncated first point actually cut off? Re-measured on every resize:
+    // a one-off read at mount could run before layout (0 >= 0), which put a "See
+    // more" that opens nothing on one-line entries. Expanded, the line is not
+    // rendered, so the last answer stands.
     useEffect(() => {
-        const firstPointId = `first-point-${id}`;
-        const element = document.getElementById(firstPointId);
-
-        if (element) {
-            if (element.scrollWidth >= element.parentElement?.scrollWidth!) {
-                setIsOverflowing(true);
-            } else {
-                setIsOverflowing(false);
-            }
-        }
-    }, [id]);
+        const element = document.getElementById(`first-point-${id}`);
+        if (!element || typeof ResizeObserver === "undefined") return;
+        const ro = new ResizeObserver(() => {
+            // expanding unmounts the line, and the observer may report it (0 x 0) before this effect is cleaned up
+            if (element.isConnected) setIsOverflowing(element.scrollWidth > element.clientWidth);
+        });
+        ro.observe(element);
+        return () => ro.disconnect();
+    }, [id, isExpanded]);
 
     return (
         <>
@@ -64,7 +66,7 @@ export const Expandable: FC<Props> = ({ expanded, id, idx, title, subTitle, date
                 <Text color="var(--fx-text-soft)" fontWeight="600" pt="1">
                     {subTitle}
                 </Text>
-                <Flex pt="2" justifyContent="space-between">
+                <Flex pt="2" justifyContent="space-between" alignItems="center">
                     {!isExpanded ? (
                         <Text id={`first-point-${id}`} isTruncated={!expanded.includes(idx)}>
                             {content[0]}

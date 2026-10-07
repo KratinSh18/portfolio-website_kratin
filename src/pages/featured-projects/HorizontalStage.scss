@@ -5,8 +5,11 @@
 .pin {
     position: sticky;
     top: 0;
+    // full-bleed: neighbours slide in from the window edge instead of being sliced
+    // mid-air at the container's padding line (the App wrapper clips overflow-x)
+    margin: 0 calc(50% - 50vw);
     height: 100vh;
-    padding-top: 144px; // clear the fixed navbar
+    padding-top: 112px; // clear the fixed nav pill; 144 left the card sitting low with a dead band above
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -47,10 +50,6 @@
 
 .float-card:nth-child(3n) .float-card__bob {
     animation-delay: -4s;
-}
-
-.float-card__glare {
-    mix-blend-mode: soft-light;
 }
 
 @keyframes floatBob {

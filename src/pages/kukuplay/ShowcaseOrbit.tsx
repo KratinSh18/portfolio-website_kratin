@@ -1,10 +1,11 @@
-import { CSSProperties, FC, useEffect, useRef } from "react";
+import { CSSProperties, FC, useRef } from "react";
 
 import { IconType } from "react-icons";
 import { FaAndroid, FaApple, FaBrain, FaChartLine, FaCreditCard, FaPenNib, FaReact, FaShieldAlt } from "react-icons/fa";
 
 import showcase from "content/kukuplay/showcase.json";
 import { configs, withProduct } from "shared/content/Content";
+import { usePauseOffscreen } from "shared/fx/usePauseOffscreen";
 
 const chapterIcons: Record<string, IconType> = {
     engine: FaBrain,
@@ -20,14 +21,17 @@ const chapterIcons: Record<string, IconType> = {
 /** Chapter id (showcase.json) → icon; an unknown id still gets a node. */
 export const iconFor = (id: string): IconType => chapterIcons[id] || FaBrain;
 
-// Visual tuning, not content: radius as a fraction of the orbit size, the 3D
-// tilt of each ring's plane, one spin period and alternating directions so the
-// rings drift against each other.
+// Visual tuning, not content: radius as a fraction of the orbit size, one spin
+// period each, alternating directions so the rings drift against each other.
+// The rings share one tilted plane (--tx/--ty in the SCSS), so they never cross,
+// and every chapter rides the outer ring, evenly spaced: no node can cover the
+// core or another node at any angle (checked for orbit sizes 300–520px).
 const RINGS = [
-    { rf: 0.27, tx: 68, ty: -12, dur: 70, dir: "normal", offset: 20 },
-    { rf: 0.37, tx: 63, ty: 14, dur: 95, dir: "reverse", offset: 75 },
-    { rf: 0.45, tx: 72, ty: -5, dur: 120, dir: "normal", offset: 140 },
+    { rf: 0.3, dur: 70, dir: "normal" },
+    { rf: 0.43, dur: 95, dir: "reverse" },
 ];
+const NODE_RING = RINGS.length - 1;
+const OFFSET = 20; // first chapter's angle on the ring
 
 interface Props {
     chapters: { id: string; title: string }[];
@@ -40,32 +44,18 @@ interface Props {
 
 /**
  * The product mark in a glowing core, circled by tilted rings with one node
- * per chapter. All motion is CSS on the compositor: each ring spins in its own
- * 3D plane and its nodes counter-rotate so the icons always face the viewer.
- * Chapters fill the rings in order (inner first), so DOM / tab order matches
- * the reading order of the cards.
+ * per chapter. All motion is CSS transforms on HTML elements (the compositor):
+ * each ring spins in the tilted plane and the nodes counter-rotate so the
+ * icons always face the viewer. Chapters go round the ring in order, so DOM /
+ * tab order matches the reading order of the cards.
  */
 export const ShowcaseOrbit: FC<Props> = ({ chapters, active, live, onSelect }) => {
     const ref = useRef<HTMLDivElement>(null);
 
-    // Pause the spin while the orbit is off-screen — a class flip, no re-render.
-    useEffect(() => {
-        const el = ref.current;
-        if (!live || !el || typeof IntersectionObserver === "undefined") return;
-        const io = new IntersectionObserver(([entry]) => el.classList.toggle("is-paused", !entry.isIntersecting));
-        io.observe(el);
-        return () => io.disconnect();
-    }, [live]);
+    // every loop (spin, glow, beam, ping) holds still while the orbit is off-screen
+    usePauseOffscreen(ref);
 
-    const n = chapters.length;
-    const ringOf = (i: number) => Math.min(RINGS.length - 1, Math.floor((i * RINGS.length) / n));
-    const placed = chapters.map((chapter, i) => {
-        const ring = ringOf(i);
-        const first = chapters.findIndex((_, j) => ringOf(j) === ring);
-        const count = chapters.filter((_, j) => ringOf(j) === ring).length;
-        return { ...chapter, i, ring, angle: RINGS[ring].offset + (360 / count) * (i - first) };
-    });
-    const lit = active >= 0 ? placed[active] : undefined;
+    const angleOf = (i: number) => OFFSET + (360 / chapters.length) * i;
 
     return (
         <div
@@ -80,45 +70,36 @@ export const ShowcaseOrbit: FC<Props> = ({ chapters, active, live, onSelect }) =
                     <div
                         key={r}
                         className="kp-orbit__ring"
-                        style={
-                            {
-                                "--rf": ring.rf,
-                                "--tx": `${ring.tx}deg`,
-                                "--ty": `${ring.ty}deg`,
-                                "--dur": `${ring.dur}s`,
-                                "--dir": ring.dir,
-                            } as CSSProperties
-                        }
+                        style={{ "--rf": ring.rf, "--dur": `${ring.dur}s`, "--dir": ring.dir } as CSSProperties}
                     >
                         <svg className="kp-orbit__svg" viewBox="0 0 100 100" aria-hidden="true">
                             <circle className="kp-orbit__track" cx="50" cy="50" r="49" pathLength={100} />
                             <circle className="kp-orbit__arc" cx="50" cy="50" r="49" pathLength={100} />
                         </svg>
 
-                        {lit && lit.ring === r && (
+                        {r === NODE_RING && active >= 0 && (
                             <span
                                 className="kp-orbit__beam"
-                                style={{ "--a": `${lit.angle}deg` } as CSSProperties}
+                                style={{ "--a": `${angleOf(active)}deg` } as CSSProperties}
                                 aria-hidden="true"
                             />
                         )}
 
-                        {placed
-                            .filter((p) => p.ring === r)
-                            .map((p) => {
-                                const Icon = iconFor(p.id);
-                                const isActive = p.i === active;
+                        {r === NODE_RING &&
+                            chapters.map((chapter, i) => {
+                                const Icon = iconFor(chapter.id);
+                                const isActive = i === active;
                                 return (
                                     <span
-                                        key={p.id}
+                                        key={chapter.id}
                                         className="kp-orbit__slot"
-                                        style={{ "--a": `${p.angle}deg` } as CSSProperties}
+                                        style={{ "--a": `${angleOf(i)}deg` } as CSSProperties}
                                     >
                                         <button
                                             type="button"
                                             className={`kp-node${isActive ? " is-active" : ""}`}
-                                            onClick={() => onSelect(p.i)}
-                                            aria-label={`${showcase.chapterWord} ${p.i + 1}: ${withProduct(p.title)}`}
+                                            onClick={() => onSelect(i)}
+                                            aria-label={`${showcase.chapterWord} ${i + 1}: ${withProduct(chapter.title)}`}
                                             aria-current={isActive ? "step" : undefined}
                                             data-cursor="Go"
                                         >

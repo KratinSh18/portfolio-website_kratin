@@ -3,13 +3,14 @@
     white-space: nowrap;
 }
 // the clipping window each piece rises out of; the padding keeps descenders
-// (g, y, p) and italic overhang from being shaved off.
+// (g, y, p) and italic overhang from being shaved off. --kern (SplitText.tsx)
+// puts back the font's kerning that splitting into boxes loses.
 .split__mask {
     display: inline-block;
     overflow: hidden;
     vertical-align: top;
     padding: 0 0.04em 0.12em;
-    margin: 0 -0.04em -0.12em;
+    margin: 0 -0.04em -0.12em calc(var(--kern, 0em) - 0.04em);
 }
 .split__piece {
     display: inline-block;

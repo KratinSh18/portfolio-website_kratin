@@ -1,8 +1,9 @@
-import { FC, PointerEvent } from "react";
+import { FC, PointerEvent, useRef } from "react";
 
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { configs, Content, MarkdownFile, useContent, withProduct } from "shared/content/Content";
+import { usePauseOffscreen } from "shared/fx/usePauseOffscreen";
 import { Education } from "pages/about/education/Education";
 import { Skills } from "pages/about/skills/Skills";
 import { SoonBadge } from "pages/about/common/fx/SoonBadge";
@@ -37,13 +38,12 @@ export const About: FC = () => {
     const reduced = useReducedMotion();
     const tiltable = desktop && !reduced;
     const { name, pronunciation, mainPicture } = configs.common;
+    const photoRef = useRef<HTMLDivElement>(null);
+    // the halo's breathing holds still while the portrait is off-screen
+    usePauseOffscreen(photoRef);
 
     return (
         <Box className="abt">
-            <span className="abt__watermark" aria-hidden="true">
-                About
-            </span>
-
             <Float3D direction="up">
                 <Flex
                     className="abt__intro"
@@ -52,7 +52,7 @@ export const About: FC = () => {
                     direction={{ base: "column", md: "row" }}
                     alignItems={{ base: "stretch", md: "center" }}
                 >
-                    <Box flex="0.38" className="abt__photo-wrap">
+                    <Box ref={photoRef} flex="0.38" className="abt__photo-wrap">
                         <span className="fx-halo" aria-hidden="true" />
                         <div
                             className={`abt__photo${tiltable ? " is-tilt" : ""}`}

@@ -60,6 +60,8 @@ export const OtherProjectCard: FC<Props> = ({ id, title, demo, github, tags, des
                         ignoreFallback
                         src={image}
                         alt={`${title} cover`}
+                        loading="lazy"
+                        decoding="async"
                         display="block"
                         w="100%"
                         transition="transform 0.8s var(--fx-ease-out)"

@@ -1,4 +1,4 @@
-// Section header — kicker, kinetic label, outlined numeral layered behind.
+// Section header — kicker, kinetic label.
 .page-header {
     position: relative;
     padding: 6rem 0 2.5rem;
@@ -8,36 +8,7 @@
     }
 }
 
-// Giant outlined section number. Sits behind the label (z 0 vs 1), never
-// takes pointer events, and only moves vertically so it can't widen the page.
-.page-header__numeral {
-    position: absolute;
-    left: -0.03em;
-    bottom: 1rem;
-    z-index: 0;
-    font-family: var(--fx-font-display);
-    font-weight: 900;
-    font-size: clamp(5rem, 14vw, 12rem);
-    line-height: 0.8;
-    letter-spacing: -0.04em;
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
-    // outline only, with a faint crimson wash fading down inside the glyphs
-    background: linear-gradient(180deg, rgba(221, 0, 4, 0.16), rgba(221, 0, 4, 0) 75%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.18);
-}
-.chakra-ui-light .page-header__numeral {
-    -webkit-text-stroke-color: rgba(15, 23, 42, 0.16);
-}
-
 .page-header__kicker {
-    position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -62,9 +33,9 @@
 
 // inline-block so its width is the text's width — the gradient spans exactly
 // the label, and the ResizeObserver fires when the web font changes it.
+// Positioned so each piece's offsetLeft (read in PageHeader.tsx) is label-relative.
 .page-header__label {
     position: relative;
-    z-index: 1;
     display: inline-block;
     max-width: 100%;
     font-family: var(--fx-font-display);

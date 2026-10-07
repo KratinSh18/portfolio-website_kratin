@@ -1,7 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 import showcase from "content/kukuplay/showcase.json";
 import { configs, withProduct } from "shared/content/Content";
+import { usePauseOffscreen } from "shared/fx/usePauseOffscreen";
 import { useReducedMotion } from "shared/motion/useReducedMotion";
 
 interface Screen {
@@ -52,6 +53,10 @@ const MockChat: FC = () => {
 export const PhoneMock: FC = () => {
     const reduced = useReducedMotion();
     const [shot, setShot] = useState(0);
+    const ref = useRef<HTMLDivElement>(null);
+
+    // the bob and the chat loop hold still while the phone is off-screen
+    usePauseOffscreen(ref);
 
     useEffect(() => {
         if (reduced || screens.length < 2) return;
@@ -65,6 +70,7 @@ export const PhoneMock: FC = () => {
 
     return (
         <div
+            ref={ref}
             className="kp-phone"
             role={mock ? "img" : undefined}
             aria-label={mock ? withProduct(showcase.phone.label) : undefined}

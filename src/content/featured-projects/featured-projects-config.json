@@ -20,8 +20,8 @@
 "tags": ["Python", "Finance", "Volatility Analysis", "Data Visualization", "Time Series"],
 "description": "Analyzed and visualized volatility clustering patterns across different market sectors using financial time series data. Implemented data processing, statistical analysis, and visual insights to identify sector-specific volatility behaviors and trends, aiding deeper understanding of risk dynamics.",
         "report": "https://drive.google.com/drive/folders/1xFf1LktP8DN9UaqvRT1D_7gnBnqO0wn9",
-        "image": "/assets/featured-projects/FDS.png",
-        "jpg": "/assets/featured-projects/FDS.png"
+        "image": "/assets/featured-projects/FDS.webp",
+        "jpg": "/assets/featured-projects/FDS.webp"
     },
     {
         "id": "featured-project-asctb-reporter",
@@ -45,8 +45,8 @@
 "tags": ["Python", "Machine Learning", "Data Science", "Fraud Detection", "Classification", "Imbalanced Data"],
 "description": "Built a payment fraud detection system using machine learning models including Logistic Regression, Random Forest, and XGBoost with techniques for handling imbalanced data. Performed data preprocessing, feature engineering, model training, and evaluation to detect fraudulent transactions and improve classification accuracy."
 ,
-        "image": "/assets/featured-projects/Pay_protect.png",
-        "jpg": "/assets/featured-projects/Pay_protect.png"
+        "image": "/assets/featured-projects/Pay_protect.webp",
+        "jpg": "/assets/featured-projects/Pay_protect.webp"
     }
     
 ]

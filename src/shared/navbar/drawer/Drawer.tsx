@@ -73,9 +73,10 @@ export const MenuDrawer: FC<Props> = ({ onSectionClick, currentPage, ...props })
                 finalFocusRef={btnRef}
             >
                 <DrawerOverlay bg="blackAlpha.500" />
+                {/* Mounted only while open, so the blur costs nothing the rest of the time. */}
                 <DrawerContent
                     bg="var(--fx-glass-strong)"
-                    sx={{ backdropFilter: "blur(22px) saturate(140%)", WebkitBackdropFilter: "blur(22px) saturate(140%)" }}
+                    sx={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
                 >
                     <DrawerHeader px="5" pt="5">
                         <Flex justifyContent="space-between" alignItems="center">

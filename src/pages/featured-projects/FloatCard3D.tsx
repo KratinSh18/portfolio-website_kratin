@@ -3,6 +3,7 @@ import { FC, MouseEvent, ReactNode, useEffect, useRef } from "react";
 import { Box } from "@chakra-ui/react";
 import { useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 
+import { usePauseOffscreen } from "shared/fx/usePauseOffscreen";
 import { MotionBox } from "shared/motion/MotionPrimitives";
 import { useIsDesktopPointer } from "shared/motion/useIsDesktopPointer";
 import { useReducedMotion } from "shared/motion/useReducedMotion";
@@ -33,6 +34,9 @@ export const FloatCard3D: FC<Props> = ({ index, children }) => {
     const reduced = useReducedMotion();
     const tilt = desktop && !reduced;
 
+    // the idle bob holds still while the card is off-screen or parked outside the pin
+    usePauseOffscreen(cardRef);
+
     useEffect(() => {
         stage?.register(index, cardRef.current);
         return () => stage?.register(index, null);
@@ -43,7 +47,9 @@ export const FloatCard3D: FC<Props> = ({ index, children }) => {
     const glareX = useMotionValue(50);
     const glareY = useMotionValue(50);
     const glareOpacity = useSpring(useMotionValue(0), { stiffness: 120, damping: 20 });
-    const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.55), rgba(255,255,255,0) 55%)`;
+    // plain alpha, no mix-blend-mode: soft-light made each card an isolated group,
+    // an extra GPU render surface re-blended on every scroll frame
+    const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.3), rgba(255,255,255,0) 55%)`;
 
     const onMove = (e: MouseEvent<HTMLDivElement>) => {
         const r = e.currentTarget.getBoundingClientRect();

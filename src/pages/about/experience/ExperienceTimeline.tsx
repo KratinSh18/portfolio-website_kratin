@@ -42,27 +42,20 @@ const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
     const panelId = `xp-more-${exp.id}`;
     const dir = wide && side === "left" ? -1 : 1;
 
-    // Sweep in from the card's own side, slightly rotated and out of focus.
-    // Opacity and blur tween (a spring would overshoot blur below 0); filter is
-    // cleared afterwards so the settled card never carries a filter.
+    // Sweep in from the card's own side, slightly rotated. Transform + opacity only:
+    // framer 5 drives a filter from JS, so a blur-in repainted the whole card every
+    // frame mid-scroll. Opacity tweens (a spring would overshoot it).
     const entrance = reduced
         ? {}
         : {
-              initial: { opacity: 0, x: (wide ? 90 : 40) * dir, rotate: 3 * dir, filter: "blur(10px)" },
-              whileInView: {
-                  opacity: 1,
-                  x: 0,
-                  rotate: 0,
-                  filter: "blur(0px)",
-                  transitionEnd: { filter: "none" },
-              },
+              initial: { opacity: 0, x: (wide ? 90 : 40) * dir, rotate: 3 * dir },
+              whileInView: { opacity: 1, x: 0, rotate: 0 },
               viewport: { once: true, amount: 0.25 },
               transition: {
                   type: "spring",
                   stiffness: 140,
                   damping: 18,
                   opacity: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-                  filter: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
               },
           };
 
@@ -80,7 +73,6 @@ const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
     return (
         <li className={`xptl__item xptl__item--${side}${isNow ? " is-now" : ""}`} data-xp-item>
             <span className="xptl__node" aria-hidden="true" />
-            <span className="xptl__num" aria-hidden="true">{`0${index + 1}`}</span>
 
             {/* keyed on `reduced`: switching motion off mid-visit remounts the card
                 instead of leaving it frozen at its hidden starting values */}
@@ -246,6 +238,8 @@ export const ExperienceTimeline: FC = () => {
             // a fast fling can queue an enter and an exit together: the last one is current
             const entry = entries[entries.length - 1];
             schedule();
+            // the NOW pulse holds still off-screen (fx.scss .is-paused)
+            root.classList.toggle("is-paused", !entry.isIntersecting);
             if (entry.isIntersecting && !listening) {
                 window.addEventListener("scroll", schedule, { passive: true });
                 listening = true;

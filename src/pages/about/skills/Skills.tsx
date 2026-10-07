@@ -20,8 +20,7 @@ const chip = {
 };
 
 /**
- * Skill groups as a bento of glass panels: a giant outlined group number, chips
- * that stagger in when the panel scrolls into view and spring on hover. The
+ * Skill groups as a bento of glass panels: chips that stagger in when the panel scrolls into view and spring on hover. The
  * hover transform lives on an inner span because framer owns the <li>'s
  * inline transform. Reduced motion renders the chips in place.
  */
@@ -36,9 +35,8 @@ export const Skills: FC = () => {
             <ArticleTitle id="skills-title" title="Skills" />
 
             <div className="skl">
-                {configs.about.skills.map((group, i) => (
+                {configs.about.skills.map((group) => (
                     <article className="skl__panel fx-glass" key={group.title} onPointerMove={glare}>
-                        <span className="skl__num" aria-hidden="true">{`0${i + 1}`}</span>
                         <h4 className="skl__title">{group.title}</h4>
                         <p className="skl__count fx-mono">{group.tools.length} skills</p>
                         {/* keyed on `reduced` so turning motion off remounts the chips visible */}

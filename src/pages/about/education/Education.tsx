@@ -24,10 +24,7 @@ export const Education: FC = () => {
                         boxShadow="var(--fx-glass-shadow)"
                         transition="border-color 0.45s var(--fx-ease-out)"
                         _hover={{ borderColor: "var(--fx-glass-border-hot)" }}
-                        sx={{
-                            backdropFilter: "blur(16px) saturate(135%)",
-                            WebkitBackdropFilter: "blur(16px) saturate(135%)",
-                        }}
+                        // no backdrop blur: re-blurring the live WebGL canvas costs a GPU pass per card per frame
                     >
                         <Expandable
                             title={edu.school}

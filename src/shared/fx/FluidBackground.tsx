@@ -11,10 +11,12 @@ import "shared/fx/FluidBackground.scss";
 // The product showcase section tints the flow indigo while on screen.
 const PRODUCT_SECTION_ID = KukuPlayShowcaseId;
 
-// Internal resolution: half the (capped) device pixels. The flow is soft by
-// nature, so CSS stretching it costs nothing visible and saves ~75% of the work.
-const RENDER_SCALE = 0.5;
-const MAX_DPR = 1.5;
+// Internal resolution in CSS px, independent of devicePixelRatio. The flow is
+// soft by nature, so CSS stretching it ~3x is invisible; on a 2x screen this is
+// ~1/5 of the old DPR-scaled buffer. Touch screens are smaller and weaker.
+const RENDER_SCALE = 0.35;
+const RENDER_SCALE_TOUCH = 0.3;
+const MAX_SIDE = 720;
 // rAF runs at 120Hz on ProMotion screens; the flow is slow enough that 60fps
 // is indistinguishable and halves the GPU bill.
 const MIN_FRAME_MS = 1000 / 60 - 2;
@@ -25,9 +27,11 @@ void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
 `;
 
 // Domain-warped fbm (IQ's "warp of a warp"): q warps p, r warps p by q, the
-// final field f is sampled through r. Two extra taps of the last fbm give a
-// surface normal for a soft specular sheen. Dark mode is kept deliberately low
-// in luminance so body text stays readable with no extra backdrop.
+// final field f is sampled through r. The last fbm also returns its analytic
+// gradient (value-noise derivatives, nearly free) for the soft specular sheen,
+// so it's 5 fbm calls per pixel instead of 7 (two finite-difference taps).
+// Dark mode is kept deliberately low in luminance so body text stays readable
+// with no extra backdrop.
 const FRAG = `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
@@ -69,6 +73,32 @@ float fbm(vec2 p) {
     return v;
 }
 
+// fbm plus its gradient: .x value, .yz d/dp. Octave k samples M^k p, so its
+// gradient is (M^k)^T times the noise's; GLSL's v * m is m^T v.
+vec3 fbmd(vec2 p) {
+    float v = 0.0;
+    vec2 g = vec2(0.0);
+    float a = 0.5;
+    mat2 J = mat2(1.0);
+    for (int i = 0; i < 4; i++) {
+        vec2 i0 = floor(p);
+        vec2 fr = fract(p);
+        vec2 u = fr * fr * (3.0 - 2.0 * fr);
+        vec2 du = 6.0 * fr * (1.0 - fr);
+        float h00 = hash(i0);
+        float h10 = hash(i0 + vec2(1.0, 0.0));
+        float h01 = hash(i0 + vec2(0.0, 1.0));
+        float h11 = hash(i0 + vec2(1.0, 1.0));
+        float k = h00 - h10 - h01 + h11;
+        v += a * (h00 + (h10 - h00) * u.x + (h01 - h00) * u.y + k * u.x * u.y);
+        g += a * ((du * (vec2(h10 - h00, h01 - h00) + k * u.yx)) * J);
+        p = M * p;
+        J = M * J;
+        a *= 0.5;
+    }
+    return vec3(v, g);
+}
+
 void main() {
     vec2 uv = gl_FragCoord.xy / u_res;
     float aspect = u_res.x / u_res.y;
@@ -92,13 +122,10 @@ void main() {
                   fbm(p + vec2(5.2, 1.3) - vec2(t * 0.7, t * 0.4)));
     vec2 r = vec2(fbm(p + 3.5 * q + vec2(1.7, 9.2) + vec2(t * 1.2, 0.0)),
                   fbm(p + 3.5 * q + vec2(8.3, 2.8) - vec2(0.0, t * 0.9)));
-    vec2 w = p + 3.5 * r;
-    float f = fbm(w);
+    vec3 fd = fbmd(p + 3.5 * r);
+    float f = fd.x;
 
-    const float e = 0.03;
-    float fx = fbm(w + vec2(e, 0.0));
-    float fy = fbm(w + vec2(0.0, e));
-    vec3 n = normalize(vec3((f - fx) / e, (f - fy) / e, 2.2));
+    vec3 n = normalize(vec3(-fd.yz, 2.2));
     vec3 lightDir = normalize(vec3(-0.45, 0.6, 0.65));
     float spec = pow(max(dot(reflect(-lightDir, n), vec3(0.0, 0.0, 1.0)), 0.0), 22.0);
 
@@ -195,15 +222,21 @@ const setup = (gl: WebGLRenderingContext): Gl | null => {
     };
 };
 
-/** 0..1 — how much of the viewport the product showcase fills (60% = fully indigo). */
+/** 0..1 — how much of the viewport `visible` px fill (60% = fully indigo). */
+const productAmount = (visible: number, vh: number) => Math.min(Math.max(visible / (vh * 0.6), 0), 1);
+
+/** The same, measured now; only for seeding (a layout read, so never per frame). */
 const productInView = (): number => {
     const el = document.getElementById(PRODUCT_SECTION_ID);
     if (!el) return 0;
     const r = el.getBoundingClientRect();
     const vh = window.innerHeight;
-    const visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-    return Math.min(Math.max(visible / (vh * 0.6), 0), 1);
+    return productAmount(Math.min(r.bottom, vh) - Math.max(r.top, 0), vh);
 };
+
+// IntersectionObserver steps for the product section; with the easing in the
+// loop, 2% of the section's height is fine-grained enough.
+const PRODUCT_THRESHOLDS = Array.from({ length: 51 }, (_, i) => i / 50);
 
 /** Frame-rate independent easing toward a target (k ≈ 1/time-constant in seconds). */
 const approach = (from: number, to: number, k: number, dt: number) => from + (to - from) * (1 - Math.exp(-k * dt));
@@ -259,6 +292,35 @@ export const FluidBackground: FC = () => {
         let raf = 0;
         let last = 0;
         let lastDraw = 0;
+        const touch = window.matchMedia("(pointer: coarse)").matches;
+
+        // The product tint follows an IntersectionObserver instead of a
+        // getBoundingClientRect per frame, which forced a style/layout flush in
+        // the middle of every scroll frame. The section is lazy, so the loop
+        // looks it up (cheap, by id) until it exists, and again if it remounts.
+        let productEl: HTMLElement | null = null;
+        let productTarget = reduced ? 0 : productInView();
+        const io =
+            !reduced && typeof IntersectionObserver !== "undefined"
+                ? new IntersectionObserver(
+                      (entries) => {
+                          const e = entries[entries.length - 1];
+                          const vh = e.rootBounds ? e.rootBounds.height : window.innerHeight;
+                          productTarget = e.isIntersecting ? productAmount(e.intersectionRect.height, vh) : 0;
+                      },
+                      { threshold: PRODUCT_THRESHOLDS }
+                  )
+                : null;
+        const watchProduct = () => {
+            if (!io || (productEl && productEl.isConnected)) return;
+            if (productEl) {
+                io.unobserve(productEl);
+                productTarget = 0;
+            }
+            productEl = document.getElementById(PRODUCT_SECTION_ID);
+            if (productEl) io.observe(productEl);
+        };
+
         const s = {
             time: 8 + Math.random() * 40, // start somewhere different each visit
             mx: 0.62,
@@ -267,14 +329,16 @@ export const FluidBackground: FC = () => {
             ty: 0.58,
             // Seeded from the live page so a reload mid-page doesn't swoosh into place.
             scroll: reduced ? 0 : window.scrollY / Math.max(window.innerHeight, 1),
-            product: reduced ? 0 : productInView(),
+            product: productTarget,
             light: lightRef.current,
         };
 
         const resize = () => {
-            const scale = Math.min(window.devicePixelRatio || 1, MAX_DPR) * RENDER_SCALE;
-            const w = Math.max(1, Math.round(canvas.clientWidth * scale));
-            const h = Math.max(1, Math.round(canvas.clientHeight * scale));
+            const cw = canvas.clientWidth;
+            const ch = canvas.clientHeight;
+            const scale = Math.min(touch ? RENDER_SCALE_TOUCH : RENDER_SCALE, MAX_SIDE / Math.max(cw, ch, 1));
+            const w = Math.max(1, Math.round(cw * scale));
+            const h = Math.max(1, Math.round(ch * scale));
             if (canvas.width !== w || canvas.height !== h) {
                 canvas.width = w;
                 canvas.height = h;
@@ -291,7 +355,8 @@ export const FluidBackground: FC = () => {
             gl.uniform1f(res.u.product, s.product);
             gl.uniform1f(res.u.light, s.light);
             gl.drawArrays(gl.TRIANGLES, 0, 3);
-            canvas.classList.add("is-ready");
+            // classList.add rewrites the attribute even when present; once is enough
+            if (!canvas.classList.contains("is-ready")) canvas.classList.add("is-ready");
         };
 
         const tick = (now: number) => {
@@ -306,7 +371,8 @@ export const FluidBackground: FC = () => {
             s.mx = approach(s.mx, s.tx, 3, dt);
             s.my = approach(s.my, s.ty, 3, dt);
             s.scroll = approach(s.scroll, window.scrollY / Math.max(window.innerHeight, 1), 6, dt);
-            s.product = approach(s.product, productInView(), 2.5, dt);
+            watchProduct();
+            s.product = approach(s.product, productTarget, 2.5, dt);
             s.light = approach(s.light, lightRef.current, 12, dt);
             draw();
         };
@@ -383,6 +449,7 @@ export const FluidBackground: FC = () => {
 
         return () => {
             stop();
+            if (io) io.disconnect();
             redrawRef.current = () => undefined;
             window.removeEventListener("pointermove", onPointer);
             document.removeEventListener("visibilitychange", onVisibility);

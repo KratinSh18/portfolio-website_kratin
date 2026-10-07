@@ -3,7 +3,6 @@ import { FC, MouseEvent } from "react";
 import { configs } from "shared/content/Content";
 import { Marquee } from "shared/fx/Marquee";
 import { Magnetic } from "shared/motion/Magnetic";
-import { SplitText } from "shared/motion/SplitText";
 import { useReducedMotion } from "shared/motion/useReducedMotion";
 import { Socials } from "shared/socials/Socials";
 import { onMailTo } from "utils/Functions";
@@ -13,7 +12,11 @@ import "shared/footer/Footer.scss";
 // Alternating solid / outlined words keep the band readable at a glance.
 const BAND = ["Let's build something", "Say hi", "Let's build something", "Say hi"];
 
-/** The finale: a never-ending display band, the contact block, then the small print. */
+/**
+ * The finale: a never-ending display band ("Let's build something"), the
+ * contact block, then the small print. The band is the headline, so the
+ * contact block opens with the kicker, not a second copy of those words.
+ */
 export const Footer: FC = () => {
     const reduced = useReducedMotion();
     const { email, name } = configs.common;
@@ -43,8 +46,7 @@ export const Footer: FC = () => {
                         <span className="finale__line" aria-hidden="true" />
                         06 — Say hi
                     </p>
-                    <SplitText as="h2" className="finale__title" text="Let's build something" by="chars" />
-                    <p className="finale__accent">Got an idea, a product or a hard problem? Write to me.</p>
+                    <h2 className="finale__accent">Got an idea, a product or a hard problem? Write to me.</h2>
                     <Magnetic strength={0.2}>
                         <a className="finale__email" href={`mailto:${email}`} onClick={onEmail} data-cursor="Write">
                             {email}

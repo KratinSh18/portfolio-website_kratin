@@ -62,24 +62,17 @@
     background: var(--fx-accent);
 }
 
-.finale__title {
-    margin: 0.9rem 0 1.25rem;
-    font-family: var(--fx-font-display);
-    font-weight: 900;
-    font-size: clamp(2.6rem, 7vw, 5.5rem);
-    line-height: 0.92;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-}
-
+// The contact block's heading: the band above already shouts the headline.
 .finale__accent {
-    max-width: 34ch;
-    margin-bottom: 1.75rem;
+    max-width: 30ch;
+    margin: 1.1rem 0 1.75rem;
     font-family: "Playfair Display", serif;
     font-style: italic;
-    font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+    font-weight: 400;
+    font-size: clamp(1.3rem, 2.6vw, 1.9rem);
     line-height: 1.35;
     color: var(--fx-text-soft);
+    text-wrap: balance;
 }
 
 // Underline draws in from the left on hover, retracts to the right on leave.
@@ -153,8 +146,6 @@
     border-radius: 999px;
     border: 1px solid var(--fx-glass-border);
     background: var(--fx-glass);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     color: inherit;
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: 0.72rem;

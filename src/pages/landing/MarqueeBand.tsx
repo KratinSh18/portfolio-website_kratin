@@ -40,7 +40,7 @@ const STACK = [
 ];
 
 /**
- * Two full-bleed tickers crossing in an X right under the hero. Scroll speed
+ * Two full-bleed parallel tickers, opposite ways, right under the hero. Scroll speed
  * nudges the CSS animations' playbackRate, so the strips rush while the page
  * moves and settle back to cruise — the keyframes stay on the compositor and
  * nothing re-renders.
@@ -86,11 +86,11 @@ export const MarqueeBand: FC = () => {
 
     return (
         <div className="mband" ref={ref}>
-            <div className="mband__strip mband__strip--b" aria-hidden="true">
-                <Marquee items={STACK} reverse speed={48} separator="+" />
-            </div>
             <div className="mband__strip mband__strip--a">
                 <Marquee items={DOING} speed={32} />
+            </div>
+            <div className="mband__strip mband__strip--b" aria-hidden="true">
+                <Marquee items={STACK} reverse speed={48} separator="+" />
             </div>
         </div>
     );

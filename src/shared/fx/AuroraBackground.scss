@@ -9,7 +9,8 @@
     overflow: hidden;
 }
 
-// drifting colour clouds (dark defaults)
+// drifting colour clouds (dark defaults). No filter: blur — the gradients are
+// already soft, and a blurred layer that moves is re-blurred every frame.
 .fx-aurora__clouds {
     position: absolute;
     inset: -25%;
@@ -17,7 +18,6 @@
         radial-gradient(38% 38% at 18% 22%, rgba(221, 0, 4, 0.14), transparent 70%),
         radial-gradient(42% 42% at 82% 28%, rgba(120, 134, 160, 0.12), transparent 72%),
         radial-gradient(46% 46% at 62% 88%, rgba(221, 0, 4, 0.1), transparent 70%);
-    filter: blur(10px);
     animation: fxAuroraDrift 30s ease-in-out infinite alternate;
 }
 

@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 //  Work experience — vertical, scroll-drawn timeline
 //  Mobile: one rail on the left. Desktop (>= 992px): centred spine, cards
-//  alternate sides, a giant outlined index fills the empty half.
+//  alternate sides.
 // ---------------------------------------------------------------------------
 .xptl {
     // the spine's x (relative to .xptl and to each item — both are full width)
@@ -13,7 +13,6 @@
     --xp-indigo: #a5b4fc;
     // the unlit node's fill = the page base, so the spine reads as "through" it
     --xp-base: #0c0e13;
-    --xp-stroke: rgba(255, 255, 255, 0.12);
 
     position: relative;
     padding-bottom: 8px;
@@ -22,7 +21,6 @@
     --xp-red: #b80003;
     --xp-indigo: #4338ca;
     --xp-base: #f6f7f9;
-    --xp-stroke: rgba(15, 23, 42, 0.14);
 }
 
 // ---- spine --------------------------------------------------------------
@@ -139,25 +137,6 @@
     }
 }
 
-// ---- giant outlined index (desktop only, fills the empty half) ----------
-.xptl__num {
-    display: none;
-    font-family: var(--fx-font-display);
-    font-weight: 900;
-    font-size: clamp(5rem, 9vw, 9rem);
-    line-height: 0.8;
-    letter-spacing: -0.04em;
-    color: transparent;
-    -webkit-text-stroke: 1.5px var(--xp-stroke);
-    pointer-events: none;
-    user-select: none;
-    transition: color 0.8s var(--fx-ease-out), -webkit-text-stroke-color 0.8s var(--fx-ease-out);
-}
-.xptl__item[data-lit] .xptl__num {
-    color: var(--fx-accent-soft);
-    -webkit-text-stroke-color: rgba(221, 0, 4, 0.55);
-}
-
 // ---- card ---------------------------------------------------------------
 .xptl__card {
     position: relative;
@@ -205,6 +184,8 @@
 
 // pulsing "NOW" badge for current roles
 .xptl__now {
+    position: relative;
+    isolation: isolate; // keeps the ::after ring behind the badge's text
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -214,6 +195,16 @@
     font-weight: 700;
     color: #fff;
     background: var(--fx-accent);
+}
+// the pulse ring: a scaled + faded pseudo element (compositor only), not an
+// animated box-shadow, which would repaint the badge every frame forever
+.xptl__now::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: rgba(221, 0, 4, 0.55);
     animation: xpNow 2.4s ease-out infinite;
 }
 .xptl__now-dot {
@@ -223,13 +214,16 @@
     background: #fff;
     animation: fxPulse 1.2s ease-in-out infinite;
 }
+// ~10px of halo around a ~60x24px pill, like the old 10px box-shadow spread
 @keyframes xpNow {
     0% {
-        box-shadow: 0 0 0 0 rgba(221, 0, 4, 0.55);
+        opacity: 1;
+        transform: scale(1);
     }
     70%,
     100% {
-        box-shadow: 0 0 0 10px rgba(221, 0, 4, 0);
+        opacity: 0;
+        transform: scale(1.32, 1.8);
     }
 }
 
@@ -412,25 +406,11 @@
         right: 50%;
         background: linear-gradient(270deg, var(--fx-accent), transparent);
     }
-    .xptl__num {
-        display: block;
-        grid-row: 1;
-        align-self: start;
-    }
     .xptl__item--left .xptl__card {
         grid-column: 1;
-        grid-row: 1;
-    }
-    .xptl__item--left .xptl__num {
-        grid-column: 2;
     }
     .xptl__item--right .xptl__card {
         grid-column: 2;
-        grid-row: 1;
-    }
-    .xptl__item--right .xptl__num {
-        grid-column: 1;
-        justify-self: end;
     }
     .xptl__card {
         padding: 1.6rem 1.75rem 1.4rem;
@@ -451,7 +431,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
     .xptl__node,
-    .xptl__num,
     .xptl__more,
     .xptl__more > div,
     .xptl__chev,
@@ -459,7 +438,7 @@
         transition: none;
     }
     .xptl__item[data-lit] .xptl__node::after,
-    .xptl__now,
+    .xptl__now::after,
     .xptl__now-dot {
         animation: none;
     }

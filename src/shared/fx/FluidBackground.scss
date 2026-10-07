@@ -37,8 +37,9 @@
     background: radial-gradient(125% 90% at 50% 40%, transparent 45%, rgba(5, 6, 10, 0.6) 100%);
 }
 
-// Film grain: one tiling feTurbulence tile, jittered in hard steps (like
-// projected film) rather than slid — a compositor-only transform, no repaints.
+// Film grain: one tiling feTurbulence tile on its own layer, jittered in hard
+// steps (like projected film) rather than slid — a compositor-only transform,
+// rastered once, never repainted. A slow step rate is enough at 5% opacity.
 .fx-fluid__grain {
     position: absolute;
     inset: -120px;
@@ -46,16 +47,17 @@
     background-size: 180px 180px;
     opacity: 0.05;
     will-change: transform;
-    animation: fxGrain 0.9s steps(1) infinite;
+    animation: fxGrain 1.6s steps(1) infinite;
 }
 
 .chakra-ui-light {
     .fx-fluid__vignette {
         background: radial-gradient(125% 90% at 50% 40%, transparent 55%, rgba(170, 176, 190, 0.18) 100%);
     }
+    // normal blend: multiply cost an extra full-screen offscreen blend pass
+    // every frame (the canvas under it never stops changing)
     .fx-fluid__grain {
         opacity: 0.06;
-        mix-blend-mode: multiply;
     }
 }
 

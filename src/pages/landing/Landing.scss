@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------------------
 //  Hero — "Liquid Crimson": giant kinetic name, flipping role slot, liquid
-//  portrait. Every loop here is pure CSS and stops while .is-paused (off-screen).
+//  portrait. Every loop here is pure CSS on transform/opacity only (so it runs
+//  on the compositor, no repaint) and stops while .is-paused (off-screen, fx.scss).
 // ---------------------------------------------------------------------------
 .hero {
     --hero-ink: #ffffff;
@@ -11,16 +12,12 @@
     min-height: calc(100vh - 96px);
     min-height: calc(100svh - 96px);
     padding-bottom: 1.25rem;
-    // glow + ring bleed past the portrait; clip sideways only (no scroll box)
-    overflow-x: clip;
+    // no overflow clip here: the glow fades out in the page gutter, and the App
+    // wrapper's overflow-x: clip already stops any sideways scroll (a clip at
+    // the container edge cut the glow off in a hard vertical line)
 }
 .chakra-ui-light .hero {
     --hero-ink: #14181f;
-}
-.hero.is-paused *,
-.hero.is-paused *::before,
-.hero.is-paused *::after {
-    animation-play-state: paused !important;
 }
 
 .hero__grid {
@@ -31,7 +28,7 @@
     gap: 2rem;
     padding-top: 0.5rem;
 }
-// the text sits above the portrait so the name can overlap it (layered depth)
+// above the portrait's glow, which bleeds past the portrait column
 .hero__text {
     position: relative;
     z-index: 2;
@@ -84,8 +81,9 @@
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: -0.04em;
-    // the vh cap keeps name + intro + CTAs + cue inside one laptop screen (1440×900)
-    font-size: clamp(3.4rem, min(13vw, 18vh), 11.5rem);
+    // the vh cap keeps name + intro + CTAs + cue inside one laptop screen (1440×900);
+    // the 10.5rem cap keeps SHARMA inside the 1.2fr text column at the 1248px container
+    font-size: clamp(3.4rem, min(13vw, 18vh), 10.5rem);
     line-height: 0.85;
     color: var(--hero-ink);
 }
@@ -100,45 +98,63 @@
     }
 }
 
-// line 1: solid, with a crimson sheen that rolls across letter by letter
+// line 1: solid, with a crimson sheen that rolls across letter by letter. The
+// glowing crimson glyph is a static copy in ::after (data-char from SplitText)
+// whose opacity is all that animates: animating color/text-shadow on the letter
+// itself repainted the giant type every frame.
 .hero__line--solid .split__piece {
-    animation: heroSheen 7s var(--fx-ease-in-out) infinite;
-    animation-delay: calc(var(--i, 0) * 0.09s);
+    position: relative;
+    &::after {
+        content: attr(data-char);
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--fx-accent-bright);
+        text-shadow: 0 0 0.3em rgba(221, 0, 4, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        animation: heroSheen 7s var(--fx-ease-in-out) infinite;
+        animation-delay: calc(var(--i, 0) * 0.09s);
+    }
 }
 @keyframes heroSheen {
     0%,
     62%,
+    84%,
     100% {
-        color: var(--hero-ink);
-        text-shadow: none;
+        opacity: 0;
     }
     72% {
-        color: var(--fx-accent-bright);
-        text-shadow: 0 0 0.3em rgba(221, 0, 4, 0.45);
-    }
-    84% {
-        color: var(--hero-ink);
-        text-shadow: none;
+        opacity: 1;
     }
 }
 
-// line 2: outlined; a crimson fill rises through each letter on hover
+// line 2: outlined; on hover each letter floods crimson, one after another — a
+// filled crimson copy of the glyph in ::after fades in (opacity only, so the
+// outline never repaints)
 @supports (-webkit-text-stroke: 1px) {
     .hero__line--outline {
         -webkit-text-stroke: 0.022em var(--hero-ink);
         -webkit-text-fill-color: transparent;
     }
     .hero__line--outline .split__piece {
-        background: linear-gradient(var(--fx-accent), var(--fx-accent)) no-repeat 0 100% / 100% 0%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        transition: background-size 0.7s var(--fx-ease-out), -webkit-text-stroke-color 0.4s ease;
-        transition-delay: calc(var(--i, 0) * 0.045s);
+        position: relative;
+        &::after {
+            content: attr(data-char);
+            position: absolute;
+            left: 0;
+            top: 0;
+            -webkit-text-fill-color: var(--fx-accent);
+            -webkit-text-stroke-color: var(--fx-accent);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s var(--fx-ease-out);
+            transition-delay: calc(var(--i, 0) * 0.045s);
+        }
     }
     @media (hover: hover) {
-        .hero__line--outline:hover .split__piece {
-            background-size: 100% 100%;
-            -webkit-text-stroke-color: var(--fx-accent);
+        .hero__line--outline:hover .split__piece::after {
+            opacity: 1;
         }
         // reduced motion: SplitText renders plain text — flood it in one step
         .hero__name--static .hero__line--outline:hover {
@@ -155,11 +171,6 @@
 .hero__name .split__mask.is-jelly > .split__piece {
     transform-origin: 50% 100%;
     animation: heroJelly 0.75s var(--fx-ease-out);
-}
-// keep the sheen running on line 1 (same name at index 0 → it isn't restarted)
-.hero__line--solid .split__mask.is-jelly > .split__piece {
-    animation: heroSheen 7s var(--fx-ease-in-out) infinite, heroJelly 0.75s var(--fx-ease-out);
-    animation-delay: calc(var(--i, 0) * 0.09s), 0s;
 }
 @keyframes heroJelly {
     0%,
@@ -190,7 +201,12 @@
 }
 .hero__slot {
     display: inline-block;
-    height: 1.3em; // tall enough for Playfair's descenders (g, y, p)
+    // Each phrase gets 0.2em of room under its 1.3em line, so the descenders of
+    // the phrase above (the p's of "Android apps") stay in their own row instead
+    // of peeking over the current one. The negative margin hangs that room below
+    // the line, so the baselines and the line height don't move.
+    height: 1.5em;
+    margin-bottom: -0.2em;
     overflow: hidden;
     vertical-align: bottom;
     padding-right: 0.12em; // italic overhang
@@ -208,14 +224,14 @@
     will-change: transform;
     > span {
         display: block;
-        height: 1.3em;
+        height: 1.5em;
         white-space: nowrap;
     }
 }
 
 // ---- statement, chips, CTAs -------------------------------------------------
 .hero__statement {
-    max-width: 38rem; // clears the portrait ring, which reaches into the text column
+    max-width: 38rem; // a readable measure
     color: var(--fx-text-soft);
     strong {
         color: var(--hero-ink);
@@ -279,7 +295,7 @@
 }
 .hero__glow {
     position: absolute;
-    inset: -16%;
+    inset: -30%;
     z-index: -1;
     pointer-events: none;
     // the breathing lives on ::before: a CSS transform animation on this element
@@ -288,20 +304,52 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at 30% 36%, rgba(221, 0, 4, 0.55), transparent 58%),
-            radial-gradient(circle at 72% 72%, rgba(99, 102, 241, 0.45), transparent 60%);
-        filter: blur(40px);
+        // pre-softened stops instead of filter: blur(40px), which the GPU re-ran on
+        // this big layer every frame of the breathing; each ellipse fades out
+        // inside the box, so no edge of it ever shows
+        background: radial-gradient(
+                ellipse 34% 34% at 34% 38%,
+                rgba(221, 0, 4, 0.6),
+                rgba(221, 0, 4, 0.34) 40%,
+                rgba(221, 0, 4, 0.12) 70%,
+                transparent
+            ),
+            radial-gradient(
+                ellipse 34% 34% at 66% 64%,
+                rgba(99, 102, 241, 0.5),
+                rgba(99, 102, 241, 0.28) 40%,
+                rgba(99, 102, 241, 0.1) 70%,
+                transparent
+            );
         animation: fxBreathe 9s ease-in-out infinite;
     }
 }
+// the liquid mask: a fixed organic shape that slowly turns while the photo
+// inside turns back at the same rate, so the edge morphs and the face stays
+// upright. Both are transform loops (animating border-radius re-clipped and
+// repainted the photo every frame).
 .hero__blob {
     position: relative;
     aspect-ratio: 1 / 1.1;
     overflow: hidden;
     border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
-    animation: heroBlob 12s ease-in-out infinite;
+    animation: heroSpin 24s linear infinite reverse;
     // Safari drops border-radius clipping on children of 3D-transformed parents
     -webkit-mask-image: -webkit-radial-gradient(white, black);
+    picture {
+        position: absolute;
+        // oversized so the turning shape never runs past the photo's corners
+        inset: -8%;
+        animation: heroSpin 24s linear infinite;
+        // bottom shade lives here, upright with the photo, not on the turning mask
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(12, 14, 19, 0.4), transparent 34%);
+            pointer-events: none;
+        }
+    }
     img {
         display: block;
         width: 100%;
@@ -314,23 +362,12 @@
         position: absolute;
         inset: 0;
         border-radius: inherit;
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 -3rem 4rem rgba(12, 14, 19, 0.35);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
         pointer-events: none;
     }
 }
-@keyframes heroBlob {
-    0%,
-    100% {
-        border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
-    }
-    33% {
-        border-radius: 63% 37% 45% 55% / 55% 62% 38% 45%;
-    }
-    66% {
-        border-radius: 38% 62% 56% 44% / 62% 38% 62% 38%;
-    }
-}
-// circular text ring, centred on the blob (margin-top % is of the width)
+// circular text ring, centred on the blob (margin-top % is of the width). The
+// spin is on this HTML wrapper: Chrome won't composite animations on SVG nodes.
 .hero__ring {
     position: absolute;
     left: -14%;
@@ -338,8 +375,13 @@
     width: 128%;
     margin-top: -64%;
     pointer-events: none;
-    overflow: visible;
     animation: heroSpin 30s linear infinite;
+    svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+    }
     text {
         font-family: "JetBrains Mono", ui-monospace, monospace;
         font-size: 12px;
@@ -404,7 +446,7 @@
     }
 }
 
-// ---- desktop: name spans wide, portrait right and slightly under it -----------
+// ---- desktop: name left, portrait + ring in their own column on the right ------
 @media (min-width: 768px) {
     .hero__portrait {
         width: 280px;
@@ -419,21 +461,13 @@
     .hero__text {
         gap: 1.1rem;
     }
-    // the ring is 128% of the portrait: below 1280 the intro fills the text
-    // column, so keep portrait + ring inside their own column (no tuck)
+    // the ring is 128% of the portrait: sized so portrait + ring fill their own
+    // column and never reach the name (the name's clamp keeps it in its column)
     .hero__portrait {
         order: 0;
         justify-self: center;
         width: min(calc(100% / 1.28), 430px);
         margin: 0;
-    }
-}
-// wide enough that the intro ends before the ring: tuck under the end of the name
-@media (min-width: 1280px) {
-    .hero__portrait {
-        justify-self: start;
-        width: min(calc(100% + 3rem), 430px);
-        margin: 0 0 0 -3rem;
     }
 }
 
@@ -442,6 +476,7 @@
     .hero__dot::after,
     .hero__glow::before,
     .hero__blob,
+    .hero__blob picture,
     .hero__ring,
     .hero__cue-line::after {
         animation: none !important;

@@ -86,16 +86,21 @@ export const Navbar: FC = () => {
 
         let lastY = window.scrollY;
         let frame = 0;
+        // Write only on change: an attribute write restyles the bar even when
+        // the value is the same, and this runs on every scroll frame.
+        const set = (key: "condensed" | "hidden", value: string) => {
+            if (bar.dataset[key] !== value) bar.dataset[key] = value;
+        };
         const update = () => {
             frame = 0;
             const y = window.scrollY;
             const dy = y - lastY;
             lastY = y;
-            bar.dataset.condensed = String(y > 40);
+            set("condensed", String(y > 40));
             // Hide only on a quick downward fling, never near the top or under
             // reduced motion; any upward scroll brings it straight back.
-            if (reduced || y < 160 || dy < -2) bar.dataset.hidden = "false";
-            else if (dy > 14) bar.dataset.hidden = "true";
+            if (reduced || y < 160 || dy < -2) set("hidden", "false");
+            else if (dy > 14) set("hidden", "true");
         };
         const onScroll = () => {
             if (!frame) frame = window.requestAnimationFrame(update);
@@ -150,7 +155,9 @@ export const Navbar: FC = () => {
                 border="1px solid var(--fx-glass-border)"
                 boxShadow="var(--fx-glass-shadow)"
                 transition="max-width 0.6s var(--fx-ease-out), padding 0.6s var(--fx-ease-out), background-color 0.4s ease"
-                sx={{ backdropFilter: "blur(16px) saturate(140%)", WebkitBackdropFilter: "blur(16px) saturate(140%)" }}
+                // The page's only live blur (one fixed pill), kept small: it re-blurs the
+                // moving WebGL canvas every frame. saturate() would add a second pass.
+                sx={{ backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" }}
             >
                 <LogoType text={configs.common.logoType} onClick={toTop} />
 

@@ -1,53 +1,26 @@
 import { FC, useEffect, useRef } from "react";
 
-import { motion, useMotionValue, useViewportScroll } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { SplitText } from "shared/motion/SplitText";
-import { useIsDesktopPointer } from "shared/motion/useIsDesktopPointer";
 import { useReducedMotion } from "shared/motion/useReducedMotion";
-import { clamp } from "utils/motion";
 
 import "shared/page-header/PageHeader.scss";
 
 interface Props {
     id?: string;
     label: string;
-    /** Section number shown as a giant outlined numeral, e.g. "02". */
+    /** Section number shown in the kicker, e.g. "02". */
     index?: string;
 }
 
 /**
- * Section header: kicker row, a kinetic char-by-char label, and a giant
- * outlined numeral layered behind it that drifts against the scroll.
+ * Section header: a kicker row ("02 — Section") over a kinetic char-by-char
+ * label. Nothing sits behind the title (the old giant numeral was clutter).
  */
 export const PageHeader: FC<Props> = ({ id, label, index }) => {
-    const rootRef = useRef<HTMLDivElement>(null);
     const labelRef = useRef<HTMLDivElement>(null);
     const reduced = useReducedMotion();
-    const desktop = useIsDesktopPointer();
-    const parallax = desktop && !reduced;
-
-    // Numeral offset = distance of the header from the viewport centre, written
-    // straight to a motion value. Subscribed only while parallax is on (touch and
-    // reduced motion do no per-scroll work) and measured once on mount, so a
-    // mid-page reload doesn't jump on the first scroll. The clamp makes it settle
-    // once the header is well off-screen.
-    const { scrollY } = useViewportScroll();
-    const numeralY = useMotionValue(0);
-    useEffect(() => {
-        if (!parallax) {
-            numeralY.set(0);
-            return;
-        }
-        const update = () => {
-            const el = rootRef.current;
-            if (!el) return;
-            const r = el.getBoundingClientRect();
-            numeralY.set(clamp((r.top + r.height / 2 - window.innerHeight / 2) * 0.22, -110, 110));
-        };
-        update();
-        return scrollY.onChange(update);
-    }, [parallax, scrollY, numeralY]);
 
     // Every char is its own transformed layer, which a wrapper-level
     // background-clip:text can't paint through. So each piece carries the
@@ -74,17 +47,7 @@ export const PageHeader: FC<Props> = ({ id, label, index }) => {
     }, [reduced, label]);
 
     return (
-        <div id={id} ref={rootRef} className="page-header">
-            {index && (
-                <motion.span
-                    aria-hidden="true"
-                    className="page-header__numeral"
-                    style={{ y: numeralY }}
-                >
-                    {index}
-                </motion.span>
-            )}
-
+        <div id={id} className="page-header">
             <div className="page-header__kicker fx-mono">
                 <motion.span
                     className="page-header__line"

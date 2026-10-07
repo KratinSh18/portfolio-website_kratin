@@ -1,50 +1,42 @@
 // ---------------------------------------------------------------------------
-//  Marquee band — two tilted strips stacked in one grid cell so they cross in
-//  an X. Strips are wider than the viewport so the rotated ends never show;
-//  the band clips them and pads vertically so the tilt isn't shaved off.
+//  Marquee band — two parallel strips with the same slight tilt, a clear gap
+//  between them and opposite directions, so neither hides the other's text.
+//  Strips are wider than the viewport so the tilted ends never show; the band
+//  clips them and pads vertically so the tilt isn't shaved off.
 // ---------------------------------------------------------------------------
 .mband {
     position: relative;
-    display: grid;
-    // minmax(0, …): an `auto` track would grow to the tickers' min-content
-    // (thousands of px), stretching every group and spreading the items apart
-    grid-template-columns: minmax(0, 1fr);
-    align-items: center;
     padding-block: clamp(3rem, 7vw, 5.5rem);
     overflow: hidden;
 }
-.mband.is-paused .marquee__group {
-    animation-play-state: paused;
-}
 .mband__strip {
-    grid-area: 1 / 1;
     width: 112%;
     margin-left: -6%;
     padding-block: 0.85rem;
+    transform: rotate(-2deg);
     font-family: var(--fx-font-display);
     font-size: clamp(1.4rem, 3.4vw, 2.6rem);
     line-height: 1.1;
     text-transform: uppercase;
     letter-spacing: -0.01em;
 }
+.mband__strip + .mband__strip {
+    margin-top: clamp(0.75rem, 1.8vw, 1.25rem);
+}
 
-// A — the readable one: brand crimson, solid white type, on top
+// A — the readable one: brand crimson, solid white type
 .mband__strip--a {
-    position: relative;
-    z-index: 2;
-    transform: rotate(-2.5deg);
     background: var(--fx-accent);
     color: #ffffff;
     font-weight: 800;
-    box-shadow: 0 18px 50px rgba(221, 0, 4, 0.28);
+    box-shadow: 0 10px 30px rgba(221, 0, 4, 0.22);
 }
 
-// B — decorative: indigo-tinted glass with outlined type, crossing underneath
+// B — decorative: dark indigo-tinted fill with outlined type. A near-opaque
+// fill, not backdrop-filter: a blur would re-sample the live WebGL canvas
+// behind it every frame.
 .mband__strip--b {
-    transform: rotate(2deg);
-    background: linear-gradient(90deg, rgba(99, 102, 241, 0.22), rgba(12, 14, 19, 0.78) 45%, rgba(99, 102, 241, 0.22));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: linear-gradient(90deg, rgba(38, 36, 92, 0.9), rgba(12, 14, 19, 0.92) 45%, rgba(38, 36, 92, 0.9));
     border-block: 1px solid var(--fx-glass-border);
     color: rgba(255, 255, 255, 0.85);
     font-weight: 800;
@@ -69,7 +61,7 @@
 }
 
 .chakra-ui-light .mband__strip--b {
-    background: linear-gradient(90deg, rgba(99, 102, 241, 0.18), rgba(255, 255, 255, 0.82) 45%, rgba(99, 102, 241, 0.18));
+    background: linear-gradient(90deg, rgba(224, 225, 252, 0.92), rgba(255, 255, 255, 0.94) 45%, rgba(224, 225, 252, 0.92));
     color: #14181f;
     .marquee__item {
         -webkit-text-stroke-color: #14181f;

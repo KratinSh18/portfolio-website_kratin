@@ -348,9 +348,22 @@
     &:nth-child(3) {
         animation-delay: 0.5s;
     }
-    // the player's pick
+    // the player's pick: an indigo fill fades in under the label. Opacity only,
+    // so the loop stays on the compositor (animating background/colour repainted)
     &:first-child {
-        animation-name: kpOpt, kpPick;
+        position: relative;
+        isolation: isolate;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: -1;
+            border-radius: inherit;
+            background: #6366f1;
+            opacity: 0;
+            animation: kpPick var(--kp-loop) var(--fx-ease-out) infinite both;
+        }
     }
 }
 .kp-chat__input {
@@ -417,13 +430,11 @@
 @keyframes kpPick {
     0%,
     66% {
-        background: rgba(99, 102, 241, 0.12);
-        color: #e6e8ff;
+        opacity: 0;
     }
     70%,
     92% {
-        background: #6366f1;
-        color: #fff;
+        opacity: 1;
     }
 }
 
@@ -564,15 +575,25 @@
     gap: 6px;
 
     span {
+        position: relative;
         width: 22px;
         height: 3px;
         border-radius: 3px;
         background: var(--kp-line);
-        transition: background 0.5s var(--fx-ease-out), box-shadow 0.5s var(--fx-ease-out);
     }
-    .is-on {
+    // lit segment fades in on its own layer (opacity, not background/shadow)
+    span::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
         background: var(--fx-indigo-bright);
         box-shadow: 0 0 10px rgba(129, 140, 248, 0.7);
+        opacity: 0;
+        transition: opacity 0.5s var(--fx-ease-out);
+    }
+    .is-on::after {
+        opacity: 1;
     }
 }
 
@@ -583,8 +604,7 @@
     position: relative;
     width: 100%;
     padding: clamp(1.4rem, 3vw, 2.2rem);
-    transition: opacity 0.6s var(--fx-ease-out), transform 0.6s var(--fx-ease-out),
-        border-color 0.6s var(--fx-ease-out), box-shadow 0.6s var(--fx-ease-out);
+    transition: opacity 0.6s var(--fx-ease-out), transform 0.6s var(--fx-ease-out);
 
     // indigo line drawn across the top edge when the card lights up
     &::before {
@@ -599,11 +619,25 @@
         transform: scaleX(0);
         transition: transform 0.9s var(--fx-ease-out);
     }
+    // the lit edge + glow sit on a layer that only fades: transitioning the
+    // card's own border/shadow repainted the whole card, text and all, per frame
+    &::after {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border: 1px solid rgba(129, 140, 248, 0.45);
+        border-radius: inherit;
+        box-shadow: 0 20px 60px rgba(99, 102, 241, 0.22);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.6s var(--fx-ease-out);
+    }
     &.is-active {
-        border-color: rgba(129, 140, 248, 0.45);
-        box-shadow: var(--fx-glass-shadow), 0 20px 60px rgba(99, 102, 241, 0.22);
         &::before {
             transform: scaleX(1);
+        }
+        &::after {
+            opacity: 1;
         }
     }
     &:focus {
@@ -696,20 +730,21 @@
         font-family: "JetBrains Mono", ui-monospace, monospace;
         font-size: 0.68rem;
         letter-spacing: 0.04em;
-        // the card is already frosted; ~50 nested blurs re-sampling the moving
-        // WebGL backdrop every frame cost a lot and look the same
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
     }
 }
 
 // ---------------------------------------------------------------------------
-//  Orbit — rings spin in tilted 3D planes; nodes counter-rotate to face front.
+//  Orbit — rings spin in one tilted 3D plane; nodes counter-rotate to face front.
 //  Ring transform:  rotateX(tx) rotateY(ty) rotateZ(spin)
 //  Node transform:  rotateZ(-spin) rotateY(-ty) rotateX(-tx)  (exact inverse)
+//  Size, tilt, core and node size are tuned together: at 55° the node ring's
+//  short axis still clears the core and spaces 8 nodes apart. Change one, re-check.
 // ---------------------------------------------------------------------------
 .kp-orbit {
-    --size: min(46vh, 30vw, 440px);
+    --size: min(56vh, 40vw, 520px);
+    --tx: 55deg;
+    --ty: -8deg;
+    --node: 46px;
     position: relative;
     flex-shrink: 0;
     width: var(--size);
@@ -717,20 +752,34 @@
     perspective: 1100px;
 }
 .kp-orbit--static {
-    --size: min(70vw, 340px);
+    --size: min(86vw, 360px);
+    --node: 40px;
     margin-inline: auto;
 }
+// soft in its gradient stops, not a blur filter: a blurred layer that breathes
+// (scales) has its blur recomputed every frame
 .kp-orbit__glow {
     position: absolute;
     inset: 0 10%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.45), rgba(99, 102, 241, 0.1) 45%, transparent 70%);
-    filter: blur(30px);
+    background: radial-gradient(
+        circle,
+        rgba(99, 102, 241, 0.4) 0%,
+        rgba(99, 102, 241, 0.2) 30%,
+        rgba(99, 102, 241, 0.07) 52%,
+        transparent 72%
+    );
     pointer-events: none;
     animation: fxBreathe 10s ease-in-out infinite;
 }
 .chakra-ui-light .kp-orbit__glow {
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.28), rgba(99, 102, 241, 0.06) 45%, transparent 70%);
+    background: radial-gradient(
+        circle,
+        rgba(99, 102, 241, 0.26) 0%,
+        rgba(99, 102, 241, 0.12) 30%,
+        rgba(99, 102, 241, 0.04) 52%,
+        transparent 72%
+    );
 }
 .kp-orbit__stage {
     position: absolute;
@@ -788,9 +837,9 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    width: calc(var(--size) * 0.3);
-    height: calc(var(--size) * 0.3);
-    margin: calc(var(--size) * -0.15) 0 0 calc(var(--size) * -0.15);
+    width: calc(var(--size) * 0.24);
+    height: calc(var(--size) * 0.24);
+    margin: calc(var(--size) * -0.12) 0 0 calc(var(--size) * -0.12);
     border-radius: 50%;
     pointer-events: none;
     overflow: hidden;
@@ -806,27 +855,21 @@
     }
 }
 
-// The still orbit has no spin to carry nodes out from behind the core, so the
-// inner ring's back node (iOS) would stay hidden there. Push the core behind
-// every ring (deepest ring point ≈ -0.43 × size) and scale back what the
-// perspective takes off.
-.kp-orbit--static .kp-orbit__core {
-    transform: translateZ(calc(var(--size) * -0.5)) scale(1.15);
-}
-
-// beam from the core to the lit node, in the ring's own plane so it follows the spin
+// beam from the core to the lit node, in the ring's own plane so it follows the
+// spin. It starts 45% out (the core's edge when the node swings to the front),
+// so neither the line nor its glint ever crosses the logo.
 .kp-orbit__beam {
     position: absolute;
-    left: 0;
+    left: calc(var(--r) * 0.45);
     top: -1px;
-    width: var(--r);
+    width: calc(var(--r) * 0.55);
     height: 2px;
     overflow: hidden;
     border-radius: 2px;
-    transform-origin: 0 50%;
+    transform-origin: calc(var(--r) * -0.45) 50%;
     transform: rotateZ(var(--a));
     pointer-events: none;
-    background: linear-gradient(90deg, transparent 30%, rgba(129, 140, 248, 0.35) 45%, #c7d2fe 100%);
+    background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.35) 25%, #c7d2fe 100%);
     animation: fxPulse 2.4s ease-in-out infinite;
 
     &::after {
@@ -843,9 +886,9 @@
 
 .kp-node {
     position: absolute;
-    width: 46px;
-    height: 46px;
-    margin: -23px 0 0 -23px;
+    width: var(--node);
+    height: var(--node);
+    margin: calc(var(--node) / -2) 0 0 calc(var(--node) / -2);
     padding: 0;
     border: 0;
     border-radius: 50%;
@@ -872,7 +915,23 @@
     color: #c7d2fe;
     font-size: 1.1rem;
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
-    transition: transform 0.5s var(--fx-ease-out), background 0.4s, color 0.4s, box-shadow 0.4s, opacity 0.4s;
+    isolation: isolate; // keeps the lit fill (z -1) above the disc, under the icon
+    transition: transform 0.5s var(--fx-ease-out), opacity 0.4s;
+
+    // the lit fill + glow, faded in: transitioning the disc's own background and
+    // shadow repainted on every chapter change, mid-scroll
+    &::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        z-index: -1;
+        border-radius: 50%;
+        border: 1px solid #c7d2fe;
+        background: var(--fx-indigo);
+        box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.25), 0 0 30px rgba(129, 140, 248, 0.8);
+        opacity: 0;
+        transition: opacity 0.4s;
+    }
 }
 .chakra-ui-light .kp-node__disc {
     background: rgba(255, 255, 255, 0.94);
@@ -893,10 +952,11 @@
 .kp-node.is-active .kp-node__disc,
 .chakra-ui-light .kp-node.is-active .kp-node__disc {
     transform: scale(1.35);
-    background: var(--fx-indigo);
     color: #fff;
-    border-color: #c7d2fe;
-    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.25), 0 0 30px rgba(129, 140, 248, 0.8);
+
+    &::before {
+        opacity: 1;
+    }
 
     // sonar ping around the lit node
     &::after {
@@ -918,10 +978,6 @@
     .kp-node {
         animation: kpCounter var(--dur) linear infinite;
         animation-direction: var(--dir);
-    }
-    &.is-paused .kp-orbit__ring,
-    &.is-paused .kp-node {
-        animation-play-state: paused;
     }
 }
 
@@ -993,14 +1049,18 @@
     .kp-orbit__beam::after,
     .kp-node__disc::after,
     .kp-phone,
-    .kp-phone * {
+    .kp-phone *,
+    .kp-phone *::before {
         animation: none !important;
     }
     .kp-chat__dots {
         display: none !important;
     }
     .kp-card,
+    .kp-card::before,
+    .kp-card::after,
     .kp-node__disc,
+    .kp-node__disc::before,
     .kp-phone__shot {
         transition: none;
     }

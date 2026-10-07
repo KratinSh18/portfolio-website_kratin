@@ -30,6 +30,14 @@ interface Props {
 
 const SPRING = { stiffness: 160, damping: 18, mass: 0.4 };
 
+// At rest the cover gets no transform at all. framer appends translateZ(0) to every
+// transform it writes, which kept each cover (and the glare stacked over it) on its
+// own GPU layer and forced a render surface per card for the whole scroll.
+const coverTransform = ({ rotateX, rotateY }: { rotateX?: string | number; rotateY?: string | number }) =>
+    parseFloat(String(rotateX)) || parseFloat(String(rotateY))
+        ? `perspective(900px) rotateX(${rotateX}) rotateY(${rotateY})`
+        : "none";
+
 const LayoutMapper: Record<ImagePosition, "row" | "row-reverse"> = {
     [ImagePosition.Right]: "row",
     [ImagePosition.Left]: "row-reverse",
@@ -162,7 +170,8 @@ export const FeaturedProjectCard: FC<Props> = ({
                     overflow="hidden"
                     borderRadius="1rem"
                     border="1px solid var(--fx-glass-border)"
-                    style={{ rotateX, rotateY, transformPerspective: 900 }}
+                    style={{ rotateX, rotateY }}
+                    transformTemplate={coverTransform}
                     sx={{
                         "@media (prefers-reduced-motion: no-preference)": { "&:hover img": { transform: "scale(1.06)" } },
                     }}
@@ -173,6 +182,8 @@ export const FeaturedProjectCard: FC<Props> = ({
                         <Image
                             src={jpg}
                             alt={`${title} preview`}
+                            loading="lazy"
+                            decoding="async"
                             w="100%"
                             h={{ base: "200px", lg: "300px" }}
                             objectFit="cover"

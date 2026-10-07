@@ -8,6 +8,7 @@ import { FaAndroid, FaApple, FaArrowRight, FaGlobe, FaPenNib } from "react-icons
 import showcase from "content/kukuplay/showcase.json";
 import { configs, withProduct } from "shared/content/Content";
 import { Marquee } from "shared/fx/Marquee";
+import { usePauseOffscreen } from "shared/fx/usePauseOffscreen";
 import { Float3D } from "shared/motion/Float3D";
 import { Magnetic } from "shared/motion/Magnetic";
 import { SplitText } from "shared/motion/SplitText";
@@ -191,6 +192,9 @@ export const KukuPlayShowcase: FC = () => {
     const chapters = showcase.chapters;
     const [active, setActive] = useState(0);
     const steps = useRef<(HTMLDivElement | null)[]>([]);
+    const sectionRef = useRef<HTMLDivElement>(null);
+    // every loop in the section (role spark included) holds still while it is off-screen
+    usePauseOffscreen(sectionRef);
 
     // A 10%-tall band across the middle of the viewport: the step inside it is
     // the active chapter. Fires only on crossings, so state changes ~8 times.
@@ -232,7 +236,7 @@ export const KukuPlayShowcase: FC = () => {
     );
 
     return (
-        <Box as="section" id={KukuPlayShowcaseId} className="kp" aria-label={`${product.name} — ${showcase.kicker}`}>
+        <Box ref={sectionRef} as="section" id={KukuPlayShowcaseId} className="kp" aria-label={`${product.name} — ${showcase.kicker}`}>
             <Container px={{ base: 6, md: 6, lg: 4 }}>
                 <Float3D direction="up">
                     <PageHeader index="01" label={showcase.kicker} />

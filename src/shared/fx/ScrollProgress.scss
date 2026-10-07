@@ -10,13 +10,26 @@
     pointer-events: none;
 }
 
-// The full gradient is always laid out edge to edge and clipped to --p, so the
-// colour under the head tells you where you are: crimson top, indigo end.
+// A full-width window slid left by (1 - p) of its width, with the gradient
+// inside slid back by the same amount: the colours stay pinned to page
+// position (crimson top, indigo end) and both moves are transforms. The old
+// clip-path / color-mix version repainted, and re-layerized the whole page,
+// on every scroll frame.
 .fx-progress__bar {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, var(--fx-accent) 0%, var(--fx-accent-bright) 35%, var(--fx-indigo-bright) 100%);
-    clip-path: inset(0 calc((1 - var(--p)) * 100%) 0 0);
+    overflow: hidden;
+    transform: translate3d(calc((var(--p) - 1) * 100%), 0, 0);
+    will-change: transform;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, var(--fx-accent) 0%, var(--fx-accent-bright) 35%, var(--fx-indigo-bright) 100%);
+        transform: translate3d(calc((1 - var(--p)) * 100%), 0, 0);
+        will-change: transform;
+    }
 }
 
 // The head rides a full-width rail slid by (p - 1) x its own width, with the
@@ -29,26 +42,36 @@
     transform: translate3d(calc((var(--p) - 1) * 100%), 0, 0);
     // Hidden at the very top, where there's no bar for it to lead.
     opacity: min(1, calc(var(--p) * 40));
-    will-change: transform;
+    will-change: transform, opacity;
+}
 
+// White dot; its glow cools from crimson to the product's indigo as you go:
+// two glows cross-faded by opacity rather than one box-shadow re-coloured
+// (and repainted) every frame.
+.fx-progress__dot {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    margin: -5px -5px 0 0;
+    border-radius: 50%;
+    background: #fff;
+
+    &::before,
     &::after {
         content: "";
         position: absolute;
-        top: 50%;
-        right: 0;
-        width: 10px;
-        height: 10px;
-        margin: -5px -5px 0 0;
+        inset: 0;
         border-radius: 50%;
-        background: #fff;
-        box-shadow: 0 0 6px 1px var(--fx-accent-bright), 0 0 18px 4px rgba(245, 27, 44, 0.45);
+        will-change: opacity;
     }
-}
-
-// Past the middle the head's glow cools to the product's indigo.
-@supports (background: color-mix(in srgb, red, blue)) {
-    .fx-progress__head::after {
-        box-shadow: 0 0 6px 1px color-mix(in srgb, var(--fx-indigo-bright) calc(var(--p) * 100%), var(--fx-accent-bright)),
-            0 0 18px 4px color-mix(in srgb, rgba(129, 140, 248, 0.45) calc(var(--p) * 100%), rgba(245, 27, 44, 0.45));
+    &::before {
+        box-shadow: 0 0 6px 1px var(--fx-accent-bright), 0 0 18px 4px rgba(245, 27, 44, 0.45);
+        opacity: calc(1 - var(--p));
+    }
+    &::after {
+        box-shadow: 0 0 6px 1px var(--fx-indigo-bright), 0 0 18px 4px rgba(129, 140, 248, 0.45);
+        opacity: var(--p);
     }
 }

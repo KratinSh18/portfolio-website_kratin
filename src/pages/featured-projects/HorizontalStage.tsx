@@ -40,6 +40,9 @@ export const HorizontalStage: FC<Props> = ({ count, ariaLabel = "Featured projec
     const trackRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<Array<HTMLElement | null>>([]);
     const metricsRef = useRef({ pinW: 0, cardW: 0, padX: 0, max: 1 });
+    // last progress drawn: the scroll listener runs page-wide, and outside the pinned
+    // range progress sits at 0 or 1, so identical frames are skipped
+    const progressRef = useRef(-1);
 
     const register = useCallback((index: number, el: HTMLElement | null) => {
         cardsRef.current[index] = el;
@@ -69,7 +72,8 @@ export const HorizontalStage: FC<Props> = ({ count, ariaLabel = "Featured projec
 
     const onFrame = useCallback((progress: number) => {
         const track = trackRef.current;
-        if (!track) return;
+        if (!track || progress === progressRef.current) return;
+        progressRef.current = progress;
 
         const { pinW, cardW, padX, max } = metricsRef.current;
         const translate = -progress * max;
@@ -87,8 +91,12 @@ export const HorizontalStage: FC<Props> = ({ count, ariaLabel = "Featured projec
                 1 - ad * 0.12
             })`;
             el.style.opacity = String(1 - ad * 0.45);
-            el.style.zIndex = String(100 - Math.round(ad * 100));
-            el.style.pointerEvents = ad < 0.35 ? "auto" : "none";
+            // z-index and pointer-events are not compositor-only: a new z-index every frame
+            // re-ran paint + layerization for the whole stage, so step it and write on change
+            const z = String(10 - Math.round(ad * 10));
+            if (el.style.zIndex !== z) el.style.zIndex = z;
+            const pe = ad < 0.35 ? "auto" : "none";
+            if (el.style.pointerEvents !== pe) el.style.pointerEvents = pe;
         }
     }, []);
 
@@ -97,20 +105,27 @@ export const HorizontalStage: FC<Props> = ({ count, ariaLabel = "Featured projec
     useEffect(() => {
         if (!enableJack) return;
 
-        measure();
-        onFrame(0);
-
+        // redraw at the current scroll position, not 0: a late image load or resize
+        // mid-stage used to snap every card back to the start for a frame
         const reflow = () => {
             measure();
-            onFrame(0);
+            const progress = Math.max(progressRef.current, 0);
+            progressRef.current = -1;
+            onFrame(progress);
         };
+        reflow();
 
         window.addEventListener("resize", reflow, { passive: true });
         const settle = window.setTimeout(reflow, 400);
 
         const track = trackRef.current;
         const imgs = track ? Array.from(track.querySelectorAll("img")) : [];
-        imgs.forEach((img) => img.addEventListener("load", reflow));
+        imgs.forEach((img) => {
+            // cards parked off to the side are clipped by the pin, so native lazy loading
+            // would only start each fetch as the card slides in (a blank cover mid-scroll)
+            img.loading = "eager";
+            img.addEventListener("load", reflow);
+        });
 
         let ro: ResizeObserver | undefined;
         if (typeof ResizeObserver !== "undefined" && track) {

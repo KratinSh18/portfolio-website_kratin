@@ -280,14 +280,19 @@ export const Landing: FC = () => {
                                 <img src={landing.jpg} alt="Portrait of Kratin Sharma" width={1080} height={1440} />
                             </picture>
                         </div>
-                        <svg className="hero__ring" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
-                            <defs>
-                                <path id="hero-ring-path" d="M 100,100 m -86,0 a 86,86 0 1,1 172,0 a 86,86 0 1,1 -172,0" />
-                            </defs>
-                            <text textLength={538} lengthAdjust="spacing">
-                                <textPath href="#hero-ring-path">{landing.ring}</textPath>
-                            </text>
-                        </svg>
+                        <div className="hero__ring" aria-hidden="true">
+                            <svg viewBox="0 0 200 200" focusable="false">
+                                <defs>
+                                    <path
+                                        id="hero-ring-path"
+                                        d="M 100,100 m -86,0 a 86,86 0 1,1 172,0 a 86,86 0 1,1 -172,0"
+                                    />
+                                </defs>
+                                <text textLength={538} lengthAdjust="spacing">
+                                    <textPath href="#hero-ring-path">{landing.ring}</textPath>
+                                </text>
+                            </svg>
+                        </div>
                     </motion.div>
                 </motion.div>
             </div>

@@ -5,7 +5,6 @@
 // ---------------------------------------------------------------------------
 .skl {
     --skl-red: #ff4d52;
-    --skl-stroke: rgba(255, 255, 255, 0.1);
 
     display: grid;
     grid-template-columns: 1fr;
@@ -14,7 +13,6 @@
 }
 .chakra-ui-light .skl {
     --skl-red: #b80003;
-    --skl-stroke: rgba(15, 23, 42, 0.12);
 }
 @media (min-width: 768px) {
     .skl {
@@ -51,25 +49,8 @@
     pointer-events: none;
 }
 
-.skl__num {
-    position: absolute;
-    top: -0.08em;
-    right: 0.12em;
-    font-family: var(--fx-font-display);
-    font-weight: 900;
-    font-size: clamp(4.5rem, 8vw, 6.5rem);
-    line-height: 1;
-    letter-spacing: -0.04em;
-    color: transparent;
-    -webkit-text-stroke: 1.5px var(--skl-stroke);
-    pointer-events: none;
-    user-select: none;
-    transition: -webkit-text-stroke-color 0.5s var(--fx-ease-out), transform 0.8s var(--fx-ease-out);
-}
-
 .skl__title {
     position: relative;
-    padding-right: 4.5rem; // clear of the number
     font-family: var(--fx-font-display);
     font-weight: 800;
     font-size: 1.3rem;
@@ -124,10 +105,6 @@
         border-color: var(--fx-glass-border-hot);
         box-shadow: var(--fx-glass-shadow), var(--fx-glow-accent);
     }
-    .skl__panel:hover .skl__num {
-        -webkit-text-stroke-color: rgba(221, 0, 4, 0.6);
-        transform: translateY(6px) rotate(-4deg);
-    }
     .skl__chip:hover {
         transform: translateY(-3px) scale(1.07);
         border-color: var(--fx-glass-border-hot);
@@ -138,12 +115,10 @@
 
 @media (prefers-reduced-motion: reduce) {
     .skl__panel,
-    .skl__num,
     .skl__chip {
         transition: none;
     }
     .skl__panel:hover,
-    .skl__panel:hover .skl__num,
     .skl__chip:hover {
         transform: none;
     }

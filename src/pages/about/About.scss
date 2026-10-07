@@ -1,37 +1,8 @@
 // ---------------------------------------------------------------------------
-//  About — photo with tilt/glare + duotone, giant name, faint ABOUT watermark
+//  About — photo with tilt/glare + duotone, giant name
 // ---------------------------------------------------------------------------
 .abt {
     position: relative;
-}
-
-// Huge, faint, outlined; sized in vw so it never widens the page.
-.abt__watermark {
-    position: absolute;
-    top: -0.1em;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 0;
-    font-family: var(--fx-font-display);
-    font-weight: 900;
-    font-size: clamp(5rem, 22vw, 19rem);
-    line-height: 0.8;
-    letter-spacing: -0.04em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    color: rgba(255, 255, 255, 0.025);
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
-    pointer-events: none;
-    user-select: none;
-}
-.chakra-ui-light .abt__watermark {
-    color: rgba(15, 23, 42, 0.025);
-    -webkit-text-stroke-color: rgba(15, 23, 42, 0.09);
-}
-.abt__intro,
-.abt__block {
-    position: relative;
-    z-index: 1;
 }
 
 // ---- photo ----------------------------------------------------------------
