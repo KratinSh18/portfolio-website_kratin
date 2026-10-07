@@ -1,0 +1,136 @@
+// Custom cursor. The root is a plain, unpositioned wrapper on purpose: each
+// layer is its own fixed element, so the ring's mix-blend-mode blends with the
+// page itself instead of an isolated stacking context (which would kill the
+// inversion).
+.fx-cursor {
+    pointer-events: none;
+}
+
+.fx-cursor__ring,
+.fx-cursor__badge,
+.fx-cursor__dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    will-change: transform;
+}
+
+.fx-cursor.is-visible {
+    .fx-cursor__ring,
+    .fx-cursor__dot {
+        opacity: 1;
+    }
+}
+
+// --- ring: white + difference = inverts whatever it is over (both themes) ---
+.fx-cursor__ring {
+    z-index: 10000;
+    mix-blend-mode: difference;
+}
+
+.fx-cursor__ring-shape {
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+    background: rgba(255, 255, 255, 0);
+    transition: transform 0.45s var(--fx-ease-out), background-color 0.3s ease, border-color 0.3s ease,
+        opacity 0.25s ease;
+}
+
+.fx-cursor.is-hover .fx-cursor__ring-shape {
+    transform: scale(1.8);
+    border-color: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.fx-cursor.is-down .fx-cursor__ring-shape {
+    transform: scale(0.75);
+}
+
+.fx-cursor.is-hover.is-down .fx-cursor__ring-shape {
+    transform: scale(1.45);
+}
+
+// With a label the solid badge takes over; the ring swells behind it and fades.
+.fx-cursor.has-label .fx-cursor__ring-shape {
+    transform: scale(2.3);
+    opacity: 0;
+}
+
+// --- label badge: normal blend so the text is always legible ---------------
+.fx-cursor__badge {
+    z-index: 10001;
+}
+
+.fx-cursor__label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 84px;
+    height: 84px;
+    margin: -42px 0 0 -42px;
+    border-radius: 50%;
+    background: var(--fx-accent);
+    box-shadow: var(--fx-glow-accent);
+    color: #fff;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-align: center;
+    transform: scale(0);
+    transition: transform 0.45s var(--fx-ease-out);
+}
+
+.fx-cursor.is-visible.has-label {
+    .fx-cursor__badge {
+        opacity: 1;
+    }
+    .fx-cursor__label {
+        transform: scale(1);
+    }
+}
+
+.fx-cursor.has-label.is-down .fx-cursor__label {
+    transform: scale(0.88);
+}
+
+// --- dot: tracks the pointer exactly, steps aside while something is hovered -
+.fx-cursor__dot {
+    z-index: 10002;
+
+    &::before {
+        content: "";
+        display: block;
+        width: 6px;
+        height: 6px;
+        margin: -3px 0 0 -3px;
+        border-radius: 50%;
+        background: var(--fx-accent-bright);
+        transition: transform 0.3s var(--fx-ease-out);
+    }
+}
+
+.fx-cursor.is-hover .fx-cursor__dot::before {
+    transform: scale(0);
+}
+
+// The native cursor is hidden only while the custom one is on screen (class set
+// from JS), so a script failure can never leave the page cursor-less. Text
+// fields keep their caret cursor — positioning a caret needs it.
+html.has-fx-cursor,
+html.has-fx-cursor * {
+    cursor: none !important;
+}
+
+html.has-fx-cursor {
+    input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    [contenteditable="true"] {
+        cursor: text !important;
+    }
+}

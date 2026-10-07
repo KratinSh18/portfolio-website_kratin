@@ -1,0 +1,99 @@
+// The site-wide liquid backdrop: a WebGL canvas plus two CSS-only layers
+// (vignette, film grain). Decorative and pointer-transparent; content sits
+// above at z-index 1.
+.fx-fluid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    // 100vh (= the large viewport on mobile) instead of inset:0, so the canvas
+    // doesn't resize every time the mobile toolbar slides in or out.
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+// Rendered at reduced resolution and stretched by CSS — the flow is soft, so
+// the upscale is invisible. Fades in on its first frame (no black flash).
+.fx-fluid__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.9s var(--fx-ease-out);
+
+    &.is-ready {
+        opacity: 1;
+    }
+}
+
+// Deepens the edges so the eye settles on the centre column of content.
+.fx-fluid__vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(125% 90% at 50% 40%, transparent 45%, rgba(5, 6, 10, 0.6) 100%);
+}
+
+// Film grain: one tiling feTurbulence tile, jittered in hard steps (like
+// projected film) rather than slid — a compositor-only transform, no repaints.
+.fx-fluid__grain {
+    position: absolute;
+    inset: -120px;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    opacity: 0.05;
+    will-change: transform;
+    animation: fxGrain 0.9s steps(1) infinite;
+}
+
+.chakra-ui-light {
+    .fx-fluid__vignette {
+        background: radial-gradient(125% 90% at 50% 40%, transparent 55%, rgba(170, 176, 190, 0.18) 100%);
+    }
+    .fx-fluid__grain {
+        opacity: 0.06;
+        mix-blend-mode: multiply;
+    }
+}
+
+@keyframes fxGrain {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    12% {
+        transform: translate3d(-48px, 31px, 0);
+    }
+    25% {
+        transform: translate3d(37px, -62px, 0);
+    }
+    37% {
+        transform: translate3d(-81px, -18px, 0);
+    }
+    50% {
+        transform: translate3d(66px, 54px, 0);
+    }
+    62% {
+        transform: translate3d(-22px, 85px, 0);
+    }
+    75% {
+        transform: translate3d(90px, -40px, 0);
+    }
+    87% {
+        transform: translate3d(-60px, -77px, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fx-fluid__canvas {
+        transition: none;
+    }
+    .fx-fluid__grain {
+        animation: none;
+    }
+}

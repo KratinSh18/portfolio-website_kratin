@@ -11,7 +11,7 @@ export const ColorModeButton: FC<StyleProps> = (props) => {
     return (
         <HStack {...props}>
             <IconButton
-                aria-label="appearance"
+                aria-label={colorMode === "light" ? "Switch to dark mode" : "Switch to light mode"}
                 bg="transparent"
                 color={color}
                 fontSize="lg"
@@ -25,8 +25,8 @@ export const ColorModeButton: FC<StyleProps> = (props) => {
                     window.scrollBy(0, 1);
                     window.scrollBy(0, -1);
                 }}
-                w="32px"
-                h="32px"
+                w="40px"
+                h="40px"
             />
         </HStack>
     );

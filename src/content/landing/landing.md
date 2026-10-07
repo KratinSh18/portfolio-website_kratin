@@ -1,15 +1,1 @@
-Welcome! I'm a graduate from IIT Ropar, currently working as a Performance Marketing Manager at KukuFm's WoWTV, where I lead comprehensive digital advertising strategies and drive business growth through data-driven decision-making.
-
-I'm currently working with,
-
--   Google Ads Management & Performance Marketing
--   Marketing Metrics & Analytics (CAC, Conversion D0-D7, Recovery Metrics)
--   Campaign Scaling & Optimization
--   Data-Driven Strategy & Performance Analysis
-
-Past technical expertise includes:
-
--   Python & Machine Learning
--   Statistical Modeling & Financial Data Analysis
--   Portfolio Optimization & Risk Management
--   Time-Series Analysis & Volatility Modeling
+IIT Ropar graduate ('26) and founding engineer on **{product}** at Kuku FM: AI-narrated interactive stories, shipped on Android, iOS and the web. I work across the whole product, from the LLM story engine and backend to payments and growth analytics. My background is performance marketing (Google Ads at Kuku FM's WoWTV), data science and ML.

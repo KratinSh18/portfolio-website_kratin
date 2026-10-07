@@ -1,235 +1,466 @@
+// ---------------------------------------------------------------------------
+//  Work experience — vertical, scroll-drawn timeline
+//  Mobile: one rail on the left. Desktop (>= 992px): centred spine, cards
+//  alternate sides, a giant outlined index fills the empty half.
+// ---------------------------------------------------------------------------
 .xptl {
+    // the spine's x (relative to .xptl and to each item — both are full width)
+    --xp-x: 14px;
+    // vertical centre of each node, measured from its item's top
+    --xp-node-y: 34px;
+    // readable crimson / indigo for small text (AA on the glass in each mode)
+    --xp-red: #ff4d52;
+    --xp-indigo: #a5b4fc;
+    // the unlit node's fill = the page base, so the spine reads as "through" it
+    --xp-base: #0c0e13;
+    --xp-stroke: rgba(255, 255, 255, 0.12);
+
     position: relative;
+    padding-bottom: 8px;
+}
+.chakra-ui-light .xptl {
+    --xp-red: #b80003;
+    --xp-indigo: #4338ca;
+    --xp-base: #f6f7f9;
+    --xp-stroke: rgba(15, 23, 42, 0.14);
 }
 
-.xptl__track {
-    display: flex;
-    align-items: flex-start; // cards size to their own content (one can expand alone)
-    gap: 28px;
-    overflow-x: auto;
-    padding: 8px 4px 28px;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    position: relative;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    &:focus-visible {
-        outline: 2px solid var(--fx-accent);
-        outline-offset: 4px;
-        border-radius: 12px;
-    }
-}
-
-// the spine that threads through every node
-.xptl__track::before {
-    content: "";
+// ---- spine --------------------------------------------------------------
+.xptl__spine {
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 38px;
-    height: 2px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(221, 0, 4, 0.55) 12%,
-        rgba(139, 148, 167, 0.5) 88%,
-        transparent
-    );
-}
-
-.xptl__item {
-    position: relative;
-    flex: 0 0 auto;
-    width: 420px;
-    max-width: 86vw;
-    scroll-snap-align: center;
-    padding-top: 64px;
-}
-
-// ---- node: a clickable button on the spine ----
-.xptl__node {
-    position: absolute;
-    top: 29px;
-    left: 26px;
-    width: 18px;
-    height: 18px;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    appearance: none;
-    font-size: 0;
-    cursor: pointer;
-    background: var(--fx-accent);
-    box-shadow: 0 0 0 4px rgba(221, 0, 4, 0.16), var(--fx-glow-accent);
-    z-index: 2;
-    transition: transform 0.25s var(--fx-ease-out), box-shadow 0.25s var(--fx-ease-out);
-}
-.xptl__node:hover {
-    transform: scale(1.25);
-}
-.xptl__node:focus-visible {
-    outline: 2px solid var(--fx-accent);
-    outline-offset: 4px;
-}
-.xptl__item:nth-child(2n) .xptl__node {
-    background: var(--fx-slate);
-    box-shadow: 0 0 0 4px rgba(139, 148, 167, 0.16);
-}
-// open node = filled ring emphasis
-.xptl__item.is-open .xptl__node {
-    transform: scale(1.3);
-    box-shadow: 0 0 0 5px rgba(221, 0, 4, 0.22), 0 0 18px rgba(221, 0, 4, 0.6);
-}
-
-// short connector linking the node down to its card
-.xptl__node::before {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    top: var(--xp-node-y);
+    bottom: 0;
+    left: var(--xp-x);
     width: 2px;
-    height: 18px;
-    background: linear-gradient(var(--fx-accent), transparent);
-    opacity: 0.7;
-}
-
-// gentle "present role" ping on the first node
-.xptl__item:first-child .xptl__node::after {
-    content: "";
-    position: absolute;
-    inset: -5px;
-    border-radius: 50%;
-    border: 1px solid var(--fx-accent);
-    animation: fxNodePing 2.6s ease-out infinite;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    // the track fades out under the last card instead of stopping dead. A gradient,
+    // not a mask: a mask clips to the 2px border box and would cut off the fill's
+    // glow and the 10px pen tip.
+    background: linear-gradient(to bottom, var(--fx-glass-border) 80%, transparent);
     pointer-events: none;
 }
-@keyframes fxNodePing {
-    0% {
-        transform: scale(0.85);
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(2);
-        opacity: 0;
-    }
+.xptl__fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    transform-origin: 50% 0;
+    transform: scaleY(0);
+    background: linear-gradient(180deg, var(--fx-accent-bright) 0%, var(--fx-accent) 45%, var(--fx-indigo) 100%);
+    box-shadow: 0 0 10px rgba(221, 0, 4, 0.55), 0 0 24px rgba(99, 102, 241, 0.35);
+    will-change: transform;
+}
+// the glowing pen tip riding the end of the fill
+.xptl__spark {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.35), 0 0 16px 4px rgba(129, 140, 248, 0.75);
+    opacity: 0;
+    transition: opacity 0.3s var(--fx-ease-out);
+    will-change: transform;
 }
 
-// ---- card ----
-.xptl__card {
-    padding: 1.4rem 1.5rem;
-    transition: transform 0.45s var(--fx-ease-out), border-color 0.45s var(--fx-ease-out),
-        box-shadow 0.45s var(--fx-ease-out);
-}
-.xptl__card:hover,
-.xptl__item.is-open .xptl__card {
-    transform: translateY(-4px);
-    border-color: var(--fx-glass-border-hot);
-    box-shadow: var(--fx-glass-shadow), var(--fx-glow-accent);
-}
-
-.xptl__date {
-    color: var(--fx-accent);
-    font-size: 0.7rem;
-}
-.xptl__company {
-    margin-top: 0.5rem;
-    line-height: 1.1;
-}
-.xptl__role {
-    color: var(--fx-text-soft);
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.xptl__body {
-    margin-top: 0.9rem;
-}
-
-// collapsed: one-line brief (2-line clamp)
-.xptl__brief {
-    font-size: 0.92rem;
-    line-height: 1.5;
-    color: inherit;
-    opacity: 0.85;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-// expanded: full bullet list
-.xptl__list {
+// ---- items --------------------------------------------------------------
+.xptl__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 48px;
 }
-.xptl__list li {
-    list-style: none;
+.xptl__item {
     position: relative;
-    padding-left: 1.1rem;
-    font-size: 0.9rem;
-    color: inherit;
-    opacity: 0.88;
-    line-height: 1.45;
-}
-.xptl__list li::before {
-    content: "▹";
-    position: absolute;
-    left: 0;
-    color: var(--fx-accent);
+    padding-left: 38px;
 }
 
-// ---- toggle ("View details" / "Show less") ----
+// connector from the node to the card
+.xptl__item::before {
+    content: "";
+    position: absolute;
+    top: var(--xp-node-y);
+    left: var(--xp-x);
+    width: 24px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--fx-accent), transparent);
+    opacity: 0.25;
+    transition: opacity 0.6s var(--fx-ease-out);
+}
+.xptl__item[data-lit]::before {
+    opacity: 1;
+}
+
+// ---- node: dark until the fill reaches it, then ignites -----------------
+.xptl__node {
+    position: absolute;
+    top: var(--xp-node-y);
+    left: var(--xp-x);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--xp-base);
+    border: 2px solid var(--fx-glass-border);
+    transform: translate(-50%, -50%) scale(0.8);
+    z-index: 1;
+    transition: transform 0.6s var(--fx-ease-out), background-color 0.4s var(--fx-ease-out),
+        border-color 0.4s var(--fx-ease-out), box-shadow 0.6s var(--fx-ease-out);
+}
+.xptl__node::after {
+    content: "";
+    position: absolute;
+    inset: -7px;
+    border-radius: 50%;
+    border: 1px solid var(--fx-accent-bright);
+    opacity: 0;
+}
+.xptl__item[data-lit] .xptl__node {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: var(--fx-accent);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 0 5px var(--fx-accent-soft), 0 0 22px rgba(221, 0, 4, 0.7);
+}
+// one ring burst on ignition
+.xptl__item[data-lit] .xptl__node::after {
+    animation: xpIgnite 0.9s var(--fx-ease-out) both;
+}
+@keyframes xpIgnite {
+    0% {
+        opacity: 0.9;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(2.2);
+    }
+}
+
+// ---- giant outlined index (desktop only, fills the empty half) ----------
+.xptl__num {
+    display: none;
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    font-size: clamp(5rem, 9vw, 9rem);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--xp-stroke);
+    pointer-events: none;
+    user-select: none;
+    transition: color 0.8s var(--fx-ease-out), -webkit-text-stroke-color 0.8s var(--fx-ease-out);
+}
+.xptl__item[data-lit] .xptl__num {
+    color: var(--fx-accent-soft);
+    -webkit-text-stroke-color: rgba(221, 0, 4, 0.55);
+}
+
+// ---- card ---------------------------------------------------------------
+.xptl__card {
+    position: relative;
+    overflow: hidden;
+    padding: 1.35rem 1.25rem 1.25rem;
+    transition: border-color 0.45s var(--fx-ease-out), box-shadow 0.45s var(--fx-ease-out);
+}
+// pointer-following sheen (position fed by glare())
+.xptl__card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.07), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.4s var(--fx-ease-out);
+    pointer-events: none;
+}
+// hover-capable pointers only: a tap would leave the glow stuck on touch screens
+@media (hover: hover) {
+    .xptl__card:hover::before {
+        opacity: 1;
+    }
+    .xptl__card:hover {
+        border-color: var(--fx-glass-border-hot);
+        box-shadow: var(--fx-glass-shadow), var(--fx-glow-accent);
+    }
+    // the product card glows in the product's indigo, like the showcase
+    .xptl__card--product:hover {
+        border-color: rgba(129, 140, 248, 0.55);
+        box-shadow: var(--fx-glass-shadow), 0 0 0.5rem rgba(99, 102, 241, 0.3), 0 0 2.4rem rgba(99, 102, 241, 0.22);
+    }
+}
+
+.xptl__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+}
+.xptl__date {
+    color: var(--xp-red);
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+// pulsing "NOW" badge for current roles
+.xptl__now {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--fx-accent);
+    animation: xpNow 2.4s ease-out infinite;
+}
+.xptl__now-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    animation: fxPulse 1.2s ease-in-out infinite;
+}
+@keyframes xpNow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(221, 0, 4, 0.55);
+    }
+    70%,
+    100% {
+        box-shadow: 0 0 0 10px rgba(221, 0, 4, 0);
+    }
+}
+
+.xptl__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    margin-top: 0.8rem;
+}
+.xptl__mark {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid rgba(129, 140, 248, 0.4);
+    box-shadow: 0 0 0 4px var(--fx-indigo-soft), 0 0 22px rgba(99, 102, 241, 0.35);
+}
+.xptl__company {
+    font-family: "Playfair Display", serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.15;
+}
+.xptl__role {
+    margin-top: 0.3rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--fx-text-soft);
+}
+
+.xptl__points {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+.xptl__points li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.93rem;
+    line-height: 1.55;
+    opacity: 0.9;
+}
+.xptl__points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 0.45rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--fx-accent);
+}
+.xptl__card--product .xptl__points li::before {
+    background: linear-gradient(90deg, var(--fx-accent), var(--fx-indigo));
+}
+
+// collapsible rest of the points: 0fr -> 1fr animates to the real height
+.xptl__more {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.55s var(--fx-ease-out);
+}
+.xptl__more > div {
+    min-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: visibility 0s linear 0.55s;
+}
+.xptl__more.is-open {
+    grid-template-rows: 1fr;
+}
+.xptl__more.is-open > div {
+    visibility: visible;
+    transition-delay: 0s;
+}
+.xptl__more .xptl__points {
+    margin-top: 0.65rem;
+}
+
 .xptl__toggle {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    margin-top: 1rem;
+    gap: 0.4rem;
+    min-height: 40px;
+    margin-top: 0.5rem;
     padding: 0;
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 0.74rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--fx-accent);
-    transition: gap 0.2s var(--fx-ease-out), opacity 0.2s var(--fx-ease-out);
+    color: var(--xp-red);
+    transition: gap 0.25s var(--fx-ease-out);
 }
 .xptl__toggle:hover {
-    gap: 0.6rem;
-    opacity: 0.85;
+    gap: 0.7rem;
+}
+.xptl__toggle:active {
+    transform: scale(0.97);
+}
+.xptl__toggle:focus-visible,
+.xptl__dive:focus-visible {
+    outline: 2px solid var(--fx-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
 }
 .xptl__chev {
     display: inline-flex;
-    transition: transform 0.3s var(--fx-ease-out);
+    font-size: 0.95rem;
+    transition: transform 0.4s var(--fx-ease-out);
 }
-.xptl__item.is-open .xptl__chev {
+.xptl__toggle[aria-expanded="true"] .xptl__chev {
     transform: rotate(180deg);
 }
 
-@media (max-width: 600px) {
+.xptl__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+.xptl__tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+.xptl__tags .fx-chip {
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+.xptl__dive {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 40px;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(129, 140, 248, 0.45);
+    background: var(--fx-indigo-soft);
+    color: var(--xp-indigo);
+    font-size: 0.66rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.3s var(--fx-ease-out), box-shadow 0.3s var(--fx-ease-out);
+}
+.xptl__dive:hover {
+    background: rgba(99, 102, 241, 0.28);
+    box-shadow: 0 0 22px rgba(99, 102, 241, 0.45);
+}
+
+// ---- desktop: centred spine, zig-zag cards ------------------------------
+@media (min-width: 992px) {
+    .xptl {
+        --xp-x: 50%;
+    }
+    .xptl__items {
+        gap: 72px;
+    }
     .xptl__item {
-        width: 82vw;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 120px;
+        padding-left: 0;
+    }
+    .xptl__item::before {
+        width: 60px;
+    }
+    .xptl__item--left::before {
+        left: auto;
+        right: 50%;
+        background: linear-gradient(270deg, var(--fx-accent), transparent);
+    }
+    .xptl__num {
+        display: block;
+        grid-row: 1;
+        align-self: start;
+    }
+    .xptl__item--left .xptl__card {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    .xptl__item--left .xptl__num {
+        grid-column: 2;
+    }
+    .xptl__item--right .xptl__card {
+        grid-column: 2;
+        grid-row: 1;
+    }
+    .xptl__item--right .xptl__num {
+        grid-column: 1;
+        justify-self: end;
+    }
+    .xptl__card {
+        padding: 1.6rem 1.75rem 1.4rem;
+    }
+    .xptl__company {
+        font-size: 1.7rem;
+    }
+    .xptl__mark {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
     }
 }
 
+// ---- reduced motion: everything drawn and still -------------------------
+.xptl.is-static .xptl__spark {
+    display: none;
+}
 @media (prefers-reduced-motion: reduce) {
-    .xptl__track {
-        scroll-behavior: auto;
-    }
-    .xptl__card,
     .xptl__node,
-    .xptl__chev {
+    .xptl__num,
+    .xptl__more,
+    .xptl__more > div,
+    .xptl__chev,
+    .xptl__item::before {
         transition: none;
     }
-    .xptl__item:first-child .xptl__node::after {
+    .xptl__item[data-lit] .xptl__node::after,
+    .xptl__now,
+    .xptl__now-dot {
         animation: none;
-        opacity: 0;
     }
 }

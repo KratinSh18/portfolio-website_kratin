@@ -1,0 +1,157 @@
+// ---------------------------------------------------------------------------
+//  About — photo with tilt/glare + duotone, giant name, faint ABOUT watermark
+// ---------------------------------------------------------------------------
+.abt {
+    position: relative;
+}
+
+// Huge, faint, outlined; sized in vw so it never widens the page.
+.abt__watermark {
+    position: absolute;
+    top: -0.1em;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    font-size: clamp(5rem, 22vw, 19rem);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.025);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+    user-select: none;
+}
+.chakra-ui-light .abt__watermark {
+    color: rgba(15, 23, 42, 0.025);
+    -webkit-text-stroke-color: rgba(15, 23, 42, 0.09);
+}
+.abt__intro,
+.abt__block {
+    position: relative;
+    z-index: 1;
+}
+
+// ---- photo ----------------------------------------------------------------
+.abt__photo-wrap {
+    position: relative;
+    isolation: isolate; // keeps the halo's z-index:-1 behind the photo, not the page
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+}
+@media (min-width: 768px) {
+    .abt__photo-wrap {
+        margin: 0;
+    }
+}
+// offset crimson frame behind the photo
+.abt__photo-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translate(14px, 14px);
+    border: 1px solid var(--fx-glass-border-hot);
+    border-radius: 1.4rem;
+    pointer-events: none;
+}
+.abt__photo {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.4rem;
+    border: 1px solid var(--fx-glass-border);
+    box-shadow: var(--fx-glass-shadow);
+}
+.abt__photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: filter 0.8s var(--fx-ease-out), transform 0.8s var(--fx-ease-out);
+}
+.abt__photo.is-tilt {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.5s var(--fx-ease-out);
+    will-change: transform;
+}
+.abt__duo,
+.abt__glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.abt__duo {
+    display: none;
+}
+.abt__glare {
+    background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, 0.35), transparent 50%);
+    mix-blend-mode: overlay;
+    opacity: 0;
+    transition: opacity 0.5s var(--fx-ease-out);
+}
+// Mouse devices: crimson/indigo duotone at rest, full colour on hover.
+// Touch devices never hover, so they always get the plain colour photo.
+@media (hover: hover) and (pointer: fine) {
+    .abt__photo img {
+        filter: grayscale(1) contrast(1.08) brightness(0.95);
+    }
+    .abt__duo {
+        display: block;
+        background: linear-gradient(160deg, var(--fx-accent) 0%, #4a0b2e 55%, var(--fx-indigo) 100%);
+        mix-blend-mode: color;
+        opacity: 0.9;
+        transition: opacity 0.8s var(--fx-ease-out);
+    }
+    .abt__photo:hover img {
+        filter: none;
+        transform: scale(1.04);
+    }
+    .abt__photo:hover .abt__duo {
+        opacity: 0;
+    }
+    .abt__photo:hover .abt__glare {
+        opacity: 1;
+    }
+}
+
+// ---- text -----------------------------------------------------------------
+.abt__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--fx-text-soft);
+}
+.abt__name {
+    display: block;
+    margin-top: 0.4rem;
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+.abt__tagline {
+    list-style: none;
+    margin: 1.2rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.abt__tagline .fx-chip {
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .abt__photo img,
+    .abt__duo,
+    .abt__glare {
+        transition: none;
+    }
+    .abt__photo:hover img {
+        transform: none;
+    }
+}

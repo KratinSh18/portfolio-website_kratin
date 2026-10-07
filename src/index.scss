@@ -9,6 +9,12 @@
 html {
   scroll-behavior: smooth;
 }
+// Reduced motion: every scrollIntoView / scrollTo (nav, back-to-top, deep links) jumps.
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
 
 html,
 body,

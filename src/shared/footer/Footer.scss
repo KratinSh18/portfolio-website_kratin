@@ -1,0 +1,205 @@
+// Finale — display band, contact block, small print.
+.finale {
+    position: relative;
+    padding: 8rem 0 1.5rem;
+}
+
+// Full-bleed out of the Container; the page wrapper's overflow-x:clip keeps
+// 100vw (which includes the scrollbar) from widening the page.
+.finale__band {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    pointer-events: none; // decorative: no hover-pause, no cursor label
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    font-size: clamp(3.5rem, 13vw, 11rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+}
+// Nested so it outranks Marquee.scss's own `.marquee { --marquee-gap }`
+// whatever order the lazy chunks' stylesheets land in.
+.finale__band .finale__marquee {
+    --marquee-gap: clamp(1.5rem, 4vw, 3.5rem);
+
+    .marquee__sep {
+        color: var(--fx-accent);
+        font-size: 0.35em;
+        opacity: 1;
+    }
+}
+.finale__outline {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--fx-accent);
+}
+
+.finale__grid {
+    display: grid;
+    gap: 3rem;
+    padding-top: 4rem;
+
+    @media (min-width: 62em) {
+        grid-template-columns: 1.5fr 1fr;
+        align-items: end;
+    }
+}
+
+.finale__kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    color: var(--fx-accent-bright);
+}
+.chakra-ui-light .finale__kicker {
+    color: var(--fx-accent);
+}
+.finale__line {
+    width: 2.5rem;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--fx-accent);
+}
+
+.finale__title {
+    margin: 0.9rem 0 1.25rem;
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    font-size: clamp(2.6rem, 7vw, 5.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+
+.finale__accent {
+    max-width: 34ch;
+    margin-bottom: 1.75rem;
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+    line-height: 1.35;
+    color: var(--fx-text-soft);
+}
+
+// Underline draws in from the left on hover, retracts to the right on leave.
+.finale__email {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.18em;
+    font-family: var(--fx-font-display);
+    font-weight: 800;
+    font-size: clamp(1.35rem, 3.6vw, 2.6rem);
+    line-height: 1.2;
+    color: inherit;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    transition: color 0.35s var(--fx-ease-out);
+
+    // invisible hit area: the line box is ~30px tall on phones, under the 40px tap target
+    &::before {
+        content: "";
+        position: absolute;
+        inset: -6px 0;
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: var(--fx-accent);
+        transform: scaleX(0.18);
+        transform-origin: 0% 50%;
+        transition: transform 0.6s var(--fx-ease-out);
+    }
+    &:hover,
+    &:focus-visible {
+        color: var(--fx-accent-bright);
+    }
+    &:hover::after,
+    &:focus-visible::after {
+        transform: scaleX(1);
+    }
+    &:focus-visible {
+        outline: 2px solid var(--fx-accent-bright);
+        outline-offset: 6px;
+        border-radius: 4px;
+    }
+}
+.chakra-ui-light .finale__email:hover,
+.chakra-ui-light .finale__email:focus-visible {
+    color: var(--fx-accent);
+}
+
+.finale__side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+
+    @media (min-width: 62em) {
+        align-items: flex-end;
+    }
+}
+
+.finale__top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    padding: 0 1.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--fx-glass-border);
+    background: var(--fx-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: inherit;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s var(--fx-ease-out);
+
+    &:hover {
+        border-color: var(--fx-glass-border-hot);
+        box-shadow: var(--fx-glow-accent);
+    }
+    &:active {
+        transform: scale(0.96);
+    }
+    &:focus-visible {
+        outline: 2px solid var(--fx-accent-bright);
+        outline-offset: 3px;
+    }
+}
+.finale__arrow {
+    display: inline-block;
+    font-size: 1rem;
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.finale__top:hover .finale__arrow {
+    transform: translateY(-3px);
+}
+
+.finale__print {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    margin-top: 5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--fx-glass-border);
+    font-size: 0.68rem;
+    color: var(--fx-text-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .finale__top:active,
+    .finale__top:hover .finale__arrow {
+        transform: none;
+    }
+}

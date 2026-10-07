@@ -1,0 +1,14 @@
+// the product's indigo, so the badge reads as "about the product", not as a role
+.about-soon {
+    margin-left: 0.55rem;
+    padding: 0.28rem 0.6rem;
+    font-size: 0.58rem;
+    font-weight: 700;
+    vertical-align: middle;
+    color: var(--fx-indigo-bright);
+    border-color: rgba(129, 140, 248, 0.45);
+}
+.chakra-ui-light .about-soon {
+    color: #4338ca;
+    border-color: rgba(67, 56, 202, 0.35);
+}

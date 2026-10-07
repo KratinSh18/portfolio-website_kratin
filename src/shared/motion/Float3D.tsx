@@ -72,7 +72,9 @@ export const Float3D: FC<Props> = ({
             <MotionBox
                 variants={variants}
                 {...trigger}
-                style={{ willChange: "transform, opacity", transformStyle: "preserve-3d" }}
+                // not `opacity`: will-change: opacity makes this a backdrop root for good, so
+                // every frosted panel inside would stop blurring the page behind it
+                style={{ willChange: "transform", transformStyle: "preserve-3d" }}
             >
                 <MotionBox
                     animate={bob ? { y: [0, -8, 0] } : undefined}

@@ -25,6 +25,9 @@ export const DeckProgress: FC<Props> = ({ count, index, onDot }) => (
                 opacity={i === index ? 1 : 0.5}
                 transition="all 0.3s ease"
                 _hover={{ opacity: 1 }}
+                position="relative"
+                // 12px dots, 24x40 hit area (the 12px gaps leave no room for wider)
+                _before={{ content: '""', position: "absolute", inset: "-14px -6px" }}
             />
         ))}
     </HStack>

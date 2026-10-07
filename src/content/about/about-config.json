@@ -6,8 +6,7 @@
             "degree": "Bachelors in Metallurgical And Materials Engineering",
             "duration": "Aug 2022 - May 2026 (Graduated)",
             "content": [
-                
-                "Courses: Financial Risk Management, Machine Learning in Materials, Foundation of Data Science, Differential Equations, Advanced Linear Algebra and Integral Transforms, Data Structure & Algorithms, Probability & Statistic processes, Tinkering Lab,Micro & Macro Economics, Managerial Sciences, English Language Skills, Industrial Management, Human Geography & Social Needs, Professional Ethics"
+                "Courses: Financial Risk Management, Machine Learning in Materials, Foundation of Data Science, Differential Equations, Advanced Linear Algebra and Integral Transforms, Data Structure & Algorithms, Probability & Statistic processes, Tinkering Lab, Micro & Macro Economics, Managerial Sciences, English Language Skills, Industrial Management, Human Geography & Social Needs, Professional Ethics"
             ]
         },
         {
@@ -18,7 +17,7 @@
             "content": [
                 "Percentage : 91"
             ]
-        }, 
+        },
         {
             "id": "edu-3",
             "school": "Disha Delphi Public School",
@@ -28,19 +27,47 @@
                 "Percentage : 90.4"
             ]
         }
-        
     ],
     "experiences": [
+        {
+            "id": "exp-0",
+            "company": "Kuku FM — {product}",
+            "position": "Founding Engineer · Full-Stack, Android, iOS & AI",
+            "duration": "Jul 2026 - Present",
+            "description": [
+                "Built the first playable MVP in week one — AI-narrated stories with characters, dice and selectable models. About 11 weeks later {product} was live on web and Google Play, and submitted to the App Store.",
+                "Implemented a spec-driven story engine on one rule: if the same input must give the same output, it's code, not a prompt. Act schema, validation gate, act planner, a deterministic orchestrator — and a safety classifier on every player input.",
+                "Shipped the native Android app in Kotlin and Jetpack Compose — streaming chat, Google sign-in, Play Billing, R8 release builds — across ~20 Play releases.",
+                "Sole author of the iOS app: blank SwiftUI scaffold to App Store submission in ~12 days at full Android parity, with StoreKit 2, Sign in with Apple and Live Activities.",
+                "Put three payment rails — Razorpay, Google Play Billing and StoreKit 2 — behind one coin ledger, with server-side verification, refund and dispute handling, and tax invoices.",
+                "Built the 'Split with AI' authoring studio that turns a script or PDF into a multi-act story, plus server-side purchase attribution and analytics across every client."
+            ],
+            "tags": [
+                "Python",
+                "FastAPI",
+                "React",
+                "Kotlin",
+                "Swift",
+                "LLMs",
+                "AWS"
+            ]
+        },
         {
             "id": "exp-1",
             "company": "KukuFm's WoWTV",
             "position": "Performance Marketing Manager",
-            "duration": "June 2026 - Present",
+            "duration": "June 2026 - Aug 2026",
             "description": [
-                "Manage and optimize all Google Ads campaigns for WoWTV, driving performance marketing strategy across the platform with focus on measurable business outcomes",
-                "Monitor and analyze key performance metrics including Customer Acquisition Cost (CAC), conversion funnels (D0-D7), recovery metrics, and other critical KPIs to optimize campaign performance and ROI",
-                "Execute data-driven campaign scaling and descaling strategies based on real-time performance analysis and market trends to maximize efficiency and revenue generation",
-                "Leverage advanced analytics and performance data to inform strategic decisions and continuously improve marketing effectiveness across all channels"
+                "Managed and optimized all Google Ads campaigns for WoWTV, driving performance marketing strategy across the platform with focus on measurable business outcomes",
+                "Monitored and analyzed key performance metrics including Customer Acquisition Cost (CAC), conversion funnels (D0-D7), recovery metrics, and other critical KPIs to optimize campaign performance and ROI",
+                "Executed data-driven campaign scaling and descaling strategies based on real-time performance analysis and market trends to maximize efficiency and revenue generation",
+                "Leveraged advanced analytics and performance data to inform strategic decisions and continuously improve marketing effectiveness across all channels"
+            ],
+            "tags": [
+                "Google Ads",
+                "CAC",
+                "D0–D7 funnels",
+                "ROAS"
             ]
         },
         {
@@ -49,47 +76,113 @@
             "position": "Product Manager Intern",
             "duration": "May 2025 - June 2025",
             "description": [
-                "Led user-centric UI/UX improvements by providing critical design feedback that shaped a more intuitive and engaging mobile application, while also influencing the product roadmap by reworking information architecture for both web and mobile platforms to improve user flow.​",
+                "Led user-centric UI/UX improvements by providing critical design feedback that shaped a more intuitive and engaging mobile application, while also influencing the product roadmap by reworking information architecture for both web and mobile platforms to improve user flow.",
                 "Owned product data integrity by collecting, validating, and enriching market information through web crawling, ensuring accurate and reliable product details for end users"
-                
+            ],
+            "tags": [
+                "Product",
+                "UI/UX",
+                "Information architecture",
+                "Web crawling"
             ]
         }
-        
     ],
     "skills": [
         {
-            "title": "Programming Languages & Concepts",
+            "title": "Product Engineering",
             "tools": [
-                "C/C++",
-                "SQL",
+                "React",
+                "TypeScript",
+                "Vite",
+                "Tailwind CSS",
+                "Kotlin",
+                "Jetpack Compose",
+                "Swift",
+                "SwiftUI",
                 "Python",
-                "Data Structures & Algorithms",
-                "Classification",
-                "Data Preprocessing",
-                "Feature Engineering",
-                "Time Complexity Analysis",
-                " Monte Carlo Simulation",
-                ""
+                "FastAPI",
+                "PostgreSQL",
+                "REST & SSE streaming"
             ]
         },
         {
-            "title": "Frameworks/Libraries",
-            "tools": ["Pandas", " NumPy","Scikit-learn","Matplotlib", "Seaborn", "Tensorflow", "Statsmodels", "Jupyter Notebook"]
+            "title": "AI & LLMs",
+            "tools": [
+                "LLM orchestration (LiteLLM)",
+                "Prompt & spec engineering",
+                "Streaming generation",
+                "Prompt caching",
+                "LLM evals (LLM-as-judge)",
+                "Safety classifiers",
+                "Agentic coding (Claude Code)"
+            ]
         },
         {
-            "title": "Tools/Platforms",
-            "tools": ["Git", "Github", "Google Ads", "Canva",  "VSCode", "Google Colab", "Spyder", "Anaconda", "MATLAB" ]
+            "title": "Payments & Monetization",
+            "tools": [
+                "Google Play Billing",
+                "StoreKit 2",
+                "Razorpay",
+                "Server-side receipt verification",
+                "Refund & dispute handling",
+                "Virtual-currency economy"
+            ]
         },
-
         {
-            "title": "Key courses",
-            "tools": ["Data Structure & Algorithms", "Financial Risk Management", "Machine Learning in Materials", "Foundation of Science" , "Differential Equations", "Advanced Linear Algebra and Integral Transforms", "Probability & Statistic processes", "Tinkerin Lab","Micro & Macro Economics", "Managerial Sciences","English Language Skills", "Industrial Management", "Human Geography & Social Needs", "Professional Ethics" ]
+            "title": "Growth & Analytics",
+            "tools": [
+                "Google Ads",
+                "Firebase Analytics",
+                "BigQuery",
+                "AppsFlyer (SDK + S2S)",
+                "Meta Pixel & Conversions API",
+                "Push & re-engagement (FCM)",
+                "Funnel & cohort analysis (CAC, D0–D7)"
+            ]
+        },
+        {
+            "title": "Cloud & DevOps",
+            "tools": [
+                "AWS (EC2, S3, SES, Aurora)",
+                "Firebase (Auth, FCM)",
+                "Git & GitLab CI",
+                "XcodeGen",
+                "Gradle & R8",
+                "Play & App Store releases",
+                "Security hardening (CSP, rate limits)"
+            ]
+        },
+        {
+            "title": "Data Science & ML",
+            "tools": [
+                "Python",
+                "SQL",
+                "C/C++",
+                "Pandas",
+                "NumPy",
+                "Scikit-learn",
+                "TensorFlow",
+                "Statsmodels",
+                "Matplotlib",
+                "Seaborn",
+                "Monte Carlo simulation"
+            ]
         },
         {
             "title": "Soft Skills",
-            "tools": [" Leadership", "Teamwork" ,"Communication","Problem Solving","Time Management","Networking","Negotiation"]
+            "tools": [
+                "Leadership",
+                "Teamwork",
+                "Communication",
+                "Problem Solving",
+                "Ownership",
+                "Time Management"
+            ]
         }
+    ],
+    "tagline": [
+        "Founding Engineer · {product}",
+        "Ex-Performance Marketing · WoWTV",
+        "IIT Ropar · Class of 2026"
     ]
 }
-    
-

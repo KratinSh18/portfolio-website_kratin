@@ -1,0 +1,92 @@
+// Section header — kicker, kinetic label, outlined numeral layered behind.
+.page-header {
+    position: relative;
+    padding: 6rem 0 2.5rem;
+
+    @media (min-width: 48em) {
+        padding-top: 8rem;
+    }
+}
+
+// Giant outlined section number. Sits behind the label (z 0 vs 1), never
+// takes pointer events, and only moves vertically so it can't widen the page.
+.page-header__numeral {
+    position: absolute;
+    left: -0.03em;
+    bottom: 1rem;
+    z-index: 0;
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    font-size: clamp(5rem, 14vw, 12rem);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    // outline only, with a faint crimson wash fading down inside the glyphs
+    background: linear-gradient(180deg, rgba(221, 0, 4, 0.16), rgba(221, 0, 4, 0) 75%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.18);
+}
+.chakra-ui-light .page-header__numeral {
+    -webkit-text-stroke-color: rgba(15, 23, 42, 0.16);
+}
+
+.page-header__kicker {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    // bright crimson reads on near-black; the deeper brand red reads on light
+    color: var(--fx-accent-bright);
+}
+.chakra-ui-light .page-header__kicker {
+    color: var(--fx-accent);
+}
+
+.page-header__line {
+    display: inline-block;
+    width: 2.5rem;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--fx-accent);
+    transform-origin: 0% 50%;
+}
+
+// inline-block so its width is the text's width — the gradient spans exactly
+// the label, and the ResizeObserver fires when the web font changes it.
+.page-header__label {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    max-width: 100%;
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    font-size: clamp(2.4rem, 6.4vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    overflow-wrap: break-word;
+}
+
+// Same recipe as .fx-gradient-text; size/position are set per piece in JS.
+.page-header__piece {
+    background-image: linear-gradient(92deg, #ffffff 0%, #ffffff 40%, var(--fx-accent) 80%, var(--fx-accent) 100%);
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+.chakra-ui-light .page-header__piece {
+    background: none;
+    -webkit-text-fill-color: #14181f;
+    color: #14181f;
+}

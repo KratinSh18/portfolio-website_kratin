@@ -1,0 +1,100 @@
+// Opening curtain. Sits above everything, navbar (20) and progress bar (30)
+// included; the custom cursor (10000+) stays on top so it never vanishes.
+.fx-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.fx-preloader__panel {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+}
+
+// Trails the ink curtain on the way out, so a crimson band sweeps the page.
+.fx-preloader__panel--accent {
+    background: var(--fx-accent);
+}
+
+.fx-preloader__panel--ink {
+    background: #0c0e13;
+}
+
+.fx-preloader__inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    color: #fff;
+}
+
+// Two copies of the signature in one grid cell: a faint ghost, and the ink
+// copy whose clip-path is opened left→right by the counter, so it "writes".
+.fx-preloader__mark {
+    display: grid;
+    max-width: 100%;
+}
+
+.fx-preloader__sig {
+    grid-area: 1 / 1;
+    font-family: "Signature", cursive;
+    font-size: clamp(2.6rem, 11vw, 8.5rem);
+    line-height: 1.25;
+    white-space: nowrap;
+    // Room for the script's swashes, which overhang the glyph box and would
+    // otherwise be shaved off by the clip.
+    padding: 0.15em 0.35em;
+}
+
+.fx-preloader__sig--ghost {
+    opacity: 0.12;
+}
+
+.fx-preloader__sig--ink {
+    clip-path: inset(0 100% 0 0);
+    text-shadow: 0 0 2.5rem rgba(221, 0, 4, 0.45);
+}
+
+.fx-preloader__foot {
+    position: absolute;
+    left: clamp(1rem, 4vw, 3rem);
+    right: clamp(1rem, 4vw, 3rem);
+    bottom: clamp(1.25rem, 5vh, 3rem);
+}
+
+.fx-preloader__meta {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 0.9rem;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.fx-preloader__count {
+    font-size: clamp(2.25rem, 7vw, 4.5rem);
+    font-weight: 500;
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+}
+
+.fx-preloader__track {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.fx-preloader__line {
+    height: 100%;
+    background: linear-gradient(90deg, var(--fx-accent), var(--fx-accent-bright));
+    box-shadow: 0 0 10px rgba(245, 27, 44, 0.7);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+}

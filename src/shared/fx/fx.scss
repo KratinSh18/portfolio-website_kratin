@@ -15,6 +15,15 @@
     // -- neutral support tone (cool slate, used very sparingly) -------------
     --fx-slate: #8b94a7;
 
+    // -- second accent: the product (KukuPlay/PlayOshi) indigo -------------
+    // Used for the product showcase and as a cool counter-flow to the crimson.
+    --fx-indigo: #6366f1;
+    --fx-indigo-bright: #818cf8;
+    --fx-indigo-soft: rgba(99, 102, 241, 0.16);
+
+    // -- display face for giant kinetic type --------------------------------
+    --fx-font-display: "Urbanist", sans-serif;
+
     // -- glow recipes (soft, never harsh) -----------------------------------
     --fx-glow-accent: 0 0 0.5rem rgba(221, 0, 4, 0.28), 0 0 2.2rem rgba(221, 0, 4, 0.18);
 

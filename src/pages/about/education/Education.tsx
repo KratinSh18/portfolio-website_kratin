@@ -12,11 +12,23 @@ export const Education: FC = () => {
         <>
             <ArticleTitle title="Education" />
 
-            <br />
-
-            <Accordion pt="2" allowMultiple index={educationExpanded} id="education">
+            <Accordion pt="6" allowMultiple index={educationExpanded} id="education">
                 {configs.about.educations.map((edu, idx) => (
-                    <AccordionItem p="0" border="0" mb="4" key={`panel-${edu.school}-${edu.degree}`}>
+                    <AccordionItem
+                        key={`panel-${edu.school}-${edu.degree}`}
+                        mb="4"
+                        p={{ base: 5, md: 6 }}
+                        bg="var(--fx-glass)"
+                        border="1px solid var(--fx-glass-border)"
+                        borderRadius="1.1rem"
+                        boxShadow="var(--fx-glass-shadow)"
+                        transition="border-color 0.45s var(--fx-ease-out)"
+                        _hover={{ borderColor: "var(--fx-glass-border-hot)" }}
+                        sx={{
+                            backdropFilter: "blur(16px) saturate(135%)",
+                            WebkitBackdropFilter: "blur(16px) saturate(135%)",
+                        }}
+                    >
                         <Expandable
                             title={edu.school}
                             subTitle={edu.degree}

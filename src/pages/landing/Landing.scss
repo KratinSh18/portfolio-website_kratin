@@ -1,100 +1,455 @@
 // ---------------------------------------------------------------------------
-//  Hero — "liquid glass", professional
+//  Hero — "Liquid Crimson": giant kinetic name, flipping role slot, liquid
+//  portrait. Every loop here is pure CSS and stops while .is-paused (off-screen).
 // ---------------------------------------------------------------------------
 .hero {
+    --hero-ink: #ffffff;
     position: relative;
-    min-height: 76vh;
-    // the soft halo bleeds past the photo; clip horizontally so it never widens
-    // the page (clip avoids creating a scroll container → safe for sticky).
+    display: flex;
+    flex-direction: column;
+    // fill the first screen under the fixed navbar (App pads 96px)
+    min-height: calc(100vh - 96px);
+    min-height: calc(100svh - 96px);
+    padding-bottom: 1.25rem;
+    // glow + ring bleed past the portrait; clip sideways only (no scroll box)
     overflow-x: clip;
 }
-
-// hero name — premium animated red sheen sweeping across white (dark mode),
-// solid near-black in light mode.
-.hero__name {
-    background: linear-gradient(100deg, #fff 0%, #fff 26%, var(--fx-accent) 50%, #fff 74%, #fff 100%);
-    background-size: 230% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    animation: heroSheen 7.5s ease-in-out infinite;
+.chakra-ui-light .hero {
+    --hero-ink: #14181f;
 }
-.chakra-ui-light .hero__name {
-    background: none;
-    -webkit-text-fill-color: #14181f;
-    color: #14181f;
-    animation: none;
-}
-@keyframes heroSheen {
-    0%,
-    100% {
-        background-position: 100% 0;
-    }
-    50% {
-        background-position: 0% 0;
-    }
+.hero.is-paused *,
+.hero.is-paused *::before,
+.hero.is-paused *::after {
+    animation-play-state: paused !important;
 }
 
+.hero__grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    gap: 2rem;
+    padding-top: 0.5rem;
+}
+// the text sits above the portrait so the name can overlap it (layered depth)
+.hero__text {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+    min-width: 0;
+}
+
+// ---- kicker ---------------------------------------------------------------
 .hero__kicker {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: 0.7rem;
+    font-size: 0.78rem;
     color: var(--fx-text-soft);
 }
-
-@media (prefers-reduced-motion: reduce) {
-    .hero__name {
-        animation: none;
-        background-position: 60% 0;
-    }
-}
-.hero__kicker .dot {
-    width: 7px;
-    height: 7px;
+.hero__dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--fx-accent);
-    box-shadow: 0 0 8px rgba(221, 0, 4, 0.6);
+    box-shadow: 0 0 10px rgba(221, 0, 4, 0.7);
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: var(--fx-accent);
+        animation: heroPing 2.4s var(--fx-ease-out) infinite;
+    }
+}
+@keyframes heroPing {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    70%,
+    100% {
+        transform: scale(3.2);
+        opacity: 0;
+    }
 }
 
-// refined credential pills (moved off the photo, into the text column)
+// ---- the name -------------------------------------------------------------
+.hero__name {
+    margin: 0;
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    // the vh cap keeps name + intro + CTAs + cue inside one laptop screen (1440×900)
+    font-size: clamp(3.4rem, min(13vw, 18vh), 11.5rem);
+    line-height: 0.85;
+    color: var(--hero-ink);
+}
+.hero__line {
+    display: block;
+    white-space: nowrap;
+}
+// letter index for the staggered sheen / flood (SplitText renders one mask per char)
+@for $i from 1 through 12 {
+    .hero__line .split__mask:nth-child(#{$i}) {
+        --i: #{$i - 1};
+    }
+}
+
+// line 1: solid, with a crimson sheen that rolls across letter by letter
+.hero__line--solid .split__piece {
+    animation: heroSheen 7s var(--fx-ease-in-out) infinite;
+    animation-delay: calc(var(--i, 0) * 0.09s);
+}
+@keyframes heroSheen {
+    0%,
+    62%,
+    100% {
+        color: var(--hero-ink);
+        text-shadow: none;
+    }
+    72% {
+        color: var(--fx-accent-bright);
+        text-shadow: 0 0 0.3em rgba(221, 0, 4, 0.45);
+    }
+    84% {
+        color: var(--hero-ink);
+        text-shadow: none;
+    }
+}
+
+// line 2: outlined; a crimson fill rises through each letter on hover
+@supports (-webkit-text-stroke: 1px) {
+    .hero__line--outline {
+        -webkit-text-stroke: 0.022em var(--hero-ink);
+        -webkit-text-fill-color: transparent;
+    }
+    .hero__line--outline .split__piece {
+        background: linear-gradient(var(--fx-accent), var(--fx-accent)) no-repeat 0 100% / 100% 0%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        transition: background-size 0.7s var(--fx-ease-out), -webkit-text-stroke-color 0.4s ease;
+        transition-delay: calc(var(--i, 0) * 0.045s);
+    }
+    @media (hover: hover) {
+        .hero__line--outline:hover .split__piece {
+            background-size: 100% 100%;
+            -webkit-text-stroke-color: var(--fx-accent);
+        }
+        // reduced motion: SplitText renders plain text — flood it in one step
+        .hero__name--static .hero__line--outline:hover {
+            -webkit-text-fill-color: var(--fx-accent);
+            -webkit-text-stroke-color: var(--fx-accent);
+        }
+    }
+}
+
+// per-letter jelly (added by Landing.tsx on pointer devices, removed on end)
+.hero__name .split__mask.is-jelly {
+    overflow: visible;
+}
+.hero__name .split__mask.is-jelly > .split__piece {
+    transform-origin: 50% 100%;
+    animation: heroJelly 0.75s var(--fx-ease-out);
+}
+// keep the sheen running on line 1 (same name at index 0 → it isn't restarted)
+.hero__line--solid .split__mask.is-jelly > .split__piece {
+    animation: heroSheen 7s var(--fx-ease-in-out) infinite, heroJelly 0.75s var(--fx-ease-out);
+    animation-delay: calc(var(--i, 0) * 0.09s), 0s;
+}
+@keyframes heroJelly {
+    0%,
+    100% {
+        transform: scale(1, 1);
+    }
+    28% {
+        transform: scale(1.16, 0.8);
+    }
+    56% {
+        transform: scale(0.9, 1.12);
+    }
+    78% {
+        transform: scale(1.03, 0.97);
+    }
+}
+
+// ---- role slot ------------------------------------------------------------
+.hero__role {
+    margin: 0;
+    font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+    line-height: 1.3; // = slot height, so vertical-align:bottom lines the baselines up
+}
+.hero__role-lead {
+    font-family: var(--fx-font-display);
+    font-weight: 600;
+    color: var(--hero-ink);
+}
+.hero__slot {
+    display: inline-block;
+    height: 1.3em; // tall enough for Playfair's descenders (g, y, p)
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-right: 0.12em; // italic overhang
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--fx-accent-bright);
+}
+.chakra-ui-light .hero__slot {
+    color: var(--fx-accent);
+}
+.hero__slot-track {
+    display: block;
+    transition: transform 0.7s var(--fx-ease-out);
+    will-change: transform;
+    > span {
+        display: block;
+        height: 1.3em;
+        white-space: nowrap;
+    }
+}
+
+// ---- statement, chips, CTAs -------------------------------------------------
+.hero__statement {
+    max-width: 38rem; // clears the portrait ring, which reaches into the text column
+    color: var(--fx-text-soft);
+    strong {
+        color: var(--hero-ink);
+        font-weight: 800;
+    }
+}
 .hero__creds {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
+    gap: 0.55rem;
+    .fx-chip {
+        font-weight: 600;
+        color: var(--hero-ink);
+    }
 }
-
-// the framed portrait
-.hero__photo {
-    position: relative;
-    width: 100%;
-    max-width: 380px;
-    margin-inline: auto;
+.hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
 }
-.hero__frame {
+.hero__cta {
     position: relative;
-    padding: 10px;
-    border-radius: 1.4rem;
-}
-.hero__frame-inner {
-    position: relative;
-    border-radius: 1rem;
     overflow: hidden;
+    // light sweep across the button on hover
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+        transform: translateX(-130%);
+        transition: transform 0.6s var(--fx-ease-out);
+        pointer-events: none;
+    }
+    &:hover::after {
+        transform: translateX(130%);
+    }
+}
+.hero__soon {
+    margin-left: 0.55rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.2);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
-// bouncing scroll cue
-.hero__cue {
-    animation: fxFloat 2.6s ease-in-out infinite;
+// ---- portrait ---------------------------------------------------------------
+.hero__portrait {
+    order: -1; // mobile: portrait on top, smaller
+    justify-self: center;
+    width: min(56vw, 240px);
+    margin-top: 0.75rem;
 }
-
-@media (max-width: 991px) {
-    .hero__photo {
-        max-width: 300px;
+.hero__tilt {
+    position: relative;
+    isolation: isolate; // keeps the glow's z-index:-1 inside this layer
+}
+.hero__glow {
+    position: absolute;
+    inset: -16%;
+    z-index: -1;
+    pointer-events: none;
+    // the breathing lives on ::before: a CSS transform animation on this element
+    // would override the pointer-parallax x/y that framer writes inline
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 30% 36%, rgba(221, 0, 4, 0.55), transparent 58%),
+            radial-gradient(circle at 72% 72%, rgba(99, 102, 241, 0.45), transparent 60%);
+        filter: blur(40px);
+        animation: fxBreathe 9s ease-in-out infinite;
+    }
+}
+.hero__blob {
+    position: relative;
+    aspect-ratio: 1 / 1.1;
+    overflow: hidden;
+    border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+    animation: heroBlob 12s ease-in-out infinite;
+    // Safari drops border-radius clipping on children of 3D-transformed parents
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 22%;
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 -3rem 4rem rgba(12, 14, 19, 0.35);
+        pointer-events: none;
+    }
+}
+@keyframes heroBlob {
+    0%,
+    100% {
+        border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+    }
+    33% {
+        border-radius: 63% 37% 45% 55% / 55% 62% 38% 45%;
+    }
+    66% {
+        border-radius: 38% 62% 56% 44% / 62% 38% 62% 38%;
+    }
+}
+// circular text ring, centred on the blob (margin-top % is of the width)
+.hero__ring {
+    position: absolute;
+    left: -14%;
+    top: 50%;
+    width: 128%;
+    margin-top: -64%;
+    pointer-events: none;
+    overflow: visible;
+    animation: heroSpin 30s linear infinite;
+    text {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 12px;
+        font-weight: 500;
+        fill: var(--fx-text-soft);
+    }
+}
+@keyframes heroSpin {
+    to {
+        transform: rotate(360deg);
     }
 }
 
+// ---- scroll cue ---------------------------------------------------------------
+.hero__cue-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(0.75rem, 3vh, 2rem);
+}
+.hero__cue {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 44px;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.6rem;
+    font-size: 0.7rem;
+    color: var(--fx-text-soft);
+    transition: color 0.3s ease;
+    &:hover {
+        color: var(--fx-accent-bright);
+    }
+    &:focus-visible {
+        outline: 2px solid var(--fx-accent-bright);
+        outline-offset: 4px;
+    }
+}
+.hero__cue-line {
+    position: relative;
+    width: 1px;
+    height: 40px;
+    overflow: hidden;
+    background: var(--fx-glass-border);
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 50%;
+        background: var(--fx-accent);
+        animation: heroDrip 2.2s var(--fx-ease-in-out) infinite;
+    }
+}
+@keyframes heroDrip {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(200%);
+    }
+}
+
+// ---- desktop: name spans wide, portrait right and slightly under it -----------
+@media (min-width: 768px) {
+    .hero__portrait {
+        width: 280px;
+    }
+}
+@media (min-width: 992px) {
+    .hero__grid {
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+        gap: 0;
+        padding-top: 0;
+    }
+    .hero__text {
+        gap: 1.1rem;
+    }
+    // the ring is 128% of the portrait: below 1280 the intro fills the text
+    // column, so keep portrait + ring inside their own column (no tuck)
+    .hero__portrait {
+        order: 0;
+        justify-self: center;
+        width: min(calc(100% / 1.28), 430px);
+        margin: 0;
+    }
+}
+// wide enough that the intro ends before the ring: tuck under the end of the name
+@media (min-width: 1280px) {
+    .hero__portrait {
+        justify-self: start;
+        width: min(calc(100% + 3rem), 430px);
+        margin: 0 0 0 -3rem;
+    }
+}
+
+// ---- reduced motion: final state, no loops ---------------------------------------
 @media (prefers-reduced-motion: reduce) {
-    .hero__cue {
+    .hero__dot::after,
+    .hero__glow::before,
+    .hero__blob,
+    .hero__ring,
+    .hero__cue-line::after {
         animation: none !important;
+    }
+    .hero__slot-track {
+        transition: none;
+    }
+    .hero__cta::after {
+        display: none;
     }
 }

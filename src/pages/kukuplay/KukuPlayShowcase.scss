@@ -1,0 +1,1007 @@
+// ============================================================================
+//  01 / NOW BUILDING — product case study. Indigo is this section's accent
+//  (the product's colour); crimson appears only as the one live "spark".
+// ============================================================================
+
+.kp {
+    // text-safe indigo: light on the dark page, deep on the light page
+    --kp-ink-accent: #a5b4fc;
+    --kp-line: rgba(129, 140, 248, 0.32);
+    position: relative;
+    padding-bottom: 2rem;
+}
+.chakra-ui-light .kp {
+    --kp-ink-accent: #4338ca;
+    --kp-line: rgba(79, 70, 229, 0.28);
+}
+
+// indigo → white display gradient; per piece so it survives SplitText's masks
+.kp-grad {
+    background: linear-gradient(180deg, #ffffff 15%, #c7d2fe 50%, var(--fx-indigo-bright) 78%, var(--fx-indigo) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+.chakra-ui-light .kp-grad {
+    background-image: linear-gradient(180deg, #14181f 25%, #3730a3 70%, var(--fx-indigo) 100%);
+}
+
+.kp-label {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0 0 1.5rem;
+    font-size: 0.72rem;
+    color: var(--kp-ink-accent);
+
+    &::before {
+        content: "";
+        width: 2.5rem;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--fx-indigo);
+    }
+}
+
+// ---------------------------------------------------------------------------
+//  Intro
+// ---------------------------------------------------------------------------
+.kp-intro__top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+// the mark ships on black — a black tile makes that square look intentional
+.kp-mark {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.4), 0 10px 30px rgba(99, 102, 241, 0.35);
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.kp-role {
+    display: flex;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--kp-ink-accent);
+}
+.kp-dates {
+    margin-top: 0.35rem;
+    font-size: 0.7rem;
+    color: var(--fx-text-soft);
+}
+// the crimson spark: a slow "live" pulse
+.kp-spark {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    margin-right: 0.6rem;
+    border-radius: 50%;
+    background: var(--fx-accent-bright);
+    box-shadow: var(--fx-glow-accent);
+    animation: fxPulse 2.4s ease-in-out infinite;
+}
+
+.kp-name-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.5rem 1rem;
+}
+.kp-name {
+    margin: 0;
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    font-size: clamp(2.75rem, 12.5vw, 9.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    filter: drop-shadow(0 0 28px rgba(99, 102, 241, 0.35));
+}
+.kp-soon {
+    margin-top: 0.8em;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--kp-line);
+    background: var(--fx-indigo-soft);
+    color: var(--kp-ink-accent);
+    font-size: 0.66rem;
+    white-space: nowrap;
+}
+
+.kp-intro__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+    margin-top: 2rem;
+
+    @media (min-width: 992px) {
+        grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+        gap: 4rem;
+    }
+}
+
+.kp-tagline {
+    max-width: 24ch;
+    margin-bottom: 1.25rem;
+    font-family: var(--fx-font-display);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 3.2vw, 2.3rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+
+    em {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-weight: 500;
+        color: var(--kp-ink-accent);
+    }
+}
+.kp-copy {
+    max-width: 60ch;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--fx-text-soft);
+}
+
+.kp-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0 1.75rem;
+    padding: 0;
+    list-style: none;
+
+    .fx-chip {
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-color: var(--kp-line);
+        svg {
+            color: var(--kp-ink-accent);
+        }
+    }
+}
+
+.kp-visit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-height: 48px;
+    padding: 0 1.5rem;
+    border-radius: 999px;
+    // deeper indigo than --fx-indigo: white on #6366f1 is 4.47:1, just under AA
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+    transition: transform 0.3s var(--fx-ease-out), box-shadow 0.3s var(--fx-ease-out);
+
+    svg {
+        transition: transform 0.3s var(--fx-ease-out);
+    }
+    &:hover {
+        box-shadow: 0 14px 44px rgba(99, 102, 241, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+        svg {
+            transform: translateX(4px);
+        }
+    }
+    &:active {
+        transform: scale(0.96);
+    }
+    &:focus-visible {
+        outline: 2px solid var(--fx-indigo-bright);
+        outline-offset: 3px;
+    }
+}
+
+// ---------------------------------------------------------------------------
+//  Phone mock — always a dark device, in both colour modes
+// ---------------------------------------------------------------------------
+.kp-phone {
+    position: relative;
+    width: 252px;
+    height: 520px;
+    margin-inline: auto;
+    padding: 10px;
+    border-radius: 42px;
+    background: linear-gradient(145deg, #2b2d3b, #0b0c12 60%);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 90px rgba(99, 102, 241, 0.28);
+    // idle bob on the compositor — a framer repeat loop would run JS every frame, forever
+    animation: fxFloat 6s ease-in-out infinite;
+}
+.kp-phone__island {
+    position: absolute;
+    z-index: 2;
+    top: 20px;
+    left: 50%;
+    width: 80px;
+    height: 22px;
+    margin-left: -40px;
+    border-radius: 999px;
+    background: #000;
+}
+.kp-phone__screen {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 32px;
+    background: radial-gradient(120% 65% at 50% 0%, #1e1b4b 0%, #0a0a14 62%);
+    color: #e6e8ff;
+}
+.kp-phone__shot {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.9s var(--fx-ease-in-out);
+
+    &.is-on {
+        opacity: 1;
+    }
+}
+
+// one 10s loop; fill-mode both keeps delayed pieces hidden until their cue
+.kp-chat {
+    --kp-loop: 10s;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    padding: 52px 14px 14px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+.kp-chat__bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.kp-chat__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: #000;
+}
+.kp-chat__show {
+    font-weight: 700;
+    font-size: 13px;
+}
+.kp-chat__meta {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #a5b4fc;
+}
+.kp-chat__turn {
+    display: grid;
+    > * {
+        grid-area: 1 / 1;
+    }
+}
+.kp-chat__narr {
+    padding: 11px 12px;
+    border-radius: 14px 14px 14px 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    animation: kpNarr var(--kp-loop) var(--fx-ease-out) infinite both;
+}
+.kp-chat__dots {
+    display: inline-flex;
+    align-self: start;
+    gap: 4px;
+    width: max-content;
+    padding: 12px 14px;
+    border-radius: 14px 14px 14px 4px;
+    background: rgba(255, 255, 255, 0.06);
+    animation: kpDots var(--kp-loop) linear infinite both;
+
+    i {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #a5b4fc;
+        animation: kpDot 1s ease-in-out infinite;
+    }
+    i:nth-child(2) {
+        animation-delay: 0.15s;
+    }
+    i:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+}
+.kp-chat__opts {
+    display: grid;
+    gap: 7px;
+    margin-top: auto;
+}
+.kp-chat__opt {
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(129, 140, 248, 0.45);
+    background: rgba(99, 102, 241, 0.12);
+    font-weight: 600;
+    animation: kpOpt var(--kp-loop) var(--fx-ease-out) infinite both;
+
+    &:nth-child(2) {
+        animation-delay: 0.25s;
+    }
+    &:nth-child(3) {
+        animation-delay: 0.5s;
+    }
+    // the player's pick
+    &:first-child {
+        animation-name: kpOpt, kpPick;
+    }
+}
+.kp-chat__input {
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(230, 232, 255, 0.55);
+}
+
+@keyframes kpDots {
+    0%,
+    16% {
+        opacity: 1;
+    }
+    20%,
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes kpDot {
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateY(-3px);
+        opacity: 1;
+    }
+}
+@keyframes kpNarr {
+    0%,
+    18% {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    25%,
+    92% {
+        opacity: 1;
+        transform: none;
+    }
+    98%,
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes kpOpt {
+    0%,
+    30% {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    36%,
+    92% {
+        opacity: 1;
+        transform: none;
+    }
+    98%,
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes kpPick {
+    0%,
+    66% {
+        background: rgba(99, 102, 241, 0.12);
+        color: #e6e8ff;
+    }
+    70%,
+    92% {
+        background: #6366f1;
+        color: #fff;
+    }
+}
+
+// ---------------------------------------------------------------------------
+//  Stats band
+// ---------------------------------------------------------------------------
+.kp-stats-wrap {
+    margin: 5rem 0;
+}
+.kp-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+    padding: 0;
+    list-style: none;
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    @media (min-width: 1280px) {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+}
+.kp-stat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.4rem 1.2rem;
+
+    // hairline of light along the top edge
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 1rem;
+        right: 1rem;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--fx-indigo-bright), transparent);
+        opacity: 0.7;
+    }
+}
+.kp-stat__num {
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    // sized so "1,100+" fits a tile at every column count (2 → 3 → 6)
+    font-size: clamp(1.9rem, 7.5vw, 3.2rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+
+    @media (min-width: 1280px) {
+        font-size: 3rem;
+    }
+}
+.kp-stat__label {
+    font-size: 0.66rem;
+    line-height: 1.5;
+    color: var(--fx-text-soft);
+}
+
+// ---------------------------------------------------------------------------
+//  Chapters — sticky scrollytelling (desktop) / stacked (touch, reduced)
+// ---------------------------------------------------------------------------
+.kp-scrolly {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 5vw, 5rem);
+}
+.kp-sticky {
+    position: sticky;
+    top: 88px;
+    align-self: start; // a stretched grid item has no room to stick
+    height: calc(100vh - 104px);
+    max-height: 860px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+}
+.kp-steps {
+    padding: 10vh 0 18vh;
+}
+.kp-scrolly .kp-step {
+    display: flex;
+    align-items: center;
+    min-height: 74vh;
+}
+.kp-stack {
+    display: grid;
+    gap: 1.25rem;
+
+    .kp-orbit {
+        margin-bottom: 1rem;
+    }
+    // a node tap scrolls the card's top here, clear of the fixed navbar
+    .kp-step {
+        scroll-margin-top: 96px;
+    }
+    // wide but no scrolly (reduced motion, touch tablets): two columns keep
+    // bullet lines a readable length instead of running the full container
+    @media (min-width: 992px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+
+        .kp-orbit {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+.kp-now {
+    width: 100%;
+    text-align: center;
+}
+.kp-now__count {
+    font-size: 0.75rem;
+    color: var(--kp-ink-accent);
+}
+.kp-now__stage {
+    display: grid;
+    place-items: center;
+    min-height: 2.1em;
+    margin: 0.5rem 0 1rem;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+}
+.kp-now__title {
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+}
+.kp-progress {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+
+    span {
+        width: 22px;
+        height: 3px;
+        border-radius: 3px;
+        background: var(--kp-line);
+        transition: background 0.5s var(--fx-ease-out), box-shadow 0.5s var(--fx-ease-out);
+    }
+    .is-on {
+        background: var(--fx-indigo-bright);
+        box-shadow: 0 0 10px rgba(129, 140, 248, 0.7);
+    }
+}
+
+// ---------------------------------------------------------------------------
+//  Chapter card
+// ---------------------------------------------------------------------------
+.kp-card {
+    position: relative;
+    width: 100%;
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+    transition: opacity 0.6s var(--fx-ease-out), transform 0.6s var(--fx-ease-out),
+        border-color 0.6s var(--fx-ease-out), box-shadow 0.6s var(--fx-ease-out);
+
+    // indigo line drawn across the top edge when the card lights up
+    &::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 1.5rem;
+        right: 1.5rem;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, transparent, var(--fx-indigo-bright), transparent);
+        transform: scaleX(0);
+        transition: transform 0.9s var(--fx-ease-out);
+    }
+    &.is-active {
+        border-color: rgba(129, 140, 248, 0.45);
+        box-shadow: var(--fx-glass-shadow), 0 20px 60px rgba(99, 102, 241, 0.22);
+        &::before {
+            transform: scaleX(1);
+        }
+    }
+    &:focus {
+        outline: none;
+    }
+    &:focus-visible {
+        outline: 2px solid var(--fx-indigo-bright);
+        outline-offset: 4px;
+    }
+}
+.kp-scrolly .kp-card:not(.is-active) {
+    opacity: 0.45;
+    transform: scale(0.95);
+}
+
+.kp-card__head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+}
+.kp-card__icon {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    border: 1px solid var(--kp-line);
+    background: var(--fx-indigo-soft);
+    color: var(--kp-ink-accent);
+    font-size: 1.25rem;
+}
+.kp-card__num {
+    margin-bottom: 0.3rem;
+    font-size: 0.66rem;
+    color: var(--kp-ink-accent);
+}
+.kp-card__title {
+    margin: 0;
+    font-family: var(--fx-font-display);
+    font-weight: 800;
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+}
+.kp-card__summary {
+    margin-bottom: 1.1rem;
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-size: 1.12rem;
+    line-height: 1.45;
+    color: var(--fx-text-soft);
+}
+.kp-card__list {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0 0 1.4rem;
+    padding: 0;
+    list-style: none;
+
+    li {
+        position: relative;
+        padding-left: 1.4rem;
+        font-size: 0.98rem;
+        line-height: 1.6;
+    }
+    li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.78em;
+        width: 0.6rem;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--fx-indigo-bright);
+    }
+}
+.chakra-ui-light .kp-card__list li::before {
+    background: var(--fx-indigo);
+}
+.kp-card__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    padding: 0;
+    list-style: none;
+
+    .fx-chip {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+        // the card is already frosted; ~50 nested blurs re-sampling the moving
+        // WebGL backdrop every frame cost a lot and look the same
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
+
+// ---------------------------------------------------------------------------
+//  Orbit — rings spin in tilted 3D planes; nodes counter-rotate to face front.
+//  Ring transform:  rotateX(tx) rotateY(ty) rotateZ(spin)
+//  Node transform:  rotateZ(-spin) rotateY(-ty) rotateX(-tx)  (exact inverse)
+// ---------------------------------------------------------------------------
+.kp-orbit {
+    --size: min(46vh, 30vw, 440px);
+    position: relative;
+    flex-shrink: 0;
+    width: var(--size);
+    height: calc(var(--size) * 0.8);
+    perspective: 1100px;
+}
+.kp-orbit--static {
+    --size: min(70vw, 340px);
+    margin-inline: auto;
+}
+.kp-orbit__glow {
+    position: absolute;
+    inset: 0 10%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.45), rgba(99, 102, 241, 0.1) 45%, transparent 70%);
+    filter: blur(30px);
+    pointer-events: none;
+    animation: fxBreathe 10s ease-in-out infinite;
+}
+.chakra-ui-light .kp-orbit__glow {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.28), rgba(99, 102, 241, 0.06) 45%, transparent 70%);
+}
+.kp-orbit__stage {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+}
+.kp-orbit__ring {
+    --r: calc(var(--size) * var(--rf));
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--tx)) rotateY(var(--ty)) rotateZ(0deg);
+}
+.kp-orbit__svg {
+    position: absolute;
+    left: calc(var(--r) * -1);
+    top: calc(var(--r) * -1);
+    width: calc(var(--r) * 2);
+    height: calc(var(--r) * 2);
+    overflow: visible;
+    pointer-events: none;
+}
+.kp-orbit__track,
+.kp-orbit__arc {
+    fill: none;
+    vector-effect: non-scaling-stroke;
+}
+.kp-orbit__track {
+    stroke: rgba(129, 140, 248, 0.32);
+    stroke-width: 1.5;
+    stroke-dasharray: 0.5 1.5;
+}
+.chakra-ui-light .kp-orbit__track {
+    stroke: rgba(79, 70, 229, 0.35);
+}
+// a brighter comet arc riding each ring
+.kp-orbit__arc {
+    stroke: var(--fx-indigo-bright);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 18 82;
+    opacity: 0.85;
+}
+.kp-orbit__slot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-style: preserve-3d;
+    transform: rotateZ(var(--a)) translateX(var(--r)) rotateZ(calc(var(--a) * -1));
+}
+.kp-orbit__core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(var(--size) * 0.3);
+    height: calc(var(--size) * 0.3);
+    margin: calc(var(--size) * -0.15) 0 0 calc(var(--size) * -0.15);
+    border-radius: 50%;
+    pointer-events: none;
+    overflow: hidden;
+    background: #000; // matches the mark's black square, so the crop is invisible
+    box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.5), 0 0 40px rgba(99, 102, 241, 0.55),
+        0 0 100px rgba(99, 102, 241, 0.3);
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+// The still orbit has no spin to carry nodes out from behind the core, so the
+// inner ring's back node (iOS) would stay hidden there. Push the core behind
+// every ring (deepest ring point ≈ -0.43 × size) and scale back what the
+// perspective takes off.
+.kp-orbit--static .kp-orbit__core {
+    transform: translateZ(calc(var(--size) * -0.5)) scale(1.15);
+}
+
+// beam from the core to the lit node, in the ring's own plane so it follows the spin
+.kp-orbit__beam {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: var(--r);
+    height: 2px;
+    overflow: hidden;
+    border-radius: 2px;
+    transform-origin: 0 50%;
+    transform: rotateZ(var(--a));
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent 30%, rgba(129, 140, 248, 0.35) 45%, #c7d2fe 100%);
+    animation: fxPulse 2.4s ease-in-out infinite;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 30%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        animation: kpBeam 1.8s var(--fx-ease-in-out) infinite;
+    }
+}
+
+.kp-node {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transform: rotateZ(0deg) rotateY(calc(var(--ty) * -1)) rotateX(calc(var(--tx) * -1));
+
+    &:focus {
+        outline: none;
+    }
+    &:focus-visible .kp-node__disc {
+        outline: 2px solid var(--fx-indigo-bright);
+        outline-offset: 3px;
+    }
+}
+.kp-node__disc {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid rgba(129, 140, 248, 0.45);
+    background: rgba(14, 15, 32, 0.9);
+    color: #c7d2fe;
+    font-size: 1.1rem;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+    transition: transform 0.5s var(--fx-ease-out), background 0.4s, color 0.4s, box-shadow 0.4s, opacity 0.4s;
+}
+.chakra-ui-light .kp-node__disc {
+    background: rgba(255, 255, 255, 0.94);
+    color: #4338ca;
+    border-color: rgba(79, 70, 229, 0.35);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+}
+// hover-capable pointers only: on touch, :hover sticks to the last tapped node
+@media (hover: hover) {
+    .kp-node:hover .kp-node__disc {
+        transform: scale(1.15);
+        border-color: var(--fx-indigo-bright);
+    }
+}
+.kp-orbit--live .kp-node:not(.is-active) .kp-node__disc {
+    opacity: 0.78;
+}
+.kp-node.is-active .kp-node__disc,
+.chakra-ui-light .kp-node.is-active .kp-node__disc {
+    transform: scale(1.35);
+    background: var(--fx-indigo);
+    color: #fff;
+    border-color: #c7d2fe;
+    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.25), 0 0 30px rgba(129, 140, 248, 0.8);
+
+    // sonar ping around the lit node
+    &::after {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        border: 1px solid var(--fx-indigo-bright);
+        animation: kpPing 2.2s var(--fx-ease-out) infinite;
+    }
+}
+
+// spin only in the live (desktop) orbit; vars come from the ring's inline style
+.kp-orbit--live {
+    .kp-orbit__ring {
+        animation: kpSpin var(--dur) linear infinite;
+        animation-direction: var(--dir);
+    }
+    .kp-node {
+        animation: kpCounter var(--dur) linear infinite;
+        animation-direction: var(--dir);
+    }
+    &.is-paused .kp-orbit__ring,
+    &.is-paused .kp-node {
+        animation-play-state: paused;
+    }
+}
+
+@keyframes kpSpin {
+    from {
+        transform: rotateX(var(--tx)) rotateY(var(--ty)) rotateZ(0deg);
+    }
+    to {
+        transform: rotateX(var(--tx)) rotateY(var(--ty)) rotateZ(360deg);
+    }
+}
+@keyframes kpCounter {
+    from {
+        transform: rotateZ(0deg) rotateY(calc(var(--ty) * -1)) rotateX(calc(var(--tx) * -1));
+    }
+    to {
+        transform: rotateZ(-360deg) rotateY(calc(var(--ty) * -1)) rotateX(calc(var(--tx) * -1));
+    }
+}
+@keyframes kpBeam {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(340%);
+    }
+}
+@keyframes kpPing {
+    from {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    to {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+// ---------------------------------------------------------------------------
+//  Stack marquee closing the section (full-bleed)
+// ---------------------------------------------------------------------------
+.kp-marquee {
+    margin-top: 5rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--kp-line);
+    border-bottom: 1px solid var(--kp-line);
+    font-family: var(--fx-font-display);
+    font-weight: 800;
+    font-size: clamp(1.1rem, 2.4vw, 1.8rem);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--fx-text-soft);
+
+    .marquee__sep {
+        font-size: 0.55em;
+        color: var(--fx-indigo-bright);
+    }
+}
+
+// ---------------------------------------------------------------------------
+//  Reduced motion: final states, nothing loops
+// ---------------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+    .kp-spark,
+    .kp-orbit__glow,
+    .kp-orbit__ring,
+    .kp-node,
+    .kp-orbit__beam,
+    .kp-orbit__beam::after,
+    .kp-node__disc::after,
+    .kp-phone,
+    .kp-phone * {
+        animation: none !important;
+    }
+    .kp-chat__dots {
+        display: none !important;
+    }
+    .kp-card,
+    .kp-node__disc,
+    .kp-phone__shot {
+        transition: none;
+    }
+}

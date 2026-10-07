@@ -1,47 +1,74 @@
-import { FC } from "react";
-
-import { Box, Heading, Flex, Text } from "@chakra-ui/react";
+import { FC, MouseEvent } from "react";
 
 import { configs } from "shared/content/Content";
-import { PageHeader } from "shared/page-header/PageHeader";
-import { onMailTo } from "utils/Functions";
+import { Marquee } from "shared/fx/Marquee";
+import { Magnetic } from "shared/motion/Magnetic";
+import { SplitText } from "shared/motion/SplitText";
+import { useReducedMotion } from "shared/motion/useReducedMotion";
 import { Socials } from "shared/socials/Socials";
+import { onMailTo } from "utils/Functions";
 
-const headerStyles = {
-    cursor: "pointer",
-    transition: "color 0.2s ease-in-out",
-    isTruncated: true,
-    fontSize: { base: "2xl", md: "3xl" },
-    _hover: { color: "primary.500" },
-    _active: { color: "primary.500" },
-};
+import "shared/footer/Footer.scss";
 
+// Alternating solid / outlined words keep the band readable at a glance.
+const BAND = ["Let's build something", "Say hi", "Let's build something", "Say hi"];
+
+/** The finale: a never-ending display band, the contact block, then the small print. */
 export const Footer: FC = () => {
+    const reduced = useReducedMotion();
+    const { email, name } = configs.common;
+
+    // A real mailto link (copyable, keyboard-native) that still routes through the shared handler.
+    const onEmail = (e: MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        onMailTo();
+    };
+    const toTop = () => window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+
     return (
-        <>
-            <PageHeader label="SAY HI" />
-            <Flex pb="2" gap="3" overflow="hidden" alignItems="center">
-                <Heading {...headerStyles} onClick={onMailTo} fontSize="2xl">
-                    {configs.common.email}
-                </Heading>
-            </Flex>
-            <Text>
-                If you want to know more about my experiences and journey, or just talk in general, get in touch! ✌️
-            </Text>
-            <Box pt="16">
-                <Socials delay={100} exclude={["mail"]} resume={false} />
-            </Box>
-            <Flex
-                pt="4"
-                pb="2"
-                fontSize="sm"
-                color="gray.500"
-                justifyContent={{ base: "center", md: "space-between" }}
-                direction={{ base: "column", md: "row" }}
-            >
-                <Text>This site is hand-crafted, with care by me.</Text>
-                <Text>&copy; {new Date().getFullYear()} All rights reserved.</Text>
-            </Flex>
-        </>
+        <footer className="finale">
+            <div className="finale__band" aria-hidden="true">
+                <Marquee
+                    className="finale__marquee"
+                    speed={36}
+                    items={BAND.map((word, i) => (
+                        <span className={i % 2 ? "finale__outline" : undefined}>{word}</span>
+                    ))}
+                />
+            </div>
+
+            <div className="finale__grid">
+                <div>
+                    <p className="finale__kicker fx-mono">
+                        <span className="finale__line" aria-hidden="true" />
+                        06 — Say hi
+                    </p>
+                    <SplitText as="h2" className="finale__title" text="Let's build something" by="chars" />
+                    <p className="finale__accent">Got an idea, a product or a hard problem? Write to me.</p>
+                    <Magnetic strength={0.2}>
+                        <a className="finale__email" href={`mailto:${email}`} onClick={onEmail} data-cursor="Write">
+                            {email}
+                        </a>
+                    </Magnetic>
+                </div>
+
+                <div className="finale__side">
+                    <Socials delay={100} exclude={["mail"]} resume={false} />
+                    <Magnetic>
+                        <button type="button" className="finale__top" onClick={toTop}>
+                            Back to top
+                            <span className="finale__arrow" aria-hidden="true">
+                                ↑
+                            </span>
+                        </button>
+                    </Magnetic>
+                </div>
+            </div>
+
+            <div className="finale__print fx-mono">
+                <span>Designed &amp; built by {name}</span>
+                <span>&copy; {new Date().getFullYear()}</span>
+            </div>
+        </footer>
     );
 };

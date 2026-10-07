@@ -4,6 +4,8 @@ import { Box } from "@chakra-ui/react";
 import { useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 
 import { MotionBox } from "shared/motion/MotionPrimitives";
+import { useIsDesktopPointer } from "shared/motion/useIsDesktopPointer";
+import { useReducedMotion } from "shared/motion/useReducedMotion";
 import { useStageRegister } from "pages/featured-projects/stage-context";
 
 interface Props {
@@ -26,6 +28,10 @@ const SPRING = { stiffness: 150, damping: 18, mass: 0.4 };
 export const FloatCard3D: FC<Props> = ({ index, children }) => {
     const stage = useStageRegister();
     const cardRef = useRef<HTMLDivElement>(null);
+    // same gate as the card's own cover tilt: a tap on touch would leave it stuck tilted
+    const desktop = useIsDesktopPointer();
+    const reduced = useReducedMotion();
+    const tilt = desktop && !reduced;
 
     useEffect(() => {
         stage?.register(index, cardRef.current);
@@ -61,8 +67,8 @@ export const FloatCard3D: FC<Props> = ({ index, children }) => {
             <Box className="float-card__bob">
                 <MotionBox
                     className="float-card__tilt"
-                    onMouseMove={onMove}
-                    onMouseLeave={onLeave}
+                    onMouseMove={tilt ? onMove : undefined}
+                    onMouseLeave={tilt ? onLeave : undefined}
                     style={{
                         rotateX,
                         rotateY,

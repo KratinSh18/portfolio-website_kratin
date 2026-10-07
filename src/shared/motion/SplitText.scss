@@ -1,0 +1,18 @@
+.split__word {
+    display: inline-block;
+    white-space: nowrap;
+}
+// the clipping window each piece rises out of; the padding keeps descenders
+// (g, y, p) and italic overhang from being shaved off.
+.split__mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding: 0 0.04em 0.12em;
+    margin: 0 -0.04em -0.12em;
+}
+.split__piece {
+    display: inline-block;
+    will-change: transform;
+    transform-origin: 0% 100%;
+}

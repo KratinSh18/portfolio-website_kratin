@@ -1,0 +1,100 @@
+// ---------------------------------------------------------------------------
+//  Marquee band — two tilted strips stacked in one grid cell so they cross in
+//  an X. Strips are wider than the viewport so the rotated ends never show;
+//  the band clips them and pads vertically so the tilt isn't shaved off.
+// ---------------------------------------------------------------------------
+.mband {
+    position: relative;
+    display: grid;
+    // minmax(0, …): an `auto` track would grow to the tickers' min-content
+    // (thousands of px), stretching every group and spreading the items apart
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+    overflow: hidden;
+}
+.mband.is-paused .marquee__group {
+    animation-play-state: paused;
+}
+.mband__strip {
+    grid-area: 1 / 1;
+    width: 112%;
+    margin-left: -6%;
+    padding-block: 0.85rem;
+    font-family: var(--fx-font-display);
+    font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+}
+
+// A — the readable one: brand crimson, solid white type, on top
+.mband__strip--a {
+    position: relative;
+    z-index: 2;
+    transform: rotate(-2.5deg);
+    background: var(--fx-accent);
+    color: #ffffff;
+    font-weight: 800;
+    box-shadow: 0 18px 50px rgba(221, 0, 4, 0.28);
+}
+
+// B — decorative: indigo-tinted glass with outlined type, crossing underneath
+.mband__strip--b {
+    transform: rotate(2deg);
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.22), rgba(12, 14, 19, 0.78) 45%, rgba(99, 102, 241, 0.22));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-block: 1px solid var(--fx-glass-border);
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 800;
+    .marquee__sep {
+        color: var(--fx-indigo-bright);
+        opacity: 1;
+    }
+}
+@supports (-webkit-text-stroke: 1px) {
+    .mband__strip--b .marquee__item {
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
+        -webkit-text-fill-color: transparent;
+    }
+    .mband__strip--b .marquee__sep {
+        -webkit-text-stroke: 0;
+        -webkit-text-fill-color: var(--fx-indigo-bright);
+    }
+}
+
+.mband__keep-case {
+    text-transform: none;
+}
+
+.chakra-ui-light .mband__strip--b {
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.18), rgba(255, 255, 255, 0.82) 45%, rgba(99, 102, 241, 0.18));
+    color: #14181f;
+    .marquee__item {
+        -webkit-text-stroke-color: #14181f;
+    }
+    .marquee__sep {
+        -webkit-text-fill-color: var(--fx-indigo);
+        color: var(--fx-indigo);
+    }
+}
+
+// reduced motion: the ticker stands still, so the readable strip wraps to show
+// every item instead of clipping all but the first few
+@media (prefers-reduced-motion: reduce) {
+    // the strip overhangs the viewport by 6% a side; keep the wrapped lines inside it
+    .mband__strip--a {
+        padding-inline: calc(6% + 1rem);
+    }
+    .mband__strip--a .marquee__group {
+        flex: 1 1 100%;
+        min-width: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 0.35rem;
+    }
+    .mband__strip--a .marquee__group[aria-hidden] {
+        display: none;
+    }
+}

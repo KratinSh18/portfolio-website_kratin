@@ -21,13 +21,28 @@ interface LiveDemoProps {
 
 interface Props extends GitHubButtonProps, ReadMoreProps, LiveDemoProps {}
 
+// Lift + crimson glow on hover, quick shrink on press; flat under reduced motion.
+const buttonHover = {
+    transition: "background 0.25s ease, box-shadow 0.3s ease, transform 0.25s var(--fx-ease-out)",
+    _hover: { transform: "translateY(-2px)", boxShadow: "var(--fx-glow-accent)" },
+    _active: { transform: "scale(0.96)" },
+    sx: { "@media (prefers-reduced-motion: reduce)": { "&:hover, &:active": { transform: "none" } } },
+};
+
 export const ReadMore: FC<ReadMoreProps> = ({ readMore }) => {
     return readMore ? (
         <Button
             variant="link"
             colorScheme="black"
+            data-cursor="Open"
             rightIcon={<ArrowRightIcon fontSize="16pt" />}
             onClick={() => open(readMore)}
+            sx={{
+                "& .chakra-button__icon": { transition: "transform 0.35s var(--fx-ease-out)" },
+                "@media (prefers-reduced-motion: no-preference)": {
+                    "&:hover .chakra-button__icon": { transform: "translateX(4px)" },
+                },
+            }}
         >
             Read More
         </Button>
@@ -43,9 +58,12 @@ export const GitHubButton: FC<GitHubButtonProps> = ({ github, display }) => {
             variant="secondary"
             py="5"
             display={display}
+            aria-label="GitHub"
+            data-cursor="Code"
             leftIcon={<GitHubIcon />}
             icon={<GitHubIcon />}
             onClick={() => open(github)}
+            {...buttonHover}
         >
             GitHub
         </Button>
@@ -59,9 +77,12 @@ export const LiveDemo: FC<LiveDemoProps> = ({ demo, display }) => {
         <Button
             as={as}
             display={display}
+            aria-label="Live demo"
+            data-cursor="Open"
             leftIcon={<LinkIcon fontSize="14pt" />}
             icon={<LinkIcon fontSize="14pt" />}
             onClick={() => open(demo)}
+            {...buttonHover}
         >
             Live Demo
         </Button>

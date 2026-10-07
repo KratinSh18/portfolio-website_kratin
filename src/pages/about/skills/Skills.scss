@@ -1,0 +1,150 @@
+// ---------------------------------------------------------------------------
+//  Skills — bento of glass panels
+//  1 column on phones, 2 from md (first panel wide), 3 from lg with panels
+//  1 and 6 wide, so 7 groups fill the grid with no holes.
+// ---------------------------------------------------------------------------
+.skl {
+    --skl-red: #ff4d52;
+    --skl-stroke: rgba(255, 255, 255, 0.1);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 1.75rem;
+}
+.chakra-ui-light .skl {
+    --skl-red: #b80003;
+    --skl-stroke: rgba(15, 23, 42, 0.12);
+}
+@media (min-width: 768px) {
+    .skl {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .skl__panel:first-child {
+        grid-column: span 2;
+    }
+}
+@media (min-width: 992px) {
+    .skl {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .skl__panel:nth-child(6) {
+        grid-column: span 2;
+    }
+}
+
+.skl__panel {
+    position: relative;
+    overflow: hidden;
+    padding: 1.4rem 1.3rem 1.3rem;
+    transition: border-color 0.45s var(--fx-ease-out), transform 0.6s var(--fx-ease-out),
+        box-shadow 0.45s var(--fx-ease-out);
+}
+// pointer-following sheen (position fed by glare())
+.skl__panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(221, 0, 4, 0.1), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s var(--fx-ease-out);
+    pointer-events: none;
+}
+
+.skl__num {
+    position: absolute;
+    top: -0.08em;
+    right: 0.12em;
+    font-family: var(--fx-font-display);
+    font-weight: 900;
+    font-size: clamp(4.5rem, 8vw, 6.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--skl-stroke);
+    pointer-events: none;
+    user-select: none;
+    transition: -webkit-text-stroke-color 0.5s var(--fx-ease-out), transform 0.8s var(--fx-ease-out);
+}
+
+.skl__title {
+    position: relative;
+    padding-right: 4.5rem; // clear of the number
+    font-family: var(--fx-font-display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+}
+.skl__count {
+    position: relative;
+    margin-top: 0.35rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--skl-red);
+}
+
+.skl__chips {
+    position: relative;
+    list-style: none;
+    margin: 1.1rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.skl__chips li {
+    display: inline-flex;
+}
+.skl__chip {
+    display: inline-block;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--fx-glass-border);
+    background: rgba(255, 255, 255, 0.03);
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.25;
+    // one elastic overshoot on hover, then settle
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s var(--fx-ease-out),
+        background-color 0.25s var(--fx-ease-out), color 0.25s var(--fx-ease-out);
+}
+.chakra-ui-light .skl__chip {
+    background: rgba(255, 255, 255, 0.5);
+}
+// hover-capable pointers only: a tap would leave panels and chips stuck lifted on touch.
+// Kept after the light-mode chip rule so the hover background wins there too.
+@media (hover: hover) {
+    .skl__panel:hover::before {
+        opacity: 1;
+    }
+    .skl__panel:hover {
+        transform: translateY(-4px);
+        border-color: var(--fx-glass-border-hot);
+        box-shadow: var(--fx-glass-shadow), var(--fx-glow-accent);
+    }
+    .skl__panel:hover .skl__num {
+        -webkit-text-stroke-color: rgba(221, 0, 4, 0.6);
+        transform: translateY(6px) rotate(-4deg);
+    }
+    .skl__chip:hover {
+        transform: translateY(-3px) scale(1.07);
+        border-color: var(--fx-glass-border-hot);
+        background: var(--fx-accent-soft);
+        color: var(--skl-red);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skl__panel,
+    .skl__num,
+    .skl__chip {
+        transition: none;
+    }
+    .skl__panel:hover,
+    .skl__panel:hover .skl__num,
+    .skl__chip:hover {
+        transform: none;
+    }
+}
