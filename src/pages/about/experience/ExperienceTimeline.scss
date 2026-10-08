@@ -280,6 +280,20 @@
     border-radius: 2px;
     background: var(--fx-accent);
 }
+// title + detail points: the title carries the line, the detail sits small under it
+.xptl__pt {
+    display: block;
+    font-size: 1.02rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+.xptl__pt-detail {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--fx-text-soft);
+}
 .xptl__card--product .xptl__points li::before {
     background: linear-gradient(90deg, var(--fx-accent), var(--fx-indigo));
 }

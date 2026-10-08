@@ -1,1 +1,1 @@
-IIT Ropar graduate ('26) and founding engineer on **{product}** at Kuku FM: AI-narrated interactive stories, shipped on Android, iOS and the web. I work across the whole product, from the LLM story engine and backend to payments and growth analytics. My background is performance marketing (Google Ads at Kuku FM's WoWTV), data science and ML.
+Founding engineer at Kuku FM, building **{product}**, an app for AI-narrated interactive stories.

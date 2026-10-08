@@ -15,7 +15,7 @@ interface Props {
 }
 
 /**
- * Section header: a kicker row ("02 — Section") over a kinetic char-by-char
+ * Section header: a kicker row ("02 · Section") over a kinetic char-by-char
  * label. Nothing sits behind the title (the old giant numeral was clutter).
  */
 export const PageHeader: FC<Props> = ({ id, label, index }) => {
@@ -56,7 +56,7 @@ export const PageHeader: FC<Props> = ({ id, label, index }) => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 />
-                <span>{index ? `${index} — Section` : "Section"}</span>
+                <span>{index ? `${index} · Section` : "Section"}</span>
             </div>
 
             <div ref={labelRef} className="page-header__label">

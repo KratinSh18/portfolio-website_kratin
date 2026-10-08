@@ -13,9 +13,11 @@ import { ChevronDownIcon } from "utils/Icons";
 import "pages/about/experience/ExperienceTimeline.scss";
 
 type Experience = typeof configs.about.experiences[number];
+/** A bold title with an optional small detail line; a plain string still renders as one line. */
+type PointData = string | { title: string; detail?: string };
 
-/** Bullets every card shows before "View all". */
-const VISIBLE = 2;
+/** Bullets every card shows before "View all" (points are one-line titles now, so all of them). */
+const VISIBLE = 6;
 /** The "pen": the spine is drawn down to this fraction of the viewport height. */
 const PEN = 0.6;
 /** Chakra "lg" — where the timeline zig-zags around a centred spine. */
@@ -30,6 +32,16 @@ interface ItemProps {
     wide: boolean;
     reduced: boolean;
 }
+
+const Point: FC<{ point: PointData }> = ({ point }) =>
+    typeof point === "string" ? (
+        <li>{withProduct(point)}</li>
+    ) : (
+        <li>
+            <strong className="xptl__pt">{withProduct(point.title)}</strong>
+            {point.detail && <span className="xptl__pt-detail">{withProduct(point.detail)}</span>}
+        </li>
+    );
 
 const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
     const [open, setOpen] = useState(false);
@@ -113,8 +125,8 @@ const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
                 </div>
 
                 <ul className="xptl__points">
-                    {exp.description.slice(0, VISIBLE).map((line, i) => (
-                        <li key={i}>{withProduct(line)}</li>
+                    {exp.description.slice(0, VISIBLE).map((point, i) => (
+                        <Point key={i} point={point} />
                     ))}
                 </ul>
 
@@ -126,8 +138,8 @@ const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
                         <div id={panelId} className={`xptl__more${open ? " is-open" : ""}`}>
                             <div>
                                 <ul className="xptl__points">
-                                    {more.map((line, i) => (
-                                        <li key={i}>{withProduct(line)}</li>
+                                    {more.map((point, i) => (
+                                        <Point key={i} point={point} />
                                     ))}
                                 </ul>
                             </div>

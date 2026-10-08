@@ -44,9 +44,9 @@ export const Footer: FC = () => {
                 <div>
                     <p className="finale__kicker fx-mono">
                         <span className="finale__line" aria-hidden="true" />
-                        06 — Say hi
+                        06 · Say hi
                     </p>
-                    <h2 className="finale__accent">Got an idea, a product or a hard problem? Write to me.</h2>
+                    <h2 className="finale__accent">Got an idea or a hard problem? Write to me.</h2>
                     <Magnetic strength={0.2}>
                         <a className="finale__email" href={`mailto:${email}`} onClick={onEmail} data-cursor="Write">
                             {email}

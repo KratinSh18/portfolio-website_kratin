@@ -49,11 +49,11 @@ export const OtherProjects: FC = () => {
             <Flex justifyContent="center" py="8" display={configs.otherProjects.length > 3 ? "flex" : "none"}>
                 {count < configs.otherProjects.length ? (
                     <Button rightIcon={<ChevronDownIcon />} variant="link" minH="40px" onClick={onShowMore}>
-                        Show More
+                        Show more
                     </Button>
                 ) : (
                     <Button rightIcon={<ChevronUpIcon />} variant="link" minH="40px" onClick={onShowLess}>
-                        Show Less
+                        Show less
                     </Button>
                 )}
             </Flex>

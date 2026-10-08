@@ -68,7 +68,15 @@ export const OtherProjectCard: FC<Props> = ({ id, title, demo, github, tags, des
                     />
                 </picture>
             </Box>
-            <Flex w="100%" direction="column" alignContent="center" flex={1}>
+            {/* short copy: on desktop the buttons sit beside the text, not in a gap below it */}
+            <Flex
+                w="100%"
+                direction={{ base: "column", lg: "row" }}
+                alignItems={{ lg: "center" }}
+                justifyContent="space-between"
+                gap={{ lg: 6 }}
+                flex={1}
+            >
                 <Box>
                     <Heading
                         fontSize="2xl"
@@ -82,7 +90,7 @@ export const OtherProjectCard: FC<Props> = ({ id, title, demo, github, tags, des
                     </Text>
                     <Tags tags={tags} id={id} size="xs" />
                 </Box>
-                <ProjectCardFooter readMore={readMore} github={github} demo={demo} />
+                <ProjectCardFooter readMore={readMore} github={github} demo={demo} pt={{ base: "8", lg: "0" }} />
             </Flex>
         </Flex>
     );

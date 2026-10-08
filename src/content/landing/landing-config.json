@@ -2,7 +2,7 @@
     "headline": "Hello, I'm Kratin Sharma",
     "picture": "/assets/landing/face.webp",
     "jpg": "/assets/landing/face.jpeg",
-    "roles": ["AI story engines", "Android apps", "iOS apps", "web products", "payment systems", "growth engines"],
+    "roles": ["AI story engines", "Android apps", "iOS apps", "web apps", "payment systems", "growth tools"],
     "credentials": ["IIT Ropar ’26", "Full-stack · Android · iOS", "LLM products", "Growth & attribution"],
     "ring": "FULL-STACK • ANDROID • iOS • WEB • AI • GROWTH • "
 }

@@ -19,7 +19,7 @@ export const LogoType: FC<Props> = ({ text, onClick }) => {
             as="button"
             type="button"
             onClick={onClick}
-            aria-label={`${text.desktop} — back to top`}
+            aria-label={`${text.desktop}, back to top`}
             minH="40px"
             minW="40px"
             display="flex"

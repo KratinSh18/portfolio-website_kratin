@@ -26,6 +26,8 @@ import "pages/kukuplay/KukuPlayShowcase.scss";
 export { KukuPlayShowcaseId };
 
 type Chapter = typeof showcase.chapters[number];
+/** A chapter bullet: a bold title with an optional small line under it (plain strings still work). */
+type Point = string | { title: string; detail?: string };
 
 const { product } = configs;
 const host = product.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
@@ -133,11 +135,18 @@ const ChapterCard: FC<{ chapter: Chapter; index: number; total: number; lit: boo
                     </h3>
                 </div>
             </header>
-            <p className="kp-card__summary">{withProduct(chapter.summary)}</p>
+            {chapter.summary && <p className="kp-card__summary">{withProduct(chapter.summary)}</p>}
             <ul className="kp-card__list">
-                {chapter.bullets.map((line, i) => (
-                    <li key={i}>{withProduct(line)}</li>
-                ))}
+                {(chapter.bullets as Point[]).map((point, i) =>
+                    typeof point === "string" ? (
+                        <li key={i}>{withProduct(point)}</li>
+                    ) : (
+                        <li key={i}>
+                            <strong className="kp-card__point">{withProduct(point.title)}</strong>
+                            {point.detail && <span className="kp-card__detail">{withProduct(point.detail)}</span>}
+                        </li>
+                    ),
+                )}
             </ul>
             <ul className="kp-card__tech" aria-label={showcase.techLabel}>
                 {chapter.tech.map((t) => (
@@ -236,7 +245,7 @@ export const KukuPlayShowcase: FC = () => {
     );
 
     return (
-        <Box ref={sectionRef} as="section" id={KukuPlayShowcaseId} className="kp" aria-label={`${product.name} — ${showcase.kicker}`}>
+        <Box ref={sectionRef} as="section" id={KukuPlayShowcaseId} className="kp" aria-label={`${product.name}, ${showcase.kicker}`}>
             <Container px={{ base: 6, md: 6, lg: 4 }}>
                 <Float3D direction="up">
                     <PageHeader index="01" label={showcase.kicker} />

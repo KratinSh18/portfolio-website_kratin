@@ -1,11 +1,11 @@
 {
     "kicker": "Now Building",
     "role": "Founding Engineer · Kuku FM",
-    "dates": "Jul 2026 — Present",
+    "dates": "Jul 2026 - Present",
     "soon": "soon",
-    "tagline": "AI-narrated interactive stories — _one engine_, shipped on Android, iOS & the web.",
-    "pitch": "{product} is Kuku FM's AI interactive-fiction app. Step into an authored, multi-act story or chat with a character — a language model narrates every turn live while you steer with options or your own words.",
-    "summary": "I made the first commit — the playable MVP — and have led the build since: one Python backend behind a web app, a native Android app, a native iOS app and an internal authoring studio. I also own releases, from Play and App Store uploads to production deploys.",
+    "tagline": "AI-narrated interactive stories, _one backend_ for Android, iOS and web.",
+    "pitch": "Play a multi-act story or chat with a character.",
+    "summary": "My first commit was the playable MVP. I also own releases.",
     "platformsLabel": "Ships on",
     "platforms": ["Android", "iOS", "Web", "Admin"],
     "visit": "Visit",
@@ -14,12 +14,12 @@
     "stats": [
         { "value": 4, "decimals": 0, "suffix": "", "label": "surfaces shipped" },
         { "value": 1100, "decimals": 0, "suffix": "+", "label": "commits authored" },
-        { "value": 11, "decimals": 0, "suffix": "", "label": "weeks, zero to production" },
+        { "value": 11, "decimals": 0, "suffix": "", "label": "weeks to production" },
         { "value": 3, "decimals": 0, "suffix": "", "label": "payment rails" },
         { "value": 25, "decimals": 0, "suffix": "", "label": "spec docs implemented" },
         { "value": 2.5, "decimals": 1, "suffix": "x", "label": "faster warm turns" }
     ],
-    "chaptersLabel": "The build, chapter by chapter",
+    "chaptersLabel": "What I built",
     "orbitLabel": "Jump to a chapter",
     "chapterWord": "Chapter",
     "techLabel": "Built with",
@@ -27,130 +27,115 @@
         {
             "id": "engine",
             "kicker": "Backend · AI",
-            "title": "AI Story Engine",
-            "summary": "From a week-one playable MVP to a spec-driven engine where code keeps score and the model only tells the story.",
+            "title": "AI story engine",
+            "summary": "Started as the week-one playable MVP",
             "bullets": [
-                "Turned a numbered spec set into a working engine — act schema, validation gate, act planner, deterministic orchestrator — on one rule: if the same input must give the same output, it's code, not a prompt.",
-                "Kept play true to canon: only the current act's canon reaches the model, and an act can't close until its key story beats have happened.",
-                "Cut warm-turn latency ~2.5x: safety runs in parallel with generation, narration streams token by token out of the model's JSON, and prompts are ordered for provider prefix caching.",
-                "Added a calibrated decision-model API beside the LLM to double-check act-completion and beat claims and to screen junk input without charging the player — every call fails soft."
+                { "title": "Built from 25 spec docs" },
+                { "title": "Turn counts and act gates in code", "detail": "Not left to the model" },
+                { "title": "~2.5x faster warm turns", "detail": "Safety check runs in parallel" },
+                { "title": "Each act sees only its own canon" }
             ],
-            "tech": ["Python", "FastAPI", "Server-Sent Events", "PostgreSQL", "LiteLLM", "DeepSeek", "Eval harness"]
+            "tech": ["Python", "FastAPI", "PostgreSQL", "LiteLLM", "DeepSeek"]
         },
         {
             "id": "android",
             "kicker": "Kotlin · Compose",
             "title": "Native Android",
-            "summary": "A native Jetpack Compose app on the shared backend — live on Google Play.",
+            "summary": "Jetpack Compose, live on Google Play",
             "bullets": [
-                "Built the Android app in Kotlin and Jetpack Compose on the shared backend: streaming chat, Google sign-in through Credential Manager, Google Play Billing.",
-                "Shipped ~20 Play releases (latest 1.0.21) on R8-optimised release builds, covered by ~38 unit-test files.",
-                "Built the re-engagement loop: 24h and 72h return reminders on WorkManager with copy from a team-edited Google Sheet, plus FCM push campaigns.",
-                "Added promo deep links that open a show's chat straight from an ad."
+                { "title": "~20 Play releases", "detail": "Latest is 1.0.21" },
+                { "title": "Streaming chat" },
+                { "title": "Play Billing and Google sign-in" },
+                { "title": "24h and 72h return reminders", "detail": "Copy comes from a team Google Sheet" }
             ],
-            "tech": ["Kotlin", "Jetpack Compose", "Play Billing", "Credential Manager", "Firebase", "WorkManager", "AppsFlyer"]
+            "tech": ["Kotlin", "Jetpack Compose", "Play Billing", "Firebase", "WorkManager"]
         },
         {
             "id": "ios",
             "kicker": "Swift · SwiftUI",
             "title": "Native iOS",
-            "summary": "Sole author of the iOS app — blank SwiftUI scaffold to App Store submission in ~12 days.",
+            "summary": "Sole author, ~12 days to App Store submission",
             "bullets": [
-                "Wrote the iOS app end to end and brought it to full feature parity with Android before submitting it to the App Store.",
-                "Wired StoreKit 2 with server-side verification, account-bound purchases and App Store refund notifications.",
-                "Shipped the platform extras: Sign in with Apple, Live Activities on the Dynamic Island and Lock Screen, universal links and push.",
-                "Covered the store requirements — in-app account deletion, report-a-reply, a privacy manifest, App Tracking Transparency — backed by ~33 test files."
+                { "title": "Full parity with Android" },
+                { "title": "StoreKit 2 purchases", "detail": "Verified on the server" },
+                { "title": "Sign in with Apple" },
+                { "title": "Live Activities and push" }
             ],
-            "tech": ["Swift", "SwiftUI", "StoreKit 2", "XcodeGen", "Sign in with Apple", "Live Activities", "Firebase"]
+            "tech": ["Swift", "SwiftUI", "StoreKit 2", "Sign in with Apple", "Live Activities"]
         },
         {
             "id": "web",
             "kicker": "React · Vite",
-            "title": "Web App",
-            "summary": "The React web client — sign-in, coin store and live streaming chat in the browser.",
+            "title": "Web app",
+            "summary": "",
             "bullets": [
-                "Built Firebase email and Google sign-in with a redirect fallback.",
-                "Built the web coin store on Razorpay Checkout, on the same coin ledger as the apps.",
-                "Rendered narration as it streams, with a frame-timed scroll-follow implemented identically on web, Android and iOS."
+                { "title": "Firebase sign-in", "detail": "Email and Google" },
+                { "title": "Razorpay coin store", "detail": "Same coin ledger as the apps" },
+                { "title": "Narration streams in live" }
             ],
-            "tech": ["React", "Vite", "Tailwind", "framer-motion", "Firebase Auth", "Razorpay"]
+            "tech": ["React", "Vite", "Tailwind", "Firebase Auth", "Razorpay"]
         },
         {
             "id": "payments",
             "kicker": "Money paths",
-            "title": "Payments & Coins",
-            "summary": "Three payment rails behind one coin ledger — every purchase verified on the server.",
+            "title": "Payments & coins",
+            "summary": "Every purchase verified on the server",
             "bullets": [
-                "Put Razorpay, Google Play Billing and StoreKit 2 behind one coin ledger, each with its refund path: dispute and chargeback clawback, real-time Play refund notifications, App Store refund notifications.",
-                "Built the coin economy: separate paid and promotional balances and a guarded order state machine — success, disputed, refunded.",
-                "Made coin spending atomic, priced coins from live exchange rates instead of hard-coded numbers, and issued tax-invoice PDFs."
+                { "title": "3 rails, one coin ledger", "detail": "Razorpay, Play Billing, StoreKit 2" },
+                { "title": "Refunds handled on each rail" },
+                { "title": "Paid and promo coins kept apart" },
+                { "title": "Atomic coin spends" },
+                { "title": "Tax invoice PDFs" }
             ],
-            "tech": ["Razorpay", "Play Billing", "StoreKit 2", "PostgreSQL", "Webhooks", "Tax invoices"]
+            "tech": ["Razorpay", "Play Billing", "StoreKit 2", "PostgreSQL", "Webhooks"]
         },
         {
             "id": "growth",
             "kicker": "Analytics · Ads",
-            "title": "Growth & Attribution",
-            "summary": "Server-side attribution and funnel tooling, so every purchase and drop-off can be measured.",
+            "title": "Growth & attribution",
+            "summary": "So every purchase and drop-off gets measured",
             "bullets": [
-                "Reported purchases from the server — Meta Conversions API and AppsFlyer server-to-server events, enriched with the advertising ID so they reach ad platforms.",
-                "Diagnosed an analytics bug dropping session IDs from a large share of Android events with BigQuery and clean-device A/B tests, then shipped a custom session ID across web, Android, iOS and the server.",
-                "Built funnel tooling: per-show card impression and click-through tracking on all three clients, act-completion events, and a Meta ad-spend import for ROAS."
+                { "title": "Purchases reported from the server", "detail": "Meta CAPI, AppsFlyer S2S" },
+                { "title": "Tracked down dropped session IDs", "detail": "Then shipped our own session ID" },
+                { "title": "Card CTR and act funnels" },
+                { "title": "Meta ad spend pulled in for ROAS" }
             ],
             "tech": ["Firebase Analytics", "BigQuery", "AppsFlyer", "Meta Conversions API", "Meta Pixel"]
         },
         {
             "id": "studio",
             "kicker": "Admin · AI authoring",
-            "title": "Authoring Studio",
-            "summary": "An admin studio where “Split with AI” turns a pasted script or PDF into a structured, multi-act story.",
+            "title": "Authoring studio",
+            "summary": "Turns a pasted script or PDF into acts",
             "bullets": [
-                "Built “Split with AI”: a four-stage pipeline — intake → extract → build → append — from raw script to structured story.",
-                "Extracted long scripts act by act, so there is no act cap and no timeouts, and tracked LLM cost per show.",
-                "Made pictures safe to edit: versioned saves, saves that would strip pictures refused until confirmed, a restorable picture history, and S3 reorganised per show and per character.",
-                "Wrote a structural portrait-name resolver, so character portraits survive shortened names — and never show the wrong character."
+                { "title": "“Split with AI”", "detail": "Long scripts go act by act, no cap" },
+                { "title": "Versioned saves, picture history" },
+                { "title": "Portraits never show the wrong character" }
             ],
-            "tech": ["React", "Vite", "pdf.js", "Gemini Flash", "AWS S3", "FastAPI"]
+            "tech": ["React", "Vite", "pdf.js", "Gemini Flash", "AWS S3"]
         },
         {
             "id": "safety",
             "kicker": "Trust · Security",
-            "title": "Safety & Hardening",
-            "summary": "Every input checked before a word is shown; admin endpoints locked down after a four-repo review.",
+            "title": "Safety & hardening",
+            "summary": "Hardened after a four-repo review",
             "bullets": [
-                "Ran every player input through a safety classifier before any story text is shown, with a structural character age gate and reply reporting.",
-                "Hardened the platform: locked-down admin endpoints, per-IP rate limiting, a Firebase ID token on every API call and OIDC-authenticated Play notifications.",
-                "Enforced a hash-based Content Security Policy with violation reporting on the web app.",
-                "Shipped finance-safe self-service account deletion on every client and email verification with 6-digit codes over AWS SES."
+                { "title": "Safety classifier on every input" },
+                { "title": "Character age gate" },
+                { "title": "Admin endpoints locked down", "detail": "Per-IP rate limits, token on every call" },
+                { "title": "Self-service account deletion", "detail": "On every client" }
             ],
-            "tech": ["Firebase Admin", "OIDC", "CSP", "Rate limiting", "AWS SES", "AWS EC2"]
+            "tech": ["Firebase Admin", "OIDC", "CSP", "Rate limiting", "AWS SES"]
         }
     ],
     "phone": {
         "label": "Illustration of a {product} story turn: live narration, then three choices",
         "show": "The Night Train",
         "meta": "Act 1 · Turn 3",
-        "narration": "Rain needles the platform. Mira turns the ticket over — it is stamped with tomorrow's date, and the conductor is already watching her.",
+        "narration": "Rain needles the platform. Mira turns the ticket over. It is stamped with tomorrow's date, and the conductor is already watching her.",
         "options": ["Board the train", "Ask about the date", "Slip into the crowd"],
         "input": "Or write your own move…"
     },
     "screens": [],
-    "stack": [
-        "Python",
-        "FastAPI",
-        "PostgreSQL",
-        "AWS",
-        "Kotlin",
-        "Jetpack Compose",
-        "Swift",
-        "SwiftUI",
-        "StoreKit 2",
-        "React",
-        "Firebase",
-        "LiteLLM",
-        "BigQuery",
-        "AppsFlyer",
-        "Razorpay",
-        "GitLab CI"
-    ]
+    "stack": ["Python", "FastAPI", "PostgreSQL", "AWS", "Kotlin", "Jetpack Compose", "Swift", "SwiftUI", "StoreKit 2", "React", "Firebase", "LiteLLM", "BigQuery", "AppsFlyer", "Razorpay", "GitLab CI"]
 }

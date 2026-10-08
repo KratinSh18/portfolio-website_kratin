@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Button, Flex, IconButton, useBreakpointValue } from "@chakra-ui/react";
+import { Button, Flex, FlexProps, IconButton, useBreakpointValue } from "@chakra-ui/react";
 
 import { ArrowRightIcon, GitHubIcon, LinkIcon } from "utils/Icons";
 import { open } from "utils/Functions";
@@ -19,7 +19,9 @@ interface LiveDemoProps {
     display?: any;
 }
 
-interface Props extends GitHubButtonProps, ReadMoreProps, LiveDemoProps {}
+interface Props extends GitHubButtonProps, ReadMoreProps, LiveDemoProps {
+    pt?: FlexProps["pt"];
+}
 
 // Lift + crimson glow on hover, quick shrink on press; flat under reduced motion.
 const buttonHover = {
@@ -44,7 +46,7 @@ export const ReadMore: FC<ReadMoreProps> = ({ readMore }) => {
                 },
             }}
         >
-            Read More
+            Read more
         </Button>
     ) : null;
 };
@@ -84,14 +86,14 @@ export const LiveDemo: FC<LiveDemoProps> = ({ demo, display }) => {
             onClick={() => open(demo)}
             {...buttonHover}
         >
-            Live Demo
+            Live demo
         </Button>
     ) : null;
 };
 
-export const ProjectCardFooter: FC<Props> = ({ readMore, github, demo }) => {
+export const ProjectCardFooter: FC<Props> = ({ readMore, github, demo, pt = "8" }) => {
     return (
-        <Flex justifyContent={readMore ? "space-between" : "flex-end"} alignItems="center" pt="8">
+        <Flex justifyContent={readMore ? "space-between" : "flex-end"} alignItems="center" pt={pt}>
             <ReadMore readMore={readMore} />
             <Flex gap="4" justifyContent="space-between" alignItems="center" display={demo || github ? "flex" : "none"}>
                 <LiveDemo demo={demo} />

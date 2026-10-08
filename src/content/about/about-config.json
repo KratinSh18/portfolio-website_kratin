@@ -3,10 +3,10 @@
         {
             "id": "edu-1",
             "school": "Indian Institute of Technology Ropar",
-            "degree": "Bachelors in Metallurgical And Materials Engineering",
+            "degree": "B.Tech, Metallurgical and Materials Engineering",
             "duration": "Aug 2022 - May 2026 (Graduated)",
             "content": [
-                "Courses: Financial Risk Management, Machine Learning in Materials, Foundation of Data Science, Differential Equations, Advanced Linear Algebra and Integral Transforms, Data Structure & Algorithms, Probability & Statistic processes, Tinkering Lab, Micro & Macro Economics, Managerial Sciences, English Language Skills, Industrial Management, Human Geography & Social Needs, Professional Ethics"
+                "Courses: ML in Materials, Foundation of Data Science, DSA, Probability & Statistics, Financial Risk Management, Micro & Macro Economics"
             ]
         },
         {
@@ -15,7 +15,7 @@
             "degree": "Senior Secondary (CBSE)",
             "duration": "2021",
             "content": [
-                "Percentage : 91"
+                "Score: 91%"
             ]
         },
         {
@@ -24,60 +24,74 @@
             "degree": "Secondary (CBSE)",
             "duration": "2019",
             "content": [
-                "Percentage : 90.4"
+                "Score: 90.4%"
             ]
         }
     ],
     "experiences": [
         {
             "id": "exp-0",
-            "company": "Kuku FM — {product}",
-            "position": "Founding Engineer · Full-Stack, Android, iOS & AI",
+            "company": "Kuku FM · {product}",
+            "position": "Founding engineer · full-stack, Android, iOS & AI",
             "duration": "Jul 2026 - Present",
             "description": [
-                "Built the first playable MVP in week one — AI-narrated stories with characters, dice and selectable models. About 11 weeks later {product} was live on web and Google Play, and submitted to the App Store.",
-                "Implemented a spec-driven story engine on one rule: if the same input must give the same output, it's code, not a prompt. Act schema, validation gate, act planner, a deterministic orchestrator — and a safety classifier on every player input.",
-                "Shipped the native Android app in Kotlin and Jetpack Compose — streaming chat, Google sign-in, Play Billing, R8 release builds — across ~20 Play releases.",
-                "Sole author of the iOS app: blank SwiftUI scaffold to App Store submission in ~12 days at full Android parity, with StoreKit 2, Sign in with Apple and Live Activities.",
-                "Put three payment rails — Razorpay, Google Play Billing and StoreKit 2 — behind one coin ledger, with server-side verification, refund and dispute handling, and tax invoices.",
-                "Built the 'Split with AI' authoring studio that turns a script or PDF into a multi-act story, plus server-side purchase attribution and analytics across every client."
+                { "title": "Playable MVP in week one", "detail": "Live on web + Google Play in ~11 weeks" },
+                { "title": "Wrote the iOS app solo", "detail": "App Store submission in ~12 days" },
+                { "title": "Native Android app", "detail": "~20 Play releases" },
+                { "title": "3 payment rails, one coin ledger" },
+                { "title": "“Split with AI” authoring studio" },
+                { "title": "Server-side purchase attribution", "detail": "Meta CAPI and AppsFlyer" }
             ],
             "tags": [
                 "Python",
-                "FastAPI",
                 "React",
                 "Kotlin",
                 "Swift",
-                "LLMs",
-                "AWS"
+                "LLMs"
             ]
         },
         {
             "id": "exp-1",
-            "company": "KukuFm's WoWTV",
-            "position": "Performance Marketing Manager",
+            "company": "Kuku FM · WoWTV",
+            "position": "Performance marketing manager",
             "duration": "June 2026 - Aug 2026",
             "description": [
-                "Managed and optimized all Google Ads campaigns for WoWTV, driving performance marketing strategy across the platform with focus on measurable business outcomes",
-                "Monitored and analyzed key performance metrics including Customer Acquisition Cost (CAC), conversion funnels (D0-D7), recovery metrics, and other critical KPIs to optimize campaign performance and ROI",
-                "Executed data-driven campaign scaling and descaling strategies based on real-time performance analysis and market trends to maximize efficiency and revenue generation",
-                "Leveraged advanced analytics and performance data to inform strategic decisions and continuously improve marketing effectiveness across all channels"
+                {
+                    "title": "Ran all Google Ads for WoWTV"
+                },
+                {
+                    "title": "Tracked CAC and D0-D7 funnels",
+                    "detail": "Plus recovery metrics"
+                },
+                {
+                    "title": "Scaled campaigns up or down",
+                    "detail": "Based on the numbers"
+                }
             ],
             "tags": [
                 "Google Ads",
                 "CAC",
-                "D0–D7 funnels",
+                "D0-D7 funnels",
                 "ROAS"
             ]
         },
         {
             "id": "exp-2",
             "company": "Medinos (Taskar)",
-            "position": "Product Manager Intern",
+            "position": "Product manager intern",
             "duration": "May 2025 - June 2025",
             "description": [
-                "Led user-centric UI/UX improvements by providing critical design feedback that shaped a more intuitive and engaging mobile application, while also influencing the product roadmap by reworking information architecture for both web and mobile platforms to improve user flow.",
-                "Owned product data integrity by collecting, validating, and enriching market information through web crawling, ensuring accurate and reliable product details for end users"
+                {
+                    "title": "UX feedback on the mobile app"
+                },
+                {
+                    "title": "Reworked information architecture",
+                    "detail": "Web + mobile user flows"
+                },
+                {
+                    "title": "Product data via web crawling",
+                    "detail": "Kept product details accurate"
+                }
             ],
             "tags": [
                 "Product",
@@ -137,7 +151,7 @@
                 "AppsFlyer (SDK + S2S)",
                 "Meta Pixel & Conversions API",
                 "Push & re-engagement (FCM)",
-                "Funnel & cohort analysis (CAC, D0–D7)"
+                "Funnel & cohort analysis (CAC, D0-D7)"
             ]
         },
         {
@@ -174,15 +188,15 @@
                 "Leadership",
                 "Teamwork",
                 "Communication",
-                "Problem Solving",
+                "Problem solving",
                 "Ownership",
-                "Time Management"
+                "Time management"
             ]
         }
     ],
     "tagline": [
-        "Founding Engineer · {product}",
-        "Ex-Performance Marketing · WoWTV",
-        "IIT Ropar · Class of 2026"
+        "Founding engineer · {product}",
+        "Ran Google Ads at WoWTV",
+        "IIT Ropar · class of 2026"
     ]
 }
