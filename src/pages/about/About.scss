@@ -13,17 +13,6 @@
     max-width: 420px;
     margin: 0 auto;
 }
-// an offset outline in the tone behind the photo (static, outside the tilt)
-.abt__photo-wrap::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: 1.4rem;
-    border: 1.5px solid rgba(var(--fx-accent-rgb), 0.5);
-    transform: translate(14px, 14px);
-    pointer-events: none;
-}
 @media (min-width: 768px) {
     .abt__photo-wrap {
         margin: 0;
