@@ -1,10 +1,9 @@
-import { CSSProperties, FC, useRef } from "react";
+import { CSSProperties, FC, ReactNode, useRef } from "react";
 
 import { IconType } from "react-icons";
 import {
     FaAndroid,
     FaApple,
-    FaBookOpen,
     FaBrain,
     FaChartLine,
     FaCreditCard,
@@ -50,16 +49,18 @@ interface Props {
     /** Spinning, sticky desktop version; false = smaller and still. */
     live: boolean;
     onSelect: (index: number) => void;
+    /** What sits in the middle of the rings (the lit chapter's name; no logo). */
+    center?: ReactNode;
 }
 
 /**
- * A plain story icon in a glowing core (no logo), circled by tilted rings with one node
+ * The lit chapter's name in the middle (no logo, no empty hub), circled by tilted rings with one node
  * per chapter. All motion is CSS transforms on HTML elements (the compositor):
  * each ring spins in the tilted plane and the nodes counter-rotate so the
  * icons always face the viewer. Chapters go round the ring in order, so DOM /
  * tab order matches the reading order of the cards.
  */
-export const ShowcaseOrbit: FC<Props> = ({ chapters, active, live, onSelect }) => {
+export const ShowcaseOrbit: FC<Props> = ({ chapters, active, live, onSelect, center }) => {
     const ref = useRef<HTMLDivElement>(null);
 
     // every loop (spin, glow, beam, ping) holds still while the orbit is off-screen
@@ -123,9 +124,11 @@ export const ShowcaseOrbit: FC<Props> = ({ chapters, active, live, onSelect }) =
                     </div>
                 ))}
 
-                <span className="kp-orbit__core" aria-hidden="true">
-                    <FaBookOpen />
-                </span>
+                {center && (
+                    <div className="kp-orbit__center" aria-hidden="true">
+                        {center}
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -151,9 +151,9 @@ const ChapterCard: FC<{ chapter: Chapter; index: number; total: number; lit: boo
     );
 };
 
-/** Big title + counter under the orbit — a visual echo of the lit card, so hidden from screen readers. */
+/** The lit chapter's counter + name, shown inside the orbit's rings (replaces the old logo hub). */
 const NowShowing: FC<{ chapters: Chapter[]; active: number }> = ({ chapters, active }) => (
-    <div className="kp-now" aria-hidden="true">
+    <>
         <p className="kp-now__count fx-mono">
             {pad(active + 1)} / {pad(chapters.length)}
         </p>
@@ -162,15 +162,21 @@ const NowShowing: FC<{ chapters: Chapter[]; active: number }> = ({ chapters, act
                 <motion.p
                     key={active}
                     className="kp-now__title"
-                    initial={{ opacity: 0, y: 28 }}
+                    initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -28 }}
-                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0, y: -18 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 >
                     {withProduct(chapters[active].title)}
                 </motion.p>
             </AnimatePresence>
         </div>
+    </>
+);
+
+/** Progress dashes under the orbit, one per chapter. */
+const ChapterProgress: FC<{ chapters: Chapter[]; active: number }> = ({ chapters, active }) => (
+    <div className="kp-now" aria-hidden="true">
         <div className="kp-progress">
             {chapters.map((c, i) => (
                 <span key={c.id} className={i <= active ? "is-on" : undefined} />
@@ -251,8 +257,14 @@ export const KukuPlayShowcase: FC = () => {
                 {scrolly ? (
                     <div className="kp-scrolly">
                         <div className="kp-sticky">
-                            <ShowcaseOrbit chapters={chapters} active={active} live onSelect={goTo} />
-                            <NowShowing chapters={chapters} active={active} />
+                            <ShowcaseOrbit
+                                chapters={chapters}
+                                active={active}
+                                live
+                                onSelect={goTo}
+                                center={<NowShowing chapters={chapters} active={active} />}
+                            />
+                            <ChapterProgress chapters={chapters} active={active} />
                         </div>
                         <div className="kp-steps">
                             {chapters.map((c, i) =>
@@ -266,7 +278,18 @@ export const KukuPlayShowcase: FC = () => {
                     </div>
                 ) : (
                     <div className="kp-stack">
-                        <ShowcaseOrbit chapters={chapters} active={-1} live={false} onSelect={goTo} />
+                        <ShowcaseOrbit
+                            chapters={chapters}
+                            active={-1}
+                            live={false}
+                            onSelect={goTo}
+                            center={
+                                <>
+                                    <p className="kp-now__count fx-mono">{pad(chapters.length)} parts</p>
+                                    <p className="kp-now__title">{product.name}</p>
+                                </>
+                            }
+                        />
                         {chapters.map((c, i) =>
                             step(
                                 c,

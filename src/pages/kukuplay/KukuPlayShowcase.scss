@@ -825,23 +825,29 @@
     transform-style: preserve-3d;
     transform: rotateZ(var(--a)) translateX(var(--r)) rotateZ(calc(var(--a) * -1));
 }
-.kp-orbit__core {
+// the middle of the rings: the lit chapter's counter + name (no logo, no hub disc).
+// Sized inside the inner ring's flattened ellipse so no ring or node crosses it.
+.kp-orbit__center {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: calc(var(--size) * 0.24);
-    height: calc(var(--size) * 0.24);
-    margin: calc(var(--size) * -0.12) 0 0 calc(var(--size) * -0.12);
-    border-radius: 50%;
+    width: calc(var(--size) * 0.46);
+    transform: translate(-50%, -50%);
+    text-align: center;
     pointer-events: none;
-    // a plain story icon in a dark hub, not a logo
-    display: grid;
-    place-items: center;
-    background: #0a0b0a;
-    color: var(--fx-lime);
-    font-size: calc(var(--size) * 0.085);
-    box-shadow: 0 0 0 1px rgba(var(--fx-lime-rgb), 0.5), 0 0 40px rgba(var(--fx-lime-rgb), 0.3),
-        0 0 100px rgba(var(--fx-green-rgb), 0.25);
+
+    .kp-now__count {
+        font-size: max(0.66rem, calc(var(--size) * 0.022));
+        letter-spacing: 0.2em;
+    }
+    .kp-now__stage {
+        min-height: 2.05em;
+        margin: 0.35rem 0 0;
+        font-size: calc(var(--size) * 0.058);
+    }
+    .kp-now__title {
+        text-shadow: 0 0 28px rgba(var(--fx-lime-rgb), 0.25);
+    }
 }
 
 // beam from the core to the lit node, in the ring's own plane so it follows the
