@@ -21,7 +21,7 @@ export const DeckProgress: FC<Props> = ({ count, index, onDot }) => (
                 h="3"
                 w={i === index ? "8" : "3"}
                 borderRadius="full"
-                bg={i === index ? "primary.500" : "gray.400"}
+                bg={i === index ? "var(--fx-accent)" : "gray.400"}
                 opacity={i === index ? 1 : 0.5}
                 transition="all 0.3s ease"
                 _hover={{ opacity: 1 }}

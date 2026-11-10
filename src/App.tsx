@@ -47,7 +47,7 @@ const About = lazy(() => import("pages/about/About").then((module) => ({ default
 
 const Loader: FC = () => (
     <Center w="100%" h="100vh">
-        <Spinner size="lg" color="primary.500" />
+        <Spinner size="lg" color="var(--fx-accent)" />
     </Center>
 );
 

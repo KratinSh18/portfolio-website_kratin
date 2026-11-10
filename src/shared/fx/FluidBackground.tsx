@@ -8,7 +8,7 @@ import { KukuPlayShowcaseId } from "utils/useScroll";
 
 import "shared/fx/FluidBackground.scss";
 
-// The product showcase section tints the flow indigo while on screen.
+// The product showcase section burns the lime brighter while on screen.
 const PRODUCT_SECTION_ID = KukuPlayShowcaseId;
 
 // Internal resolution in CSS px, independent of devicePixelRatio. The flow is
@@ -129,31 +129,31 @@ void main() {
     vec3 lightDir = normalize(vec3(-0.45, 0.6, 0.65));
     float spec = pow(max(dot(reflect(-lightDir, n), vec3(0.0, 0.0, 1.0)), 0.0), 22.0);
 
-    float cur = smoothstep(0.38, 0.9, f);                       // main molten current
-    float counter = smoothstep(0.45, 0.95, length(q)) * (1.0 - cur); // cool counter-current
-    float hot = smoothstep(0.55, 0.85, r.y) * cur;               // molten core
+    float cur = smoothstep(0.38, 0.9, f);                       // main lime current
+    float counter = smoothstep(0.45, 0.95, length(q)) * (1.0 - cur); // deep-green counter-current
+    float hot = smoothstep(0.55, 0.85, r.y) * cur;               // bright core
 
-    vec3 crimson = vec3(0.867, 0.0, 0.016);
-    vec3 crimsonHot = vec3(0.961, 0.106, 0.173);
-    vec3 indigo = vec3(0.388, 0.4, 0.945);
-    vec3 indigoHot = vec3(0.506, 0.549, 0.973);
+    // PlayOshi lime (#c5f41f), a hotter lime for the core, a teal-green
+    // counter-current. Lime is very luminous, so the
+    // weights below are much lower to keep the same dark, readable page.
+    vec3 lime = vec3(0.773, 0.957, 0.122);
+    vec3 limeHot = vec3(0.86, 1.0, 0.36);
+    vec3 teal = vec3(0.1, 0.62, 0.4);
 
-    // Inside the product showcase the indigo counter-current takes over.
-    vec3 mainC = mix(crimson, indigo, u_product);
-    vec3 counterC = mix(indigo, crimson, u_product);
-    vec3 hotC = mix(crimsonHot, indigoHot, u_product);
+    // Inside the product showcase the lime only burns brighter (same hue).
+    float boost = 1.0 + 0.5 * u_product;
 
-    vec3 dark = vec3(0.047, 0.055, 0.075);
-    dark = mix(dark, mainC * 0.42, cur * 0.9);
-    dark = mix(dark, counterC * 0.26, counter * 0.6);
-    dark += hotC * hot * 0.22;
-    dark += mainC * infl * 0.035;
-    dark += vec3(0.9, 0.92, 1.0) * spec * (0.025 + 0.06 * cur);
+    vec3 dark = vec3(0.039, 0.043, 0.039);
+    dark = mix(dark, lime * 0.15 * boost, cur * 0.9);
+    dark = mix(dark, teal * 0.13, counter * 0.6);
+    dark += limeHot * hot * 0.07 * boost;
+    dark += lime * infl * 0.02;
+    dark += vec3(0.92, 1.0, 0.9) * spec * (0.02 + 0.045 * cur);
 
-    // Light: ink dropped in water on paper — tints only, never dark.
-    vec3 paper = vec3(0.965, 0.969, 0.976);
-    vec3 inkMain = mix(vec3(0.97, 0.80, 0.82), vec3(0.83, 0.84, 0.98), u_product);
-    vec3 inkCounter = mix(vec3(0.85, 0.86, 0.98), vec3(0.97, 0.84, 0.85), u_product);
+    // Light: green ink dropped in water on paper — tints only, never dark.
+    vec3 paper = vec3(0.968, 0.972, 0.962);
+    vec3 inkMain = mix(vec3(0.9, 0.96, 0.74), vec3(0.86, 0.95, 0.6), u_product);
+    vec3 inkCounter = vec3(0.82, 0.93, 0.87);
     vec3 light = paper;
     light = mix(light, inkMain, cur * 0.75);
     light = mix(light, inkCounter, counter * 0.55);
@@ -222,7 +222,7 @@ const setup = (gl: WebGLRenderingContext): Gl | null => {
     };
 };
 
-/** 0..1 — how much of the viewport `visible` px fill (60% = fully indigo). */
+/** 0..1 — how much of the viewport `visible` px fill (60% = full product boost). */
 const productAmount = (visible: number, vh: number) => Math.min(Math.max(visible / (vh * 0.6), 0), 1);
 
 /** The same, measured now; only for seeding (a layout read, so never per frame). */
@@ -242,8 +242,8 @@ const PRODUCT_THRESHOLDS = Array.from({ length: 51 }, (_, i) => i / 50);
 const approach = (from: number, to: number, k: number, dt: number) => from + (to - from) * (1 - Math.exp(-k * dt));
 
 /**
- * The site's living backdrop: a molten crimson liquid on near-black with an
- * indigo counter-current, rendered by one raw WebGL1 fragment shader. Every
+ * The site's living backdrop: a lime liquid on near-black with a
+ * deep teal-green counter-current, rendered by one raw WebGL1 fragment shader. Every
  * input (time, pointer, scroll, product section, colour mode) is a uniform fed
  * from a single rAF loop — no React state per frame. Falls back to the CSS
  * aurora without WebGL, and draws one still frame under reduced motion.

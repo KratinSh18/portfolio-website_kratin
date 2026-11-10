@@ -1,1 +1,1 @@
-I'm a founding engineer at Kuku FM, building {product}. Before that I did ML and quant finance projects, like NIFTY 50 portfolio risk and fraud detection. At IIT Ropar I was ISMP Co-Secretary and Music Club Head. I play drums and guitar.
+I'm a founding engineer at Kuku FM, working on {product}. Day to day I build with AI coding tools like Claude Code. Before that I did ML and quant finance projects, like NIFTY 50 portfolio risk and fraud detection. At IIT Ropar I was ISMP Co-Secretary and Music Club Head. I play drums and guitar.

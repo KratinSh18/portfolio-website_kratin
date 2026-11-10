@@ -15,7 +15,7 @@ export const ColorModeButton: FC<StyleProps> = (props) => {
                 bg="transparent"
                 color={color}
                 fontSize="lg"
-                _hover={{ color: "primary.500" }}
+                _hover={{ color: "var(--fx-accent)" }}
                 _active={{ bg: "transparent" }}
                 icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
                 variant="ghost"

@@ -48,7 +48,7 @@ export const Content: FC<Props> = ({ children, ...rest }) => {
                 components={{
                     p: ({ node, ...props }) => <Text {...rest} {...props} />,
                     a: ({ node, ...props }) => (
-                        <Link href={props.href} target="_blank" color="primary.200" {...props} />
+                        <Link href={props.href} target="_blank" color="var(--fx-accent)" {...props} />
                     ),
                     ul: ({ node, ...props }) => {
                         const { ordered, ...rest } = props;

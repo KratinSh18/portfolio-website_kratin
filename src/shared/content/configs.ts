@@ -14,9 +14,9 @@ export const configs = {
     featuredProjects,
     otherProjects,
     about,
-    /** The product Kratin builds — rename it (KukuPlay → PlayOshi) in product.json only. */
+    /** The product Kratin works on: its name and url live in product.json only. */
     product,
 };
 
-/** Swap the `{product}` token for the product's current name (KukuPlay → PlayOshi lives in product.json). */
+/** Swap the `{product}` token for the product's name (from product.json). */
 export const withProduct = (text: string): string => text.split("{product}").join(configs.product.name);

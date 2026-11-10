@@ -1,7 +1,9 @@
 import { FC, useEffect, useRef, useState } from "react";
 
+import { FaBookOpen } from "react-icons/fa";
+
 import showcase from "content/kukuplay/showcase.json";
-import { configs, withProduct } from "shared/content/Content";
+import { withProduct } from "shared/content/Content";
 import { usePauseOffscreen } from "shared/fx/usePauseOffscreen";
 import { useReducedMotion } from "shared/motion/useReducedMotion";
 
@@ -19,7 +21,9 @@ const MockChat: FC = () => {
     return (
         <div className="kp-chat">
             <div className="kp-chat__bar">
-                <img className="kp-chat__avatar" src={configs.product.mark} alt="" width={32} height={32} />
+                <span className="kp-chat__avatar" aria-hidden="true">
+                    <FaBookOpen />
+                </span>
                 <div>
                     <p className="kp-chat__show">{phone.show}</p>
                     <p className="kp-chat__meta">{phone.meta}</p>

@@ -21,7 +21,7 @@ export const Tags: FC<Props> = ({ id, tags, size = "sm" }) => {
                         color="inherit"
                         border="1px solid var(--fx-glass-border)"
                         _hover={{
-                            color: "primary.400",
+                            color: "var(--fx-accent)",
                             borderColor: "var(--fx-glass-border-hot)",
                             transform: "translateY(-2px) scale(1.05)",
                         }}

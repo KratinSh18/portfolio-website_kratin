@@ -8,19 +8,17 @@
     --xp-x: 14px;
     // vertical centre of each node, measured from its item's top
     --xp-node-y: 34px;
-    // readable crimson / indigo for small text (AA on the glass in each mode)
-    --xp-red: #ff4d52;
-    --xp-indigo: #a5b4fc;
+    // readable lime / deep green for small text (AA on the glass in each mode)
+    --xp-ink: var(--fx-lime);
     // the unlit node's fill = the page base, so the spine reads as "through" it
-    --xp-base: #0c0e13;
+    --xp-base: #0a0b0a;
 
     position: relative;
     padding-bottom: 8px;
 }
 .chakra-ui-light .xptl {
-    --xp-red: #b80003;
-    --xp-indigo: #4338ca;
-    --xp-base: #f6f7f9;
+    --xp-ink: var(--fx-accent);
+    --xp-base: #f6f7f5;
 }
 
 // ---- spine --------------------------------------------------------------
@@ -44,8 +42,8 @@
     border-radius: inherit;
     transform-origin: 50% 0;
     transform: scaleY(0);
-    background: linear-gradient(180deg, var(--fx-accent-bright) 0%, var(--fx-accent) 45%, var(--fx-indigo) 100%);
-    box-shadow: 0 0 10px rgba(221, 0, 4, 0.55), 0 0 24px rgba(99, 102, 241, 0.35);
+    background: linear-gradient(180deg, var(--fx-green) 0%, var(--fx-accent) 100%);
+    box-shadow: 0 0 10px rgba(var(--fx-accent-rgb), 0.5), 0 0 24px rgba(var(--fx-green-rgb), 0.35);
     will-change: transform;
 }
 // the glowing pen tip riding the end of the fill
@@ -57,7 +55,7 @@
     height: 10px;
     border-radius: 50%;
     background: #fff;
-    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.35), 0 0 16px 4px rgba(129, 140, 248, 0.75);
+    box-shadow: 0 0 0 3px rgba(var(--fx-accent-rgb), 0.35), 0 0 16px 4px rgba(var(--fx-accent-rgb), 0.7);
     opacity: 0;
     transition: opacity 0.3s var(--fx-ease-out);
     will-change: transform;
@@ -120,7 +118,7 @@
     transform: translate(-50%, -50%) scale(1.1);
     background: var(--fx-accent);
     border-color: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 0 0 5px var(--fx-accent-soft), 0 0 22px rgba(221, 0, 4, 0.7);
+    box-shadow: 0 0 0 5px var(--fx-accent-soft), 0 0 22px rgba(var(--fx-accent-rgb), 0.6);
 }
 // one ring burst on ignition
 .xptl__item[data-lit] .xptl__node::after {
@@ -163,10 +161,10 @@
         border-color: var(--fx-glass-border-hot);
         box-shadow: var(--fx-glass-shadow), var(--fx-glow-accent);
     }
-    // the product card glows in the product's indigo, like the showcase
+    // the product card glows a little harder, like the showcase
     .xptl__card--product:hover {
-        border-color: rgba(129, 140, 248, 0.55);
-        box-shadow: var(--fx-glass-shadow), 0 0 0.5rem rgba(99, 102, 241, 0.3), 0 0 2.4rem rgba(99, 102, 241, 0.22);
+        border-color: rgba(var(--fx-accent-rgb), 0.6);
+        box-shadow: var(--fx-glass-shadow), 0 0 0.5rem rgba(var(--fx-accent-rgb), 0.32), 0 0 2.4rem rgba(var(--fx-accent-rgb), 0.22);
     }
 }
 
@@ -177,7 +175,7 @@
     gap: 0.6rem;
 }
 .xptl__date {
-    color: var(--xp-red);
+    color: var(--xp-ink);
     font-size: 0.7rem;
     font-weight: 700;
 }
@@ -193,8 +191,8 @@
     border-radius: 999px;
     font-size: 0.6rem;
     font-weight: 700;
-    color: #fff;
-    background: var(--fx-accent);
+    color: var(--fx-on-lime);
+    background: var(--fx-lime);
 }
 // the pulse ring: a scaled + faded pseudo element (compositor only), not an
 // animated box-shadow, which would repaint the badge every frame forever
@@ -204,14 +202,14 @@
     inset: 0;
     z-index: -1;
     border-radius: inherit;
-    background: rgba(221, 0, 4, 0.55);
+    background: rgba(var(--fx-lime-rgb), 0.5);
     animation: xpNow 2.4s ease-out infinite;
 }
 .xptl__now-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #fff;
+    background: var(--fx-on-lime);
     animation: fxPulse 1.2s ease-in-out infinite;
 }
 // ~10px of halo around a ~60x24px pill, like the old 10px box-shadow spread
@@ -232,14 +230,6 @@
     align-items: flex-start;
     gap: 0.9rem;
     margin-top: 0.8rem;
-}
-.xptl__mark {
-    flex: 0 0 auto;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    border: 1px solid rgba(129, 140, 248, 0.4);
-    box-shadow: 0 0 0 4px var(--fx-indigo-soft), 0 0 22px rgba(99, 102, 241, 0.35);
 }
 .xptl__company {
     font-family: "Playfair Display", serif;
@@ -295,7 +285,7 @@
     color: var(--fx-text-soft);
 }
 .xptl__card--product .xptl__points li::before {
-    background: linear-gradient(90deg, var(--fx-accent), var(--fx-indigo));
+    background: linear-gradient(90deg, var(--fx-accent), var(--fx-green));
 }
 
 // collapsible rest of the points: 0fr -> 1fr animates to the real height
@@ -333,7 +323,7 @@
     cursor: pointer;
     font-size: 0.68rem;
     font-weight: 700;
-    color: var(--xp-red);
+    color: var(--xp-ink);
     transition: gap 0.25s var(--fx-ease-out);
 }
 .xptl__toggle:hover {
@@ -384,9 +374,9 @@
     min-height: 40px;
     padding: 0 0.9rem;
     border-radius: 999px;
-    border: 1px solid rgba(129, 140, 248, 0.45);
-    background: var(--fx-indigo-soft);
-    color: var(--xp-indigo);
+    border: 1px solid rgba(var(--fx-accent-rgb), 0.45);
+    background: var(--fx-accent-soft);
+    color: var(--xp-ink);
     font-size: 0.66rem;
     font-weight: 700;
     text-decoration: none;
@@ -394,8 +384,8 @@
     transition: background-color 0.3s var(--fx-ease-out), box-shadow 0.3s var(--fx-ease-out);
 }
 .xptl__dive:hover {
-    background: rgba(99, 102, 241, 0.28);
-    box-shadow: 0 0 22px rgba(99, 102, 241, 0.45);
+    background: rgba(var(--fx-accent-rgb), 0.22);
+    box-shadow: 0 0 22px rgba(var(--fx-accent-rgb), 0.35);
 }
 
 // ---- desktop: centred spine, zig-zag cards ------------------------------
@@ -431,11 +421,6 @@
     }
     .xptl__company {
         font-size: 1.7rem;
-    }
-    .xptl__mark {
-        width: 52px;
-        height: 52px;
-        border-radius: 14px;
     }
 }
 

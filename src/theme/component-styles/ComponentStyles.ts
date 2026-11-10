@@ -17,9 +17,21 @@ const ButtonStyles: ComponentStyleConfig = {
         fontWeight: "bold",
     },
     variants: {
-        solid: {
-            color: "white",
-        },
+        // primary = a lime fill: near-black text (white on lime is ~1.3:1)
+        solid: (props: any) =>
+            props.colorScheme === "primary"
+                ? {
+                      bg: "primary.300",
+                      color: "gray.900",
+                      _hover: { bg: "primary.200", _disabled: { bg: "primary.300" } },
+                      _active: { bg: "primary.400" },
+                  }
+                : { color: "white" },
+        // link buttons ("Show more"): 500 is 2.7:1 on white, so the deep green there
+        link: (props: any) =>
+            props.colorScheme === "primary"
+                ? { color: props.colorMode === "dark" ? "primary.300" : "primary.600" }
+                : {},
         secondary: (props: any) => {
             return {
                 color: props.colorMode === "dark" ? "white" : "gray.900",
@@ -38,7 +50,7 @@ const ButtonStyles: ComponentStyleConfig = {
                 background: "transparent",
                 _hover: {
                     background: "transparent",
-                    color: "primary.500",
+                    color: "var(--fx-accent)",
                 },
                 _focus: {
                     background: "transparent",
@@ -58,7 +70,7 @@ const LinkStyles: ComponentStyleConfig = {
     baseStyle: (props) => {
         let color = "primary.600";
 
-        if (props.colorMode === "dark") color = "primary.100";
+        if (props.colorMode === "dark") color = "primary.300";
 
         return {
             fontWeight: 700,

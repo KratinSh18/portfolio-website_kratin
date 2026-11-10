@@ -26,7 +26,7 @@ export const LogoType: FC<Props> = ({ text, onClick }) => {
             alignItems="center"
             borderRadius="md"
             transition="color 0.3s var(--fx-ease-out), transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)"
-            _hover={{ color: "primary.500" }}
+            _hover={{ color: "var(--fx-accent)" }}
             _focusVisible={{ outline: "2px solid var(--fx-accent-bright)", outlineOffset: "4px" }}
             sx={{
                 // hover-capable pointers only: a tap on touch would leave the tilt stuck

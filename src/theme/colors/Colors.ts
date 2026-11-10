@@ -1,31 +1,33 @@
 import { ColorHues } from "@chakra-ui/react";
 
 /**
- * Generated via https://lyft-colorbox.herokuapp.com/
+ * PlayOshi lime, sampled from its mark (300 = the brand lime, 500 = its deep
+ * green). Text slots: 100-300 read on the dark page, 600+ on white (600 is
+ * 7:1). Lime fills carry near-black text, never white.
  */
 export const PrimaryColors: ColorHues = {
-    50: "#FF9597",
-    100: "#FD6568",
-    200: "#F9383B",
-    300: "#F21115",
-    400: "#E90004",
-    500: "#DD0004",
-    600: "#CD0003",
-    700: "#B80003",
-    800: "#A00003",
-    900: "#870002",
+    50: "#F6FDE0",
+    100: "#E8FBA8",
+    200: "#D4F75C",
+    300: "#C5F41F",
+    400: "#A0D712",
+    500: "#70B000",
+    600: "#3F6212",
+    700: "#365314",
+    800: "#2B4510",
+    900: "#1A2E05",
 };
 
-// Cool, professional slate neutrals (replaces the previous warm/brownish grays).
+// Neutral greys down to PlayOshi black (no blue cast next to the lime).
 export const PrimaryDarkColors: ColorHues = {
-    50: "#F6F7F9",
-    100: "#ECEEF2",
-    200: "#DDE1E8",
-    300: "#C2C8D2",
-    400: "#8A93A3",
-    500: "#697184",
-    600: "#4A5160",
-    700: "#2B313C",
-    800: "#161A22",
-    900: "#0C0E13",
+    50: "#F6F7F5",
+    100: "#ECEEEA",
+    200: "#DCDFDA",
+    300: "#C2C6BF",
+    400: "#8A8F87",
+    500: "#696E66",
+    600: "#4A4E47",
+    700: "#2B2E29",
+    800: "#161815",
+    900: "#0A0B0A",
 };

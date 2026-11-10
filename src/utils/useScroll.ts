@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 export const WorkPageId = "page-work";
 export const AboutPageId = "page-about";
-// The product showcase; the WebGL background tints indigo while it is on screen.
+// The product showcase; the WebGL background burns a brighter lime while it is on screen.
 // Lives here (main bundle) so the background and the hero can use it without
 // pulling the lazy showcase chunk in.
-export const KukuPlayShowcaseId = "page-kukuplay";
+export const KukuPlayShowcaseId = "page-playoshi";
 
 export enum Page {
     Work = "work",

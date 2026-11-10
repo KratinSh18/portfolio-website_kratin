@@ -68,7 +68,7 @@ export const Footer: FC = () => {
             </div>
 
             <div className="finale__print fx-mono">
-                <span>Designed &amp; built by {name}</span>
+                <span>Designed and built by {name}, with help from Claude Code</span>
                 <span>&copy; {new Date().getFullYear()}</span>
             </div>
         </footer>

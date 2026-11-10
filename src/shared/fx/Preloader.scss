@@ -14,13 +14,13 @@
     will-change: transform;
 }
 
-// Trails the ink curtain on the way out, so a crimson band sweeps the page.
+// Trails the ink curtain on the way out, so a lime band sweeps the page.
 .fx-preloader__panel--accent {
-    background: var(--fx-accent);
+    background: var(--fx-lime);
 }
 
 .fx-preloader__panel--ink {
-    background: #0c0e13;
+    background: #0a0b0a;
 }
 
 .fx-preloader__inner {
@@ -58,7 +58,7 @@
 
 .fx-preloader__sig--ink {
     clip-path: inset(0 100% 0 0);
-    text-shadow: 0 0 2.5rem rgba(221, 0, 4, 0.45);
+    text-shadow: 0 0 2.5rem rgba(var(--fx-lime-rgb), 0.4);
 }
 
 .fx-preloader__foot {
@@ -93,8 +93,8 @@
 
 .fx-preloader__line {
     height: 100%;
-    background: linear-gradient(90deg, var(--fx-accent), var(--fx-accent-bright));
-    box-shadow: 0 0 10px rgba(245, 27, 44, 0.7);
+    background: linear-gradient(90deg, var(--fx-green), var(--fx-lime));
+    box-shadow: 0 0 10px rgba(var(--fx-lime-rgb), 0.7);
     transform: scaleX(0);
     transform-origin: 0 50%;
 }

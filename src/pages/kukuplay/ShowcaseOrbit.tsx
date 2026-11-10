@@ -1,10 +1,20 @@
 import { CSSProperties, FC, useRef } from "react";
 
 import { IconType } from "react-icons";
-import { FaAndroid, FaApple, FaBrain, FaChartLine, FaCreditCard, FaPenNib, FaReact, FaShieldAlt } from "react-icons/fa";
+import {
+    FaAndroid,
+    FaApple,
+    FaBookOpen,
+    FaBrain,
+    FaChartLine,
+    FaCreditCard,
+    FaPenNib,
+    FaReact,
+    FaShieldAlt,
+} from "react-icons/fa";
 
 import showcase from "content/kukuplay/showcase.json";
-import { configs, withProduct } from "shared/content/Content";
+import { withProduct } from "shared/content/Content";
 import { usePauseOffscreen } from "shared/fx/usePauseOffscreen";
 
 const chapterIcons: Record<string, IconType> = {
@@ -43,7 +53,7 @@ interface Props {
 }
 
 /**
- * The product mark in a glowing core, circled by tilted rings with one node
+ * A plain story icon in a glowing core (no logo), circled by tilted rings with one node
  * per chapter. All motion is CSS transforms on HTML elements (the compositor):
  * each ring spins in the tilted plane and the nodes counter-rotate so the
  * icons always face the viewer. Chapters go round the ring in order, so DOM /
@@ -114,7 +124,7 @@ export const ShowcaseOrbit: FC<Props> = ({ chapters, active, live, onSelect }) =
                 ))}
 
                 <span className="kp-orbit__core" aria-hidden="true">
-                    <img src={configs.product.mark} alt="" width={160} height={160} />
+                    <FaBookOpen />
                 </span>
             </div>
         </div>

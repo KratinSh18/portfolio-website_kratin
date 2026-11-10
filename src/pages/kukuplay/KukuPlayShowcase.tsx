@@ -42,9 +42,6 @@ const accent = (text: string): ReactNode[] =>
 const Intro: FC<{ reduced: boolean }> = ({ reduced }) => (
     <div className="kp-intro">
         <div className="kp-intro__top">
-            <span className="kp-mark">
-                <img src={product.mark} alt={withProduct(showcase.markAlt)} width={64} height={64} />
-            </span>
             <div>
                 <p className="kp-role fx-mono">
                     <span className="kp-spark" aria-hidden="true" />
@@ -65,11 +62,6 @@ const Intro: FC<{ reduced: boolean }> = ({ reduced }) => (
                 pieceClassName="kp-grad"
                 stagger={0.045}
             />
-            {product.showNextName && (
-                <span className="kp-soon fx-mono">
-                    {showcase.soon} {product.nextName}
-                </span>
-            )}
         </div>
 
         <div className="kp-intro__grid">

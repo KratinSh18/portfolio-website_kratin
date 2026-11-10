@@ -12,7 +12,7 @@
 
 // A full-width window slid left by (1 - p) of its width, with the gradient
 // inside slid back by the same amount: the colours stay pinned to page
-// position (crimson top, indigo end) and both moves are transforms. The old
+// position (deep green top, lime end) and both moves are transforms. The old
 // clip-path / color-mix version repainted, and re-layerized the whole page,
 // on every scroll frame.
 .fx-progress__bar {
@@ -26,7 +26,7 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(90deg, var(--fx-accent) 0%, var(--fx-accent-bright) 35%, var(--fx-indigo-bright) 100%);
+        background: linear-gradient(90deg, var(--fx-green) 0%, var(--fx-lime) 100%);
         transform: translate3d(calc((1 - var(--p)) * 100%), 0, 0);
         will-change: transform;
     }
@@ -45,7 +45,7 @@
     will-change: transform, opacity;
 }
 
-// White dot; its glow cools from crimson to the product's indigo as you go:
+// White dot; its glow brightens from deep green to lime as you go:
 // two glows cross-faded by opacity rather than one box-shadow re-coloured
 // (and repainted) every frame.
 .fx-progress__dot {
@@ -67,11 +67,16 @@
         will-change: opacity;
     }
     &::before {
-        box-shadow: 0 0 6px 1px var(--fx-accent-bright), 0 0 18px 4px rgba(245, 27, 44, 0.45);
+        box-shadow: 0 0 6px 1px var(--fx-green), 0 0 18px 4px rgba(var(--fx-green-rgb), 0.45);
         opacity: calc(1 - var(--p));
     }
     &::after {
-        box-shadow: 0 0 6px 1px var(--fx-indigo-bright), 0 0 18px 4px rgba(129, 140, 248, 0.45);
+        box-shadow: 0 0 6px 1px var(--fx-lime), 0 0 18px 4px rgba(var(--fx-lime-rgb), 0.5);
         opacity: var(--p);
     }
+}
+
+// lime fades out on white: the light page runs deep green to brand green
+.chakra-ui-light .fx-progress__bar::before {
+    background: linear-gradient(90deg, var(--fx-accent) 0%, var(--fx-green) 100%);
 }

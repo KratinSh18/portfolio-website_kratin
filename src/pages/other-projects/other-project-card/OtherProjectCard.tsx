@@ -18,7 +18,7 @@ interface Props {
 }
 
 /**
- * Glass card: hovering anywhere lifts it, lights a crimson edge glow and slowly
+ * Glass card: hovering anywhere lifts it, lights a lime edge glow and slowly
  * zooms the cover. Transform-free under reduced motion (glow and border stay).
  */
 export const OtherProjectCard: FC<Props> = ({ id, title, demo, github, tags, description, readMore, image, jpg }) => {
@@ -35,7 +35,7 @@ export const OtherProjectCard: FC<Props> = ({ id, title, demo, github, tags, des
             _hover={{
                 borderColor: "var(--fx-glass-border-hot)",
                 boxShadow:
-                    "var(--fx-glass-shadow), 0 0 0 1px var(--fx-glass-border-hot), 0 24px 60px -24px rgba(221, 0, 4, 0.5)",
+                    "var(--fx-glass-shadow), 0 0 0 1px var(--fx-glass-border-hot), 0 24px 60px -24px rgba(var(--fx-accent-rgb), 0.45)",
             }}
             // lift + cover zoom only when motion is welcome; a reduce override
             // couldn't outrank Chakra's [data-group]:hover selector on the image
@@ -81,7 +81,7 @@ export const OtherProjectCard: FC<Props> = ({ id, title, demo, github, tags, des
                     <Heading
                         fontSize="2xl"
                         transition="color 0.3s var(--fx-ease-out)"
-                        _groupHover={{ color: "primary.500" }}
+                        _groupHover={{ color: "var(--fx-accent)" }}
                     >
                         {title}
                     </Heading>

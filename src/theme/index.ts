@@ -34,7 +34,7 @@ const styles = {
     // toggle is reliable. Here we only set the selection highlight.
     global: {
         "*::selection": {
-            background: "rgba(221,0,4,0.28)",
+            background: "rgba(197,244,31,0.3)",
         },
     },
 };

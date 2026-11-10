@@ -31,10 +31,8 @@ const STACK = [
     "Python",
     "FastAPI",
     "PostgreSQL",
-    "AWS",
     "Firebase",
     "BigQuery",
-    "LiteLLM",
     "StoreKit 2",
     "Play Billing",
 ];

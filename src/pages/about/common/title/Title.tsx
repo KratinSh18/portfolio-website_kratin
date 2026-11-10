@@ -7,7 +7,7 @@ interface Props extends StyleProps {
     id?: string;
 }
 
-/** Sub-section title inside About (Education, Skills): display face, crimson tick. */
+/** Sub-section title inside About (Education, Skills): display face, lime tick. */
 export const ArticleTitle: FC<Props> = ({ title, id, ...props }) => {
     return (
         <Heading

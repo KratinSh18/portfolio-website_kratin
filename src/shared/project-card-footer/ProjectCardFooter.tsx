@@ -23,7 +23,7 @@ interface Props extends GitHubButtonProps, ReadMoreProps, LiveDemoProps {
     pt?: FlexProps["pt"];
 }
 
-// Lift + crimson glow on hover, quick shrink on press; flat under reduced motion.
+// Lift + lime glow on hover, quick shrink on press; flat under reduced motion.
 const buttonHover = {
     transition: "background 0.25s ease, box-shadow 0.3s ease, transform 0.25s var(--fx-ease-out)",
     _hover: { transform: "translateY(-2px)", boxShadow: "var(--fx-glow-accent)" },

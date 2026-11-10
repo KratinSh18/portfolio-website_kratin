@@ -66,7 +66,7 @@ export const SwipeDeck: FC<Props> = ({ ariaLabel = "Carousel", children }) => {
                     "&::-webkit-scrollbar": { display: "none" },
                     "&:focus-visible": {
                         outline: "2px solid",
-                        outlineColor: "primary.500",
+                        outlineColor: "var(--fx-accent-bright)",
                         outlineOffset: "4px",
                         borderRadius: "lg",
                     },

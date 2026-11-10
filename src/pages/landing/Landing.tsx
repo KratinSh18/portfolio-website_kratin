@@ -222,18 +222,15 @@ export const Landing: FC = () => {
                                 h="52px"
                                 px="7"
                                 borderRadius="full"
-                                bg="var(--fx-accent)"
-                                color="white"
+                                bg="var(--fx-lime)"
+                                color="var(--fx-on-lime)"
                                 fontWeight="800"
                                 className="hero__cta"
-                                // stays on --fx-accent: white on accent-bright is ~4.1:1, under AA for 16px text
-                                _hover={{ bg: "var(--fx-accent)", boxShadow: "var(--fx-glow-accent)" }}
-                                _active={{ bg: "var(--fx-accent)", transform: "scale(0.96)" }}
+                                // lime fill, near-black text (white on lime is ~1.3:1)
+                                _hover={{ bg: "var(--fx-lime)", boxShadow: "var(--fx-glow-accent)" }}
+                                _active={{ bg: "var(--fx-lime)", transform: "scale(0.96)" }}
                             >
                                 See {product.name}
-                                {product.showNextName && (
-                                    <span className="hero__soon">soon {product.nextName}</span>
-                                )}
                             </Button>
                         </Magnetic>
                         <Magnetic strength={0.25}>

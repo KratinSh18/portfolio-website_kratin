@@ -38,7 +38,7 @@ const shouldShow = (): boolean => {
 
 /**
  * The opening beat: the signature writes itself in while a mono counter races
- * 0→100 along a thin crimson line, then an ink curtain lifts with a crimson
+ * 0→100 along a thin lime line, then an ink curtain lifts with a lime
  * panel trailing it. ~1.4s, once per session, skippable by click or any key.
  *
  * markPreloaderDone() fires the moment the curtain starts to lift, so hero

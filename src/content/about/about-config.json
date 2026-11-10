@@ -35,12 +35,12 @@
             "position": "Founding engineer · full-stack, Android, iOS & AI",
             "duration": "Jul 2026 - Present",
             "description": [
-                { "title": "Playable MVP in week one", "detail": "Live on web + Google Play in ~11 weeks" },
-                { "title": "Wrote the iOS app solo", "detail": "App Store submission in ~12 days" },
-                { "title": "Native Android app", "detail": "~20 Play releases" },
+                { "title": "Playable MVP in week one", "detail": "Live on Play and web by week 11" },
+                { "title": "Co-built the Android app", "detail": "30+ Play builds" },
+                { "title": "Built the native iOS app", "detail": "Submitted to the App Store" },
+                { "title": "AI story engine", "detail": "A turn lands in seconds" },
                 { "title": "3 payment rails, one coin ledger" },
-                { "title": "“Split with AI” authoring studio" },
-                { "title": "Server-side purchase attribution", "detail": "Meta CAPI and AppsFlyer" }
+                { "title": "AI authoring studio", "detail": "Script or PDF in, acts out" }
             ],
             "tags": [
                 "Python",
@@ -122,13 +122,13 @@
         {
             "title": "AI & LLMs",
             "tools": [
-                "LLM orchestration (LiteLLM)",
+                "LLM orchestration",
                 "Prompt & spec engineering",
                 "Streaming generation",
                 "Prompt caching",
                 "LLM evals (LLM-as-judge)",
                 "Safety classifiers",
-                "Agentic coding (Claude Code)"
+                "AI-assisted development (Claude Code)"
             ]
         },
         {
@@ -136,7 +136,7 @@
             "tools": [
                 "Google Play Billing",
                 "StoreKit 2",
-                "Razorpay",
+                "Web payments",
                 "Server-side receipt verification",
                 "Refund & dispute handling",
                 "Virtual-currency economy"
@@ -148,8 +148,8 @@
                 "Google Ads",
                 "Firebase Analytics",
                 "BigQuery",
-                "AppsFlyer (SDK + S2S)",
-                "Meta Pixel & Conversions API",
+                "Mobile attribution (SDK + server)",
+                "Ad conversion APIs",
                 "Push & re-engagement (FCM)",
                 "Funnel & cohort analysis (CAC, D0-D7)"
             ]
@@ -157,13 +157,12 @@
         {
             "title": "Cloud & DevOps",
             "tools": [
-                "AWS (EC2, S3, SES, Aurora)",
                 "Firebase (Auth, FCM)",
                 "Git & GitLab CI",
                 "XcodeGen",
                 "Gradle & R8",
-                "Play & App Store releases",
-                "Security hardening (CSP, rate limits)"
+                "Play releases & App Store submission",
+                "App security basics"
             ]
         },
         {

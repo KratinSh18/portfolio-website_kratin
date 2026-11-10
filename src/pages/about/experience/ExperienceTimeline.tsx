@@ -7,7 +7,6 @@ import { Magnetic } from "shared/motion/Magnetic";
 import { useReducedMotion } from "shared/motion/useReducedMotion";
 import { KukuPlayShowcaseId } from "utils/useScroll";
 import { glare } from "pages/about/common/fx/glare";
-import { SoonBadge } from "pages/about/common/fx/SoonBadge";
 import { ChevronDownIcon } from "utils/Icons";
 
 import "pages/about/experience/ExperienceTimeline.scss";
@@ -46,7 +45,7 @@ const Point: FC<{ point: PointData }> = ({ point }) =>
 const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
     const [open, setOpen] = useState(false);
     const side = index % 2 === 0 ? "left" : "right";
-    // The product is whatever mentions {product}: its mark and the deep-dive link
+    // The product is whatever mentions {product}: its glow and the deep-dive link
     // follow the token, so the rename never touches this file.
     const isProduct = exp.company.includes("{product}");
     const isNow = /present/i.test(exp.duration);
@@ -105,20 +104,9 @@ const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
                 </div>
 
                 <div className="xptl__head">
-                    {isProduct && (
-                        <img
-                            className="xptl__mark"
-                            src={configs.product.mark}
-                            alt={`${configs.product.name} app icon`}
-                            width={52}
-                            height={52}
-                            loading="lazy"
-                        />
-                    )}
                     <div>
                         <h3 className="xptl__company">
                             {withProduct(exp.company)}
-                            {isProduct && <SoonBadge />}
                         </h3>
                         <p className="xptl__role">{withProduct(exp.position)}</p>
                     </div>
@@ -188,7 +176,7 @@ const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
 };
 
 /**
- * Vertical, scroll-drawn work timeline. A spine fills crimson -> indigo as the
+ * Vertical, scroll-drawn work timeline. A spine fills deep green -> lime as the
  * page scrolls; each role's node ignites when the fill reaches it and its glass
  * card sweeps in from its side (zig-zag on desktop, one rail on mobile).
  *

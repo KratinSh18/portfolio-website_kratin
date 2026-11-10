@@ -1,30 +1,30 @@
 // ============================================================================
-//  01 / NOW BUILDING — product case study. Indigo is this section's accent
-//  (the product's colour); crimson appears only as the one live "spark".
+//  01 / NOW BUILDING — product case study, in the product's own lime on black.
+//  The page's background liquid burns brighter here (FluidBackground).
 // ============================================================================
 
 .kp {
-    // text-safe indigo: light on the dark page, deep on the light page
-    --kp-ink-accent: #a5b4fc;
-    --kp-line: rgba(129, 140, 248, 0.32);
+    // text-safe accent: lime on the dark page, deep green on the light page
+    --kp-ink-accent: var(--fx-lime);
+    --kp-line: rgba(var(--fx-lime-rgb), 0.3);
     position: relative;
     padding-bottom: 2rem;
 }
 .chakra-ui-light .kp {
-    --kp-ink-accent: #4338ca;
-    --kp-line: rgba(79, 70, 229, 0.28);
+    --kp-ink-accent: var(--fx-accent);
+    --kp-line: rgba(var(--fx-accent-rgb), 0.28);
 }
 
-// indigo → white display gradient; per piece so it survives SplitText's masks
+// white → lime display gradient; per piece so it survives SplitText's masks
 .kp-grad {
-    background: linear-gradient(180deg, #ffffff 15%, #c7d2fe 50%, var(--fx-indigo-bright) 78%, var(--fx-indigo) 100%);
+    background: linear-gradient(180deg, #ffffff 15%, #e8fba8 50%, var(--fx-lime) 78%, var(--fx-green) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
 }
 .chakra-ui-light .kp-grad {
-    background-image: linear-gradient(180deg, #14181f 25%, #3730a3 70%, var(--fx-indigo) 100%);
+    background-image: linear-gradient(180deg, #14181f 25%, var(--fx-accent) 70%, var(--fx-accent-bright) 100%);
 }
 
 .kp-label {
@@ -40,7 +40,7 @@
         width: 2.5rem;
         height: 2px;
         border-radius: 2px;
-        background: var(--fx-indigo);
+        background: var(--fx-accent);
     }
 }
 
@@ -54,24 +54,6 @@
     margin-bottom: 1.25rem;
 }
 
-// the mark ships on black — a black tile makes that square look intentional
-.kp-mark {
-    flex-shrink: 0;
-    width: 64px;
-    height: 64px;
-    border-radius: 18px;
-    overflow: hidden;
-    background: #000;
-    box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.4), 0 10px 30px rgba(99, 102, 241, 0.35);
-
-    img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-}
-
 .kp-role {
     display: flex;
     align-items: center;
@@ -83,7 +65,7 @@
     font-size: 0.7rem;
     color: var(--fx-text-soft);
 }
-// the crimson spark: a slow "live" pulse
+// the lime spark: a slow "live" pulse
 .kp-spark {
     flex-shrink: 0;
     width: 8px;
@@ -109,17 +91,7 @@
     line-height: 0.92;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-    filter: drop-shadow(0 0 28px rgba(99, 102, 241, 0.35));
-}
-.kp-soon {
-    margin-top: 0.8em;
-    padding: 0.4rem 0.75rem;
-    border-radius: 999px;
-    border: 1px solid var(--kp-line);
-    background: var(--fx-indigo-soft);
-    color: var(--kp-ink-accent);
-    font-size: 0.66rem;
-    white-space: nowrap;
+    filter: drop-shadow(0 0 28px rgba(var(--fx-lime-rgb), 0.22));
 }
 
 .kp-intro__grid {
@@ -183,19 +155,19 @@
     min-height: 48px;
     padding: 0 1.5rem;
     border-radius: 999px;
-    // deeper indigo than --fx-indigo: white on #6366f1 is 4.47:1, just under AA
-    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-    color: #fff;
+    // lime fill, near-black text (white on lime is ~1.3:1)
+    background: linear-gradient(135deg, var(--fx-lime) 0%, #a0d712 100%);
+    color: var(--fx-on-lime);
     font-weight: 700;
     letter-spacing: 0.01em;
-    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 10px 30px rgba(var(--fx-lime-rgb), 0.28);
     transition: transform 0.3s var(--fx-ease-out), box-shadow 0.3s var(--fx-ease-out);
 
     svg {
         transition: transform 0.3s var(--fx-ease-out);
     }
     &:hover {
-        box-shadow: 0 14px 44px rgba(99, 102, 241, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+        box-shadow: 0 14px 44px rgba(var(--fx-lime-rgb), 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
         svg {
             transform: translateX(4px);
         }
@@ -204,7 +176,7 @@
         transform: scale(0.96);
     }
     &:focus-visible {
-        outline: 2px solid var(--fx-indigo-bright);
+        outline: 2px solid var(--fx-accent-bright);
         outline-offset: 3px;
     }
 }
@@ -219,8 +191,8 @@
     margin-inline: auto;
     padding: 10px;
     border-radius: 42px;
-    background: linear-gradient(145deg, #2b2d3b, #0b0c12 60%);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 90px rgba(99, 102, 241, 0.28);
+    background: linear-gradient(145deg, #2a2d27, #0b0c0a 60%);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 90px rgba(var(--fx-lime-rgb), 0.16);
     // idle bob on the compositor — a framer repeat loop would run JS every frame, forever
     animation: fxFloat 6s ease-in-out infinite;
 }
@@ -240,8 +212,8 @@
     height: 100%;
     overflow: hidden;
     border-radius: 32px;
-    background: radial-gradient(120% 65% at 50% 0%, #1e1b4b 0%, #0a0a14 62%);
-    color: #e6e8ff;
+    background: radial-gradient(120% 65% at 50% 0%, #1f2d08 0%, #0a0b0a 62%);
+    color: #eef3e6;
 }
 .kp-phone__shot {
     position: absolute;
@@ -275,11 +247,17 @@
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
+// a plain story icon, not a logo
 .kp-chat__avatar {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
     width: 32px;
     height: 32px;
     border-radius: 10px;
-    background: #000;
+    background: rgba(var(--fx-lime-rgb), 0.14);
+    color: var(--fx-lime);
+    font-size: 15px;
 }
 .kp-chat__show {
     font-weight: 700;
@@ -290,7 +268,7 @@
     font-size: 9px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #a5b4fc;
+    color: var(--fx-lime);
 }
 .kp-chat__turn {
     display: grid;
@@ -319,7 +297,7 @@
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background: #a5b4fc;
+        background: var(--fx-lime);
         animation: kpDot 1s ease-in-out infinite;
     }
     i:nth-child(2) {
@@ -337,8 +315,8 @@
 .kp-chat__opt {
     padding: 8px 12px;
     border-radius: 999px;
-    border: 1px solid rgba(129, 140, 248, 0.45);
-    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(var(--fx-lime-rgb), 0.4);
+    background: rgba(var(--fx-lime-rgb), 0.08);
     font-weight: 600;
     animation: kpOpt var(--kp-loop) var(--fx-ease-out) infinite both;
 
@@ -348,7 +326,8 @@
     &:nth-child(3) {
         animation-delay: 0.5s;
     }
-    // the player's pick: an indigo fill fades in under the label. Opacity only,
+    // the player's pick: a lime wash fades in under the label (dark enough to
+    // keep the light text at ~6:1). Opacity only,
     // so the loop stays on the compositor (animating background/colour repainted)
     &:first-child {
         position: relative;
@@ -360,7 +339,8 @@
             inset: -1px;
             z-index: -1;
             border-radius: inherit;
-            background: #6366f1;
+            background: rgba(var(--fx-lime-rgb), 0.38);
+            box-shadow: inset 0 0 0 1px var(--fx-lime);
             opacity: 0;
             animation: kpPick var(--kp-loop) var(--fx-ease-out) infinite both;
         }
@@ -371,7 +351,7 @@
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    color: rgba(230, 232, 255, 0.55);
+    color: rgba(238, 243, 230, 0.55);
 }
 
 @keyframes kpDots {
@@ -473,7 +453,7 @@
         left: 1rem;
         right: 1rem;
         height: 1px;
-        background: linear-gradient(90deg, transparent, var(--fx-indigo-bright), transparent);
+        background: linear-gradient(90deg, transparent, var(--fx-accent), transparent);
         opacity: 0.7;
     }
 }
@@ -588,8 +568,8 @@
         position: absolute;
         inset: 0;
         border-radius: inherit;
-        background: var(--fx-indigo-bright);
-        box-shadow: 0 0 10px rgba(129, 140, 248, 0.7);
+        background: var(--fx-accent);
+        box-shadow: 0 0 10px rgba(var(--fx-accent-rgb), 0.7);
         opacity: 0;
         transition: opacity 0.5s var(--fx-ease-out);
     }
@@ -607,7 +587,7 @@
     padding: clamp(1.4rem, 3vw, 2.2rem);
     transition: opacity 0.6s var(--fx-ease-out), transform 0.6s var(--fx-ease-out);
 
-    // indigo line drawn across the top edge when the card lights up
+    // lime line drawn across the top edge when the card lights up
     &::before {
         content: "";
         position: absolute;
@@ -616,7 +596,7 @@
         right: 1.5rem;
         height: 2px;
         border-radius: 2px;
-        background: linear-gradient(90deg, transparent, var(--fx-indigo-bright), transparent);
+        background: linear-gradient(90deg, transparent, var(--fx-accent), transparent);
         transform: scaleX(0);
         transition: transform 0.9s var(--fx-ease-out);
     }
@@ -626,9 +606,9 @@
         content: "";
         position: absolute;
         inset: -1px;
-        border: 1px solid rgba(129, 140, 248, 0.45);
+        border: 1px solid rgba(var(--fx-accent-rgb), 0.45);
         border-radius: inherit;
-        box-shadow: 0 20px 60px rgba(99, 102, 241, 0.22);
+        box-shadow: 0 20px 60px rgba(var(--fx-accent-rgb), 0.22);
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.6s var(--fx-ease-out);
@@ -645,7 +625,7 @@
         outline: none;
     }
     &:focus-visible {
-        outline: 2px solid var(--fx-indigo-bright);
+        outline: 2px solid var(--fx-accent);
         outline-offset: 4px;
     }
 }
@@ -668,7 +648,7 @@
     height: 46px;
     border-radius: 14px;
     border: 1px solid var(--kp-line);
-    background: var(--fx-indigo-soft);
+    background: var(--fx-accent-soft);
     color: var(--kp-ink-accent);
     font-size: 1.25rem;
 }
@@ -714,7 +694,7 @@
         width: 0.6rem;
         height: 2px;
         border-radius: 2px;
-        background: var(--fx-indigo-bright);
+        background: var(--fx-accent);
     }
 }
 // a point: bold title, optional small soft line under it
@@ -730,9 +710,6 @@
     font-size: 0.86rem;
     line-height: 1.45;
     color: var(--fx-text-soft);
-}
-.chakra-ui-light .kp-card__list li::before {
-    background: var(--fx-indigo);
 }
 .kp-card__tech {
     display: flex;
@@ -779,9 +756,9 @@
     border-radius: 50%;
     background: radial-gradient(
         circle,
-        rgba(99, 102, 241, 0.4) 0%,
-        rgba(99, 102, 241, 0.2) 30%,
-        rgba(99, 102, 241, 0.07) 52%,
+        rgba(var(--fx-lime-rgb), 0.26) 0%,
+        rgba(var(--fx-green-rgb), 0.16) 30%,
+        rgba(var(--fx-green-rgb), 0.06) 52%,
         transparent 72%
     );
     pointer-events: none;
@@ -790,9 +767,9 @@
 .chakra-ui-light .kp-orbit__glow {
     background: radial-gradient(
         circle,
-        rgba(99, 102, 241, 0.26) 0%,
-        rgba(99, 102, 241, 0.12) 30%,
-        rgba(99, 102, 241, 0.04) 52%,
+        rgba(var(--fx-lime-rgb), 0.4) 0%,
+        rgba(var(--fx-lime-rgb), 0.18) 30%,
+        rgba(var(--fx-lime-rgb), 0.06) 52%,
         transparent 72%
     );
 }
@@ -826,16 +803,16 @@
     vector-effect: non-scaling-stroke;
 }
 .kp-orbit__track {
-    stroke: rgba(129, 140, 248, 0.32);
+    stroke: rgba(var(--fx-lime-rgb), 0.32);
     stroke-width: 1.5;
     stroke-dasharray: 0.5 1.5;
 }
 .chakra-ui-light .kp-orbit__track {
-    stroke: rgba(79, 70, 229, 0.35);
+    stroke: rgba(var(--fx-accent-rgb), 0.35);
 }
 // a brighter comet arc riding each ring
 .kp-orbit__arc {
-    stroke: var(--fx-indigo-bright);
+    stroke: var(--fx-accent);
     stroke-width: 2;
     stroke-linecap: round;
     stroke-dasharray: 18 82;
@@ -857,22 +834,19 @@
     margin: calc(var(--size) * -0.12) 0 0 calc(var(--size) * -0.12);
     border-radius: 50%;
     pointer-events: none;
-    overflow: hidden;
-    background: #000; // matches the mark's black square, so the crop is invisible
-    box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.5), 0 0 40px rgba(99, 102, 241, 0.55),
-        0 0 100px rgba(99, 102, 241, 0.3);
-
-    img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+    // a plain story icon in a dark hub, not a logo
+    display: grid;
+    place-items: center;
+    background: #0a0b0a;
+    color: var(--fx-lime);
+    font-size: calc(var(--size) * 0.085);
+    box-shadow: 0 0 0 1px rgba(var(--fx-lime-rgb), 0.5), 0 0 40px rgba(var(--fx-lime-rgb), 0.3),
+        0 0 100px rgba(var(--fx-green-rgb), 0.25);
 }
 
 // beam from the core to the lit node, in the ring's own plane so it follows the
 // spin. It starts 45% out (the core's edge when the node swings to the front),
-// so neither the line nor its glint ever crosses the logo.
+// so neither the line nor its glint ever crosses the core.
 .kp-orbit__beam {
     position: absolute;
     left: calc(var(--r) * 0.45);
@@ -884,7 +858,7 @@
     transform-origin: calc(var(--r) * -0.45) 50%;
     transform: rotateZ(var(--a));
     pointer-events: none;
-    background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.35) 25%, #c7d2fe 100%);
+    background: linear-gradient(90deg, transparent, rgba(var(--fx-accent-rgb), 0.35) 25%, var(--fx-accent) 100%);
     animation: fxPulse 2.4s ease-in-out infinite;
 
     &::after {
@@ -915,7 +889,7 @@
         outline: none;
     }
     &:focus-visible .kp-node__disc {
-        outline: 2px solid var(--fx-indigo-bright);
+        outline: 2px solid var(--fx-accent);
         outline-offset: 3px;
     }
 }
@@ -925,11 +899,11 @@
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 1px solid rgba(129, 140, 248, 0.45);
-    background: rgba(14, 15, 32, 0.9);
-    color: #c7d2fe;
+    border: 1px solid rgba(var(--fx-lime-rgb), 0.45);
+    background: rgba(12, 14, 11, 0.9);
+    color: #e8fba8;
     font-size: 1.1rem;
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+    box-shadow: 0 0 0 4px rgba(var(--fx-lime-rgb), 0.07);
     isolation: isolate; // keeps the lit fill (z -1) above the disc, under the icon
     transition: transform 0.5s var(--fx-ease-out), opacity 0.4s;
 
@@ -941,24 +915,24 @@
         inset: -1px;
         z-index: -1;
         border-radius: 50%;
-        border: 1px solid #c7d2fe;
-        background: var(--fx-indigo);
-        box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.25), 0 0 30px rgba(129, 140, 248, 0.8);
+        border: 1px solid #e8fba8;
+        background: var(--fx-lime);
+        box-shadow: 0 0 0 6px rgba(var(--fx-lime-rgb), 0.22), 0 0 30px rgba(var(--fx-lime-rgb), 0.6);
         opacity: 0;
         transition: opacity 0.4s;
     }
 }
 .chakra-ui-light .kp-node__disc {
     background: rgba(255, 255, 255, 0.94);
-    color: #4338ca;
-    border-color: rgba(79, 70, 229, 0.35);
+    color: var(--fx-accent);
+    border-color: rgba(var(--fx-accent-rgb), 0.35);
     box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
 }
 // hover-capable pointers only: on touch, :hover sticks to the last tapped node
 @media (hover: hover) {
     .kp-node:hover .kp-node__disc {
         transform: scale(1.15);
-        border-color: var(--fx-indigo-bright);
+        border-color: var(--fx-accent);
     }
 }
 .kp-orbit--live .kp-node:not(.is-active) .kp-node__disc {
@@ -967,7 +941,7 @@
 .kp-node.is-active .kp-node__disc,
 .chakra-ui-light .kp-node.is-active .kp-node__disc {
     transform: scale(1.35);
-    color: #fff;
+    color: var(--fx-on-lime); // on the lime fill
 
     &::before {
         opacity: 1;
@@ -979,7 +953,7 @@
         position: absolute;
         inset: -6px;
         border-radius: 50%;
-        border: 1px solid var(--fx-indigo-bright);
+        border: 1px solid var(--fx-accent);
         animation: kpPing 2.2s var(--fx-ease-out) infinite;
     }
 }
@@ -1048,7 +1022,7 @@
 
     .marquee__sep {
         font-size: 0.55em;
-        color: var(--fx-indigo-bright);
+        color: var(--fx-accent);
     }
 }
 

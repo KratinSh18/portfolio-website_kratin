@@ -116,9 +116,9 @@ export const MenuDrawer: FC<Props> = ({ onSectionClick, currentPage, ...props })
                                         alignItems="baseline"
                                         gap="3"
                                         py="1"
-                                        color={item.active ? "primary.500" : color}
+                                        color={item.active ? "var(--fx-accent)" : color}
                                         transition="color 0.3s var(--fx-ease-out)"
-                                        _hover={{ color: "primary.500" }}
+                                        _hover={{ color: "var(--fx-accent)" }}
                                         _focusVisible={{ outline: "2px solid var(--fx-accent-bright)", outlineOffset: "4px" }}
                                     >
                                         <Text as="span" className="fx-mono" fontSize="xs" color="var(--fx-text-soft)">

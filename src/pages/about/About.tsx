@@ -6,7 +6,6 @@ import { configs, Content, MarkdownFile, useContent, withProduct } from "shared/
 import { usePauseOffscreen } from "shared/fx/usePauseOffscreen";
 import { Education } from "pages/about/education/Education";
 import { Skills } from "pages/about/skills/Skills";
-import { SoonBadge } from "pages/about/common/fx/SoonBadge";
 import { Float3D } from "shared/motion/Float3D";
 import { SplitText } from "shared/motion/SplitText";
 import { useIsDesktopPointer } from "shared/motion/useIsDesktopPointer";
@@ -77,7 +76,6 @@ export const About: FC = () => {
                             {configs.about.tagline.map((line) => (
                                 <li className="fx-chip" key={line}>
                                     {withProduct(line)}
-                                    {line.includes("{product}") && <SoonBadge />}
                                 </li>
                             ))}
                         </ul>

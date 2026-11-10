@@ -1,31 +1,37 @@
 // ============================================================================
 //  FX SYSTEM — "Liquid Glass" (professional)
-//  Refined, brand-aligned design tokens: a single crimson accent on cool slate
-//  neutrals, frosted glass that adapts to light/dark, soft glows and slow fluid
-//  motion. No neon, no glitch, no HUD chrome. Degrades calmly under
+//  Lime on black, the PlayOshi colours (sampled from its mark): one lime
+//  accent on near-black, a deeper green for depth, frosted glass that adapts
+//  to light/dark, soft glows and slow fluid motion. Degrades calmly under
 //  prefers-reduced-motion.
+//
+//  Contrast: text ON lime is near-black (--fx-on-lime). In light mode lime is
+//  too pale for text on white, so --fx-accent / --fx-accent-bright switch to
+//  deep greens there; --fx-lime stays lime for fills that carry dark text.
 // ============================================================================
 
 :root {
-    // -- accent (the one brand colour) --------------------------------------
-    --fx-accent: #dd0004; // brand crimson
-    --fx-accent-bright: #f51b2c; // for subtle glow only
-    --fx-accent-soft: rgba(221, 0, 4, 0.14);
+    // -- the brand lime + its deeper green (fixed in both modes) -------------
+    --fx-lime: #c5f41f;
+    --fx-lime-rgb: 197, 244, 31;
+    --fx-green: #70b000;
+    --fx-green-rgb: 112, 176, 0;
+    --fx-on-lime: #0a0b0a; // text on a lime fill (15:1)
+
+    // -- accent for text, lines, ticks and rings (mode-aware) ----------------
+    --fx-accent: var(--fx-lime);
+    --fx-accent-rgb: var(--fx-lime-rgb);
+    --fx-accent-bright: #d4f75c; // focus rings + sparks
+    --fx-accent-soft: rgba(var(--fx-lime-rgb), 0.14);
 
     // -- neutral support tone (cool slate, used very sparingly) -------------
     --fx-slate: #8b94a7;
-
-    // -- second accent: the product (KukuPlay/PlayOshi) indigo -------------
-    // Used for the product showcase and as a cool counter-flow to the crimson.
-    --fx-indigo: #6366f1;
-    --fx-indigo-bright: #818cf8;
-    --fx-indigo-soft: rgba(99, 102, 241, 0.16);
 
     // -- display face for giant kinetic type --------------------------------
     --fx-font-display: "Urbanist", sans-serif;
 
     // -- glow recipes (soft, never harsh) -----------------------------------
-    --fx-glow-accent: 0 0 0.5rem rgba(221, 0, 4, 0.28), 0 0 2.2rem rgba(221, 0, 4, 0.18);
+    --fx-glow-accent: 0 0 0.5rem rgba(var(--fx-lime-rgb), 0.3), 0 0 2.2rem rgba(var(--fx-lime-rgb), 0.16);
 
     // -- motion tokens (fluid, 400–600ms) -----------------------------------
     --fx-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -36,19 +42,25 @@
     // -- glass (defaults = dark; .chakra-ui-light overrides below) ----------
     // No live blur behind glass (re-blurring the moving WebGL canvas every
     // frame was the biggest scroll cost), so the fills are more opaque instead.
-    --fx-glass: rgba(20, 24, 32, 0.74);
-    --fx-glass-strong: rgba(15, 18, 25, 0.88);
+    --fx-glass: rgba(18, 21, 18, 0.76);
+    --fx-glass-strong: rgba(13, 15, 13, 0.9);
     --fx-glass-border: rgba(255, 255, 255, 0.1);
-    --fx-glass-border-hot: rgba(221, 0, 4, 0.5);
+    --fx-glass-border-hot: rgba(var(--fx-lime-rgb), 0.5);
     --fx-glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
     --fx-text-soft: rgba(255, 255, 255, 0.62);
 }
 
 .chakra-ui-light {
+    // deep greens: 7.1:1 and 5:1 on white
+    --fx-accent: #3f6212;
+    --fx-accent-rgb: 63, 98, 18;
+    --fx-accent-bright: #4d7c0f;
+    --fx-accent-soft: rgba(63, 98, 18, 0.1);
+    --fx-glow-accent: 0 0 0.5rem rgba(var(--fx-green-rgb), 0.28), 0 0 2rem rgba(var(--fx-lime-rgb), 0.3);
     --fx-glass: rgba(255, 255, 255, 0.78);
     --fx-glass-strong: rgba(255, 255, 255, 0.9);
     --fx-glass-border: rgba(15, 23, 42, 0.1);
-    --fx-glass-border-hot: rgba(221, 0, 4, 0.4);
+    --fx-glass-border-hot: rgba(63, 98, 18, 0.42);
     --fx-glass-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
     --fx-text-soft: rgba(15, 23, 42, 0.64);
 }
@@ -63,13 +75,13 @@
 }
 
 // ---------------------------------------------------------------------------
-//  Refined heading sheen — mostly the solid text colour with a crimson tail.
+//  Refined heading sheen — mostly the solid text colour with a lime tail.
 //  NOTE: must use explicit colours here, never `currentColor`. The clip needs
 //  `color: transparent`, which would also make a `currentColor` gradient stop
 //  transparent (→ invisible text). Default = dark mode (white text).
 // ---------------------------------------------------------------------------
 .fx-gradient-text {
-    // ~50/50 white → crimson in dark mode.
+    // ~50/50 white → lime in dark mode.
     background: linear-gradient(92deg, #ffffff 0%, #ffffff 40%, var(--fx-accent) 80%, var(--fx-accent) 100%);
     background-size: 100% 100%;
     -webkit-background-clip: text;
@@ -112,10 +124,10 @@
     border-radius: 50%;
     background: radial-gradient(
         circle at 50% 45%,
-        rgba(221, 0, 4, 0.34) 0%,
-        rgba(221, 0, 4, 0.22) 26%,
-        rgba(221, 0, 4, 0.1) 46%,
-        rgba(221, 0, 4, 0.03) 60%,
+        rgba(var(--fx-lime-rgb), 0.26) 0%,
+        rgba(var(--fx-green-rgb), 0.18) 26%,
+        rgba(var(--fx-green-rgb), 0.08) 46%,
+        rgba(var(--fx-green-rgb), 0.025) 60%,
         transparent 72%
     );
     z-index: -1;

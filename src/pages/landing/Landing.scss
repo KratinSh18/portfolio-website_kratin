@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-//  Hero — "Liquid Crimson": giant kinetic name, flipping role slot, liquid
+//  Hero — "Liquid Lime": giant kinetic name, flipping role slot, liquid
 //  portrait. Every loop here is pure CSS on transform/opacity only (so it runs
 //  on the compositor, no repaint) and stops while .is-paused (off-screen, fx.scss).
 // ---------------------------------------------------------------------------
@@ -52,7 +52,7 @@
     height: 8px;
     border-radius: 50%;
     background: var(--fx-accent);
-    box-shadow: 0 0 10px rgba(221, 0, 4, 0.7);
+    box-shadow: 0 0 10px rgba(var(--fx-accent-rgb), 0.7);
     &::after {
         content: "";
         position: absolute;
@@ -98,8 +98,8 @@
     }
 }
 
-// line 1: solid, with a crimson sheen that rolls across letter by letter. The
-// glowing crimson glyph is a static copy in ::after (data-char from SplitText)
+// line 1: solid, with a lime sheen that rolls across letter by letter. The
+// glowing lime glyph is a static copy in ::after (data-char from SplitText)
 // whose opacity is all that animates: animating color/text-shadow on the letter
 // itself repainted the giant type every frame.
 .hero__line--solid .split__piece {
@@ -110,7 +110,7 @@
         left: 0;
         top: 0;
         color: var(--fx-accent-bright);
-        text-shadow: 0 0 0.3em rgba(221, 0, 4, 0.45);
+        text-shadow: 0 0 0.3em rgba(var(--fx-accent-rgb), 0.45);
         opacity: 0;
         pointer-events: none;
         animation: heroSheen 7s var(--fx-ease-in-out) infinite;
@@ -129,8 +129,8 @@
     }
 }
 
-// line 2: outlined; on hover each letter floods crimson, one after another — a
-// filled crimson copy of the glyph in ::after fades in (opacity only, so the
+// line 2: outlined; on hover each letter floods lime, one after another — a
+// filled lime copy of the glyph in ::after fades in (opacity only, so the
 // outline never repaints)
 @supports (-webkit-text-stroke: 1px) {
     .hero__line--outline {
@@ -270,17 +270,6 @@
         transform: translateX(130%);
     }
 }
-.hero__soon {
-    margin-left: 0.55rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.2);
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.62rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
 
 // ---- portrait ---------------------------------------------------------------
 .hero__portrait {
@@ -309,44 +298,39 @@
         // inside the box, so no edge of it ever shows
         background: radial-gradient(
                 ellipse 34% 34% at 34% 38%,
-                rgba(221, 0, 4, 0.6),
-                rgba(221, 0, 4, 0.34) 40%,
-                rgba(221, 0, 4, 0.12) 70%,
+                rgba(197, 244, 31, 0.42),
+                rgba(197, 244, 31, 0.22) 40%,
+                rgba(197, 244, 31, 0.08) 70%,
                 transparent
             ),
             radial-gradient(
                 ellipse 34% 34% at 66% 64%,
-                rgba(99, 102, 241, 0.5),
-                rgba(99, 102, 241, 0.28) 40%,
-                rgba(99, 102, 241, 0.1) 70%,
+                rgba(26, 158, 102, 0.45),
+                rgba(26, 158, 102, 0.24) 40%,
+                rgba(26, 158, 102, 0.08) 70%,
                 transparent
             );
         animation: fxBreathe 9s ease-in-out infinite;
     }
 }
-// the liquid mask: a fixed organic shape that slowly turns while the photo
-// inside turns back at the same rate, so the edge morphs and the face stays
-// upright. Both are transform loops (animating border-radius re-clipped and
-// repainted the photo every frame).
+// the portrait: a still circle. (It used to be an organic shape turning one way
+// with the photo turning back, which read as a wobble, and its 1:1.1 height ran
+// into the text ring.)
 .hero__blob {
     position: relative;
-    aspect-ratio: 1 / 1.1;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
-    animation: heroSpin 24s linear infinite reverse;
+    border-radius: 50%;
     // Safari drops border-radius clipping on children of 3D-transformed parents
     -webkit-mask-image: -webkit-radial-gradient(white, black);
     picture {
         position: absolute;
-        // oversized so the turning shape never runs past the photo's corners
-        inset: -8%;
-        animation: heroSpin 24s linear infinite;
-        // bottom shade lives here, upright with the photo, not on the turning mask
+        inset: 0;
         &::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(12, 14, 19, 0.4), transparent 34%);
+            background: linear-gradient(to top, rgba(10, 11, 10, 0.4), transparent 34%);
             pointer-events: none;
         }
     }
@@ -368,14 +352,16 @@
 }
 // circular text ring, centred on the blob (margin-top % is of the width). The
 // spin is on this HTML wrapper: Chrome won't composite animations on SVG nodes.
+// Sized so the text's path radius (86/200 of the ring) is ~0.58 of the photo's
+// width: a clear gap outside the 0.5-radius circle, never touching it.
 .hero__ring {
     position: absolute;
-    left: -14%;
+    left: -18%;
     top: 50%;
-    width: 128%;
-    margin-top: -64%;
+    width: 136%;
+    margin-top: -68%;
     pointer-events: none;
-    animation: heroSpin 30s linear infinite;
+    animation: heroSpin 40s linear infinite;
     svg {
         display: block;
         width: 100%;
@@ -466,7 +452,7 @@
     .hero__portrait {
         order: 0;
         justify-self: center;
-        width: min(calc(100% / 1.28), 430px);
+        width: min(calc(100% / 1.36), 410px); // the ring is 1.36x the photo and must fit the column
         margin: 0;
     }
 }

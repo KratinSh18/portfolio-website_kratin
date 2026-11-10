@@ -2,21 +2,19 @@
     "kicker": "Now Building",
     "role": "Founding Engineer · Kuku FM",
     "dates": "Jul 2026 - Present",
-    "soon": "soon",
-    "tagline": "AI-narrated interactive stories, _one backend_ for Android, iOS and web.",
-    "pitch": "Play a multi-act story or chat with a character.",
-    "summary": "My first commit was the playable MVP. I also own releases.",
-    "platformsLabel": "Ships on",
+    "tagline": "Interactive stories told by AI. _One backend_ for Android, iOS and web.",
+    "pitch": "{product} is a Kuku FM product. You play a story act by act, or chat with a character. Live on Google Play and the web, and submitted to the App Store.",
+    "summary": "My first commit was the playable MVP. I use AI coding tools like Claude Code to move faster. The product calls, system design, code reviews, testing and releases are mine.",
+    "platformsLabel": "Built for",
     "platforms": ["Android", "iOS", "Web", "Admin"],
     "visit": "Visit",
-    "markAlt": "{product} logo",
     "statsLabel": "By the numbers",
     "stats": [
-        { "value": 4, "decimals": 0, "suffix": "", "label": "surfaces shipped" },
-        { "value": 1100, "decimals": 0, "suffix": "+", "label": "commits authored" },
+        { "value": 1800, "decimals": 0, "suffix": "+", "label": "commits" },
         { "value": 11, "decimals": 0, "suffix": "", "label": "weeks to production" },
+        { "value": 30, "decimals": 0, "suffix": "+", "label": "Play builds" },
+        { "value": 2, "decimals": 0, "suffix": "", "label": "platforms live" },
         { "value": 3, "decimals": 0, "suffix": "", "label": "payment rails" },
-        { "value": 25, "decimals": 0, "suffix": "", "label": "spec docs implemented" },
         { "value": 2.5, "decimals": 1, "suffix": "x", "label": "faster warm turns" }
     ],
     "chaptersLabel": "What I built",
@@ -30,23 +28,24 @@
             "title": "AI story engine",
             "summary": "Started as the week-one playable MVP",
             "bullets": [
-                { "title": "Built from 25 spec docs" },
+                { "title": "A turn lands in seconds" },
+                { "title": "Every story talks to you", "detail": "Narration in second person" },
+                { "title": "Key beats land in order", "detail": "The engine steers each act to them" },
                 { "title": "Turn counts and act gates in code", "detail": "Not left to the model" },
-                { "title": "~2.5x faster warm turns", "detail": "Safety check runs in parallel" },
-                { "title": "Each act sees only its own canon" }
+                { "title": "Story quality tests in CI", "detail": "They run on every push" }
             ],
-            "tech": ["Python", "FastAPI", "PostgreSQL", "LiteLLM", "DeepSeek"]
+            "tech": ["Python", "FastAPI", "PostgreSQL", "LLMs", "SSE streaming"]
         },
         {
             "id": "android",
             "kicker": "Kotlin · Compose",
             "title": "Native Android",
-            "summary": "Jetpack Compose, live on Google Play",
+            "summary": "Co-built with the team, live on Google Play",
             "bullets": [
-                { "title": "~20 Play releases", "detail": "Latest is 1.0.21" },
-                { "title": "Streaming chat" },
-                { "title": "Play Billing and Google sign-in" },
-                { "title": "24h and 72h return reminders", "detail": "Copy comes from a team Google Sheet" }
+                { "title": "30+ Play builds", "detail": "Latest is 1.0.27" },
+                { "title": "A face on every quoted line", "detail": "Each speaker gets their own picture" },
+                { "title": "Dice Mode roll cards", "detail": "Every roll shows above the story" },
+                { "title": "Play Billing and Google sign-in" }
             ],
             "tech": ["Kotlin", "Jetpack Compose", "Play Billing", "Firebase", "WorkManager"]
         },
@@ -54,9 +53,9 @@
             "id": "ios",
             "kicker": "Swift · SwiftUI",
             "title": "Native iOS",
-            "summary": "Sole author, ~12 days to App Store submission",
+            "summary": "Submitted to the App Store",
             "bullets": [
-                { "title": "Full parity with Android" },
+                { "title": "First build in about 12 days", "detail": "Same stories as Android" },
                 { "title": "StoreKit 2 purchases", "detail": "Verified on the server" },
                 { "title": "Sign in with Apple" },
                 { "title": "Live Activities and push" }
@@ -67,13 +66,14 @@
             "id": "web",
             "kicker": "React · Vite",
             "title": "Web app",
-            "summary": "",
+            "summary": "Live at playoshi.app",
             "bullets": [
-                { "title": "Firebase sign-in", "detail": "Email and Google" },
-                { "title": "Razorpay coin store", "detail": "Same coin ledger as the apps" },
-                { "title": "Narration streams in live" }
+                { "title": "Plays like the apps", "detail": "Same chats and story turns" },
+                { "title": "Narration streams in live" },
+                { "title": "Firebase sign-in", "detail": "Email or Google" },
+                { "title": "Web coin store", "detail": "Same coin ledger as the apps" }
             ],
-            "tech": ["React", "Vite", "Tailwind", "Firebase Auth", "Razorpay"]
+            "tech": ["React", "Vite", "Tailwind", "Firebase Auth"]
         },
         {
             "id": "payments",
@@ -81,61 +81,63 @@
             "title": "Payments & coins",
             "summary": "Every purchase verified on the server",
             "bullets": [
-                { "title": "3 rails, one coin ledger", "detail": "Razorpay, Play Billing, StoreKit 2" },
+                { "title": "3 rails, one coin ledger", "detail": "Web, Google Play, App Store" },
                 { "title": "Refunds handled on each rail" },
                 { "title": "Paid and promo coins kept apart" },
                 { "title": "Atomic coin spends" },
                 { "title": "Tax invoice PDFs" }
             ],
-            "tech": ["Razorpay", "Play Billing", "StoreKit 2", "PostgreSQL", "Webhooks"]
+            "tech": ["Play Billing", "StoreKit 2", "PostgreSQL", "Webhooks"]
         },
         {
             "id": "growth",
-            "kicker": "Analytics · Ads",
-            "title": "Growth & attribution",
-            "summary": "So every purchase and drop-off gets measured",
+            "kicker": "Retention · Push",
+            "title": "Growth & reminders",
+            "summary": "Small things that bring players back",
             "bullets": [
-                { "title": "Purchases reported from the server", "detail": "Meta CAPI, AppsFlyer S2S" },
-                { "title": "Tracked down dropped session IDs", "detail": "Then shipped our own session ID" },
-                { "title": "Card CTR and act funnels" },
-                { "title": "Meta ad spend pulled in for ROAS" }
+                { "title": "Free chats every day", "detail": "For a new player's first week" },
+                { "title": "Push and email reminders", "detail": "Timed to the player, with quiet hours" },
+                { "title": "Story links open the story", "detail": "Even on a fresh install" },
+                { "title": "A welcome trailer per story", "detail": "Plays once, on Android" }
             ],
-            "tech": ["Firebase Analytics", "BigQuery", "AppsFlyer", "Meta Conversions API", "Meta Pixel"]
+            "tech": ["Firebase Analytics", "FCM", "Email", "Deep links"]
         },
         {
             "id": "studio",
-            "kicker": "Admin · AI authoring",
+            "kicker": "Admin · AI tools",
             "title": "Authoring studio",
             "summary": "Turns a pasted script or PDF into acts",
             "bullets": [
-                { "title": "“Split with AI”", "detail": "Long scripts go act by act, no cap" },
+                { "title": "AI script splitter", "detail": "Long scripts go act by act, no cap" },
+                { "title": "Live progress on AI jobs", "detail": "The bar moves as the AI writes" },
+                { "title": "Mood pictures per character", "detail": "The face in a chat follows the mood" },
                 { "title": "Versioned saves, picture history" },
                 { "title": "Portraits never show the wrong character" }
             ],
-            "tech": ["React", "Vite", "pdf.js", "Gemini Flash", "AWS S3"]
+            "tech": ["React", "Vite", "pdf.js", "LLMs"]
         },
         {
             "id": "safety",
-            "kicker": "Trust · Security",
-            "title": "Safety & hardening",
-            "summary": "Hardened after a four-repo review",
+            "kicker": "Trust · Safety",
+            "title": "Player safety",
+            "summary": "Built into every story and chat",
             "bullets": [
                 { "title": "Safety classifier on every input" },
-                { "title": "Character age gate" },
-                { "title": "Admin endpoints locked down", "detail": "Per-IP rate limits, token on every call" },
+                { "title": "Adults-only characters", "detail": "Ages checked on every save" },
+                { "title": "Sign-up by email code", "detail": "6 digits instead of a link" },
                 { "title": "Self-service account deletion", "detail": "On every client" }
             ],
-            "tech": ["Firebase Admin", "OIDC", "CSP", "Rate limiting", "AWS SES"]
+            "tech": ["Firebase Auth", "Firebase Admin", "Email codes"]
         }
     ],
     "phone": {
         "label": "Illustration of a {product} story turn: live narration, then three choices",
         "show": "The Night Train",
         "meta": "Act 1 · Turn 3",
-        "narration": "Rain needles the platform. Mira turns the ticket over. It is stamped with tomorrow's date, and the conductor is already watching her.",
+        "narration": "Rain needles the platform. You turn the ticket over. It is stamped with tomorrow's date, and the conductor is already watching you.",
         "options": ["Board the train", "Ask about the date", "Slip into the crowd"],
-        "input": "Or write your own move…"
+        "input": "Or do something else…"
     },
     "screens": [],
-    "stack": ["Python", "FastAPI", "PostgreSQL", "AWS", "Kotlin", "Jetpack Compose", "Swift", "SwiftUI", "StoreKit 2", "React", "Firebase", "LiteLLM", "BigQuery", "AppsFlyer", "Razorpay", "GitLab CI"]
+    "stack": ["Python", "FastAPI", "PostgreSQL", "Kotlin", "Jetpack Compose", "Swift", "SwiftUI", "StoreKit 2", "Play Billing", "React", "Firebase", "GitLab CI"]
 }

@@ -3,8 +3,8 @@ import { FC, useEffect } from "react";
 import { useColorMode } from "@chakra-ui/react";
 
 const TOKENS = {
-    dark: { bg: "#0c0e13", color: "rgba(255,255,255,0.92)" },
-    light: { bg: "#f6f7f9", color: "#1a1f29" },
+    dark: { bg: "#0a0b0a", color: "rgba(255,255,255,0.92)" },
+    light: { bg: "#f6f7f5", color: "#1a1f29" },
 };
 
 /**

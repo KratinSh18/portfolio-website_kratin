@@ -25,7 +25,7 @@ export const PageHeader: FC<Props> = ({ id, label, index }) => {
     // Every char is its own transformed layer, which a wrapper-level
     // background-clip:text can't paint through. So each piece carries the
     // label-wide gradient, sized to the label and shifted back by its own
-    // offset: the letters line up into one continuous white→crimson sweep.
+    // offset: the letters line up into one continuous white→lime sweep.
     // Re-run on resize and once the web font has loaded.
     useEffect(() => {
         const el = labelRef.current;

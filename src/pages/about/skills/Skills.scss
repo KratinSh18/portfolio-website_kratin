@@ -4,7 +4,7 @@
 //  1 and 6 wide, so 7 groups fill the grid with no holes.
 // ---------------------------------------------------------------------------
 .skl {
-    --skl-red: #ff4d52;
+    --skl-ink: var(--fx-lime);
 
     display: grid;
     grid-template-columns: 1fr;
@@ -12,7 +12,7 @@
     margin-top: 1.75rem;
 }
 .chakra-ui-light .skl {
-    --skl-red: #b80003;
+    --skl-ink: var(--fx-accent);
 }
 @media (min-width: 768px) {
     .skl {
@@ -43,7 +43,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(221, 0, 4, 0.1), transparent 50%);
+    background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(var(--fx-accent-rgb), 0.1), transparent 50%);
     opacity: 0;
     transition: opacity 0.4s var(--fx-ease-out);
     pointer-events: none;
@@ -63,7 +63,7 @@
     margin-top: 0.35rem;
     font-size: 0.62rem;
     font-weight: 700;
-    color: var(--skl-red);
+    color: var(--skl-ink);
 }
 
 .skl__chips {
@@ -109,7 +109,7 @@
         transform: translateY(-3px) scale(1.07);
         border-color: var(--fx-glass-border-hot);
         background: var(--fx-accent-soft);
-        color: var(--skl-red);
+        color: var(--skl-ink);
     }
 }
 

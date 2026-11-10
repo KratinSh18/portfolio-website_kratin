@@ -25,7 +25,7 @@ interface Props {
 
 export const Expandable: FC<Props> = ({ expanded, id, idx, title, subTitle, date, content, onChange }) => {
     const isExpanded = useMemo(() => expanded.includes(idx), [expanded, idx]);
-    // readable crimson for the small mono date in each mode (AA on the glass)
+    // readable green for the small mono date in each mode (AA on the glass)
     const dateColor = useColorModeValue("primary.700", "primary.200");
     const [isOverflowing, setIsOverflowing] = useState<boolean>(false);
     // One toggle that stays mounted open or closed, so keyboard focus is never
