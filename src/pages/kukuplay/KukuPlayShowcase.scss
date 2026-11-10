@@ -802,6 +802,10 @@
     position: absolute;
     inset: 0;
     transform-style: preserve-3d;
+    // This full-size flat layer sits at z = 0. The rings tilt back, so the nodes
+    // on the far half are behind it in 3D and it swallowed their clicks. Only the
+    // nodes take clicks.
+    pointer-events: none;
 }
 .kp-orbit__ring {
     --r: calc(var(--size) * var(--rf));
@@ -914,6 +918,7 @@
     border-radius: 50%;
     background: transparent;
     cursor: pointer;
+    pointer-events: auto;
     transform: rotateZ(0deg) rotateY(calc(var(--ty) * -1)) rotateX(calc(var(--tx) * -1));
 
     &:focus {
