@@ -79,6 +79,8 @@ export const Cursor: FC = () => {
         const onOver = (e: PointerEvent) => {
             const target = e.target instanceof Element ? e.target : null;
             const hit = target ? target.closest(INTERACTIVE) : null;
+            // PlayOshi keeps its lime: the cursor re-points its accent there (fx.scss)
+            root.classList.toggle("is-kp", !!(target && target.closest(".kp")));
             if (hit === current) return;
             current = hit;
             const text = (target && target.closest("[data-cursor]")?.getAttribute("data-cursor")) || "";

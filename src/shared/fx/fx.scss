@@ -1,28 +1,39 @@
 // ============================================================================
 //  FX SYSTEM — "Liquid Glass" (professional)
-//  Lime on black, the PlayOshi colours (sampled from its mark): one lime
-//  accent on near-black, a deeper green for depth, frosted glass that adapts
-//  to light/dark, soft glows and slow fluid motion. Degrades calmly under
-//  prefers-reduced-motion.
+//  A monochrome site: warm cream on near-black (dark) and charcoal on paper
+//  (light). Lime is PlayOshi's own colour and lives ONLY in its section
+//  (.kp / #page-playoshi), where the accent tokens are re-pointed to it, so
+//  the product is the one splash of colour on the page.
 //
-//  Contrast: text ON lime is near-black (--fx-on-lime). In light mode lime is
-//  too pale for text on white, so --fx-accent / --fx-accent-bright switch to
-//  deep greens there; --fx-lime stays lime for fills that carry dark text.
+//  Contrast: text ON an accent fill uses --fx-on-accent (near-black on cream,
+//  paper on charcoal). Glows stay soft (cream at 0.10-0.25), nothing neon.
 // ============================================================================
 
 :root {
-    // -- the brand lime + its deeper green (fixed in both modes) -------------
+    // -- the monochrome pair + the warm neutral for meta text ----------------
+    --fx-cream: #f2e8d5;
+    --fx-cream-rgb: 242, 232, 213;
+    --fx-charcoal: #1c1c1a;
+    --fx-charcoal-rgb: 28, 28, 26;
+
+    // -- PlayOshi lime + its deeper green (only read inside .kp) -------------
     --fx-lime: #c5f41f;
     --fx-lime-rgb: 197, 244, 31;
     --fx-green: #70b000;
     --fx-green-rgb: 112, 176, 0;
     --fx-on-lime: #0a0b0a; // text on a lime fill (15:1)
 
-    // -- accent for text, lines, ticks and rings (mode-aware) ----------------
-    --fx-accent: var(--fx-lime);
-    --fx-accent-rgb: var(--fx-lime-rgb);
-    --fx-accent-bright: #d4f75c; // focus rings + sparks
-    --fx-accent-soft: rgba(var(--fx-lime-rgb), 0.14);
+    // -- accent for text, lines, ticks, rings and fills (mode-aware) ---------
+    --fx-accent: var(--fx-cream);
+    --fx-accent-rgb: var(--fx-cream-rgb);
+    --fx-ink-accent: var(--fx-accent); // the accent as small text
+    --fx-on-accent: #0a0b0a; // text on an accent fill
+    --fx-accent-bright: #faf8f3; // focus rings + sparks
+    --fx-accent-soft: rgba(var(--fx-cream-rgb), 0.1);
+    // the far end of accent gradients (spine, progress): a warm grey
+    --fx-accent-deep: #7d786f;
+    --fx-accent-deep-rgb: 125, 120, 111;
+    --fx-meta: #a8a39a; // secondary text (dates, meta)
 
     // -- neutral support tone (cool slate, used very sparingly) -------------
     --fx-slate: #8b94a7;
@@ -31,7 +42,7 @@
     --fx-font-display: "Urbanist", sans-serif;
 
     // -- glow recipes (soft, never harsh) -----------------------------------
-    --fx-glow-accent: 0 0 0.5rem rgba(var(--fx-lime-rgb), 0.3), 0 0 2.2rem rgba(var(--fx-lime-rgb), 0.16);
+    --fx-glow-accent: 0 0 0.5rem rgba(var(--fx-cream-rgb), 0.2), 0 0 2.2rem rgba(var(--fx-cream-rgb), 0.1);
 
     // -- motion tokens (fluid, 400–600ms) -----------------------------------
     --fx-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -42,18 +53,63 @@
     // -- glass (defaults = dark; .chakra-ui-light overrides below) ----------
     // No live blur behind glass (re-blurring the moving WebGL canvas every
     // frame was the biggest scroll cost), so the fills are more opaque instead.
-    --fx-glass: rgba(18, 21, 18, 0.76);
-    --fx-glass-strong: rgba(13, 15, 13, 0.9);
+    --fx-glass: rgba(18, 18, 17, 0.76);
+    --fx-glass-strong: rgba(13, 13, 12, 0.9);
     --fx-glass-border: rgba(255, 255, 255, 0.1);
-    --fx-glass-border-hot: rgba(var(--fx-lime-rgb), 0.5);
+    --fx-glass-border-hot: rgba(var(--fx-cream-rgb), 0.45);
     --fx-glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
     --fx-text-soft: rgba(255, 255, 255, 0.62);
 }
 
 .chakra-ui-light {
+    // charcoal on paper: 16:1 on #f6f7f5
+    --fx-accent: var(--fx-charcoal);
+    --fx-accent-rgb: var(--fx-charcoal-rgb);
+    --fx-ink-accent: var(--fx-charcoal);
+    --fx-on-accent: #f6f7f5;
+    --fx-accent-bright: var(--fx-charcoal);
+    --fx-accent-soft: rgba(var(--fx-charcoal-rgb), 0.07);
+    --fx-accent-deep: #a8a39a;
+    --fx-accent-deep-rgb: 168, 163, 154;
+    --fx-meta: #5f5b54;
+    --fx-glow-accent: 0 0 0.5rem rgba(var(--fx-charcoal-rgb), 0.12), 0 0 2rem rgba(var(--fx-charcoal-rgb), 0.08);
+    --fx-glass: rgba(255, 255, 255, 0.78);
+    --fx-glass-strong: rgba(255, 255, 255, 0.9);
+    --fx-glass-border: rgba(var(--fx-charcoal-rgb), 0.12);
+    --fx-glass-border-hot: rgba(var(--fx-charcoal-rgb), 0.45);
+    --fx-glass-shadow: 0 12px 40px rgba(var(--fx-charcoal-rgb), 0.12);
+    --fx-text-soft: rgba(20, 22, 26, 0.66);
+}
+
+// ---------------------------------------------------------------------------
+//  PlayOshi keeps its own lime: inside its section every accent token points
+//  back at the brand colours (lime on the dark page, deep greens on light).
+//  Custom properties resolve where they are declared, so each one is
+//  re-declared here rather than re-pointing --fx-cream alone. The cursor is
+//  page-wide, so it takes .is-kp (Cursor.tsx) while it is over the section.
+// ---------------------------------------------------------------------------
+.kp,
+.fx-cursor.is-kp {
+    --fx-accent: var(--fx-lime);
+    --fx-accent-rgb: var(--fx-lime-rgb);
+    --fx-ink-accent: var(--fx-lime);
+    --fx-on-accent: var(--fx-on-lime);
+    --fx-accent-bright: #d4f75c;
+    --fx-accent-soft: rgba(var(--fx-lime-rgb), 0.14);
+    --fx-accent-deep: var(--fx-green);
+    --fx-accent-deep-rgb: var(--fx-green-rgb);
+    --fx-glow-accent: 0 0 0.5rem rgba(var(--fx-lime-rgb), 0.3), 0 0 2.2rem rgba(var(--fx-lime-rgb), 0.16);
+    --fx-glass: rgba(18, 21, 18, 0.76);
+    --fx-glass-strong: rgba(13, 15, 13, 0.9);
+    --fx-glass-border-hot: rgba(var(--fx-lime-rgb), 0.5);
+}
+.chakra-ui-light .kp,
+.chakra-ui-light .fx-cursor.is-kp {
     // deep greens: 7.1:1 and 5:1 on white
     --fx-accent: #3f6212;
     --fx-accent-rgb: 63, 98, 18;
+    --fx-ink-accent: #3f6212;
+    --fx-on-accent: #f6f7f5; // paper on the deep green (7:1)
     --fx-accent-bright: #4d7c0f;
     --fx-accent-soft: rgba(63, 98, 18, 0.1);
     --fx-glow-accent: 0 0 0.5rem rgba(var(--fx-green-rgb), 0.28), 0 0 2rem rgba(var(--fx-lime-rgb), 0.3);
@@ -75,13 +131,13 @@
 }
 
 // ---------------------------------------------------------------------------
-//  Refined heading sheen — mostly the solid text colour with a lime tail.
+//  Refined heading sheen — mostly the solid text colour with an accent tail.
 //  NOTE: must use explicit colours here, never `currentColor`. The clip needs
 //  `color: transparent`, which would also make a `currentColor` gradient stop
 //  transparent (→ invisible text). Default = dark mode (white text).
 // ---------------------------------------------------------------------------
 .fx-gradient-text {
-    // ~50/50 white → lime in dark mode.
+    // ~50/50 white → accent (cream; lime inside PlayOshi) in dark mode.
     background: linear-gradient(92deg, #ffffff 0%, #ffffff 40%, var(--fx-accent) 80%, var(--fx-accent) 100%);
     background-size: 100% 100%;
     -webkit-background-clip: text;
@@ -113,7 +169,7 @@
 }
 
 // ---------------------------------------------------------------------------
-//  Soft accent halo behind the portrait — calm, single colour, gentle breathe.
+//  Soft accent halo — calm, single colour, gentle breathe.
 //  The softness is in the gradient's stops, not a filter: a blurred layer
 //  that scales has its blur recomputed every frame; a plain gradient layer is
 //  rastered once and the breathe stays compositor-only.
@@ -124,10 +180,10 @@
     border-radius: 50%;
     background: radial-gradient(
         circle at 50% 45%,
-        rgba(var(--fx-lime-rgb), 0.26) 0%,
-        rgba(var(--fx-green-rgb), 0.18) 26%,
-        rgba(var(--fx-green-rgb), 0.08) 46%,
-        rgba(var(--fx-green-rgb), 0.025) 60%,
+        rgba(var(--fx-accent-rgb), 0.22) 0%,
+        rgba(var(--fx-accent-deep-rgb), 0.16) 26%,
+        rgba(var(--fx-accent-deep-rgb), 0.07) 46%,
+        rgba(var(--fx-accent-deep-rgb), 0.02) 60%,
         transparent 72%
     );
     z-index: -1;

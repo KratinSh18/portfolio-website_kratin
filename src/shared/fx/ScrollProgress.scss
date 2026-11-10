@@ -8,11 +8,20 @@
     height: 2px;
     z-index: 30;
     pointer-events: none;
+    // warm grey at the top of the page to the accent at the end
+    --pg-from: var(--fx-accent-deep);
+    --pg-from-rgb: var(--fx-accent-deep-rgb);
+    --pg-to: var(--fx-accent);
+    --pg-to-rgb: var(--fx-accent-rgb);
+    --pg-dot: #fff;
+}
+.chakra-ui-light .fx-progress {
+    --pg-dot: var(--fx-charcoal);
 }
 
 // A full-width window slid left by (1 - p) of its width, with the gradient
 // inside slid back by the same amount: the colours stay pinned to page
-// position (deep green top, lime end) and both moves are transforms. The old
+// position (warm grey top, accent end) and both moves are transforms. The old
 // clip-path / color-mix version repainted, and re-layerized the whole page,
 // on every scroll frame.
 .fx-progress__bar {
@@ -26,7 +35,7 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(90deg, var(--fx-green) 0%, var(--fx-lime) 100%);
+        background: linear-gradient(90deg, var(--pg-from) 0%, var(--pg-to) 100%);
         transform: translate3d(calc((1 - var(--p)) * 100%), 0, 0);
         will-change: transform;
     }
@@ -45,7 +54,7 @@
     will-change: transform, opacity;
 }
 
-// White dot; its glow brightens from deep green to lime as you go:
+// White dot (charcoal on light); its glow warms from grey to the accent as you go:
 // two glows cross-faded by opacity rather than one box-shadow re-coloured
 // (and repainted) every frame.
 .fx-progress__dot {
@@ -56,7 +65,7 @@
     height: 10px;
     margin: -5px -5px 0 0;
     border-radius: 50%;
-    background: #fff;
+    background: var(--pg-dot);
 
     &::before,
     &::after {
@@ -67,16 +76,12 @@
         will-change: opacity;
     }
     &::before {
-        box-shadow: 0 0 6px 1px var(--fx-green), 0 0 18px 4px rgba(var(--fx-green-rgb), 0.45);
+        box-shadow: 0 0 6px 1px var(--pg-from), 0 0 18px 4px rgba(var(--pg-from-rgb), 0.4);
         opacity: calc(1 - var(--p));
     }
     &::after {
-        box-shadow: 0 0 6px 1px var(--fx-lime), 0 0 18px 4px rgba(var(--fx-lime-rgb), 0.5);
+        box-shadow: 0 0 6px 1px var(--pg-to), 0 0 18px 4px rgba(var(--pg-to-rgb), 0.25);
         opacity: var(--p);
     }
 }
 
-// lime fades out on white: the light page runs deep green to brand green
-.chakra-ui-light .fx-progress__bar::before {
-    background: linear-gradient(90deg, var(--fx-accent) 0%, var(--fx-green) 100%);
-}

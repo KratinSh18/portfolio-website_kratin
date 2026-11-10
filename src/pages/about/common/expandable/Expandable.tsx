@@ -8,7 +8,6 @@ import {
     Text,
     Flex,
     UnorderedList,
-    useColorModeValue,
 } from "@chakra-ui/react";
 import { SectionTitle } from "pages/about/common/title/Title";
 
@@ -25,8 +24,8 @@ interface Props {
 
 export const Expandable: FC<Props> = ({ expanded, id, idx, title, subTitle, date, content, onChange }) => {
     const isExpanded = useMemo(() => expanded.includes(idx), [expanded, idx]);
-    // readable green for the small mono date in each mode (AA on the glass)
-    const dateColor = useColorModeValue("primary.700", "primary.200");
+    // the small mono date: the accent, cream on dark / charcoal on light (AA on the glass)
+    const dateColor = "var(--fx-ink-accent)";
     const [isOverflowing, setIsOverflowing] = useState<boolean>(false);
     // One toggle that stays mounted open or closed, so keyboard focus is never
     // dropped (a "See more" that unmounts on click sends focus back to <body>).

@@ -26,7 +26,7 @@ body,
 // (white / gray.800), so the light/dark toggle just works. The <AuroraBackground>
 // layers subtle brand tint on top.
 ::selection {
-  background: rgba(197, 244, 31, 0.3);
+  background: rgba(var(--fx-accent-rgb), 0.3);
 }
 
 .autograph__path {

@@ -176,7 +176,7 @@ const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
 };
 
 /**
- * Vertical, scroll-drawn work timeline. A spine fills deep green -> lime as the
+ * Vertical, scroll-drawn work timeline. A spine fills warm grey -> accent as the
  * page scrolls; each role's node ignites when the fill reaches it and its glass
  * card sweeps in from its side (zig-zag on desktop, one rail on mobile).
  *

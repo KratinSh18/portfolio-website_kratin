@@ -1,10 +1,15 @@
 // ---------------------------------------------------------------------------
-//  Hero — "Liquid Lime": giant kinetic name, flipping role slot, liquid
+//  Hero — giant kinetic name, flipping role slot, liquid
 //  portrait. Every loop here is pure CSS on transform/opacity only (so it runs
 //  on the compositor, no repaint) and stops while .is-paused (off-screen, fx.scss).
 // ---------------------------------------------------------------------------
 .hero {
     --hero-ink: #ffffff;
+    // the rolling sheen on line 1: a warm cream pass over the white name
+    --hero-sheen: var(--fx-cream);
+    // the portrait's glow: faint cream + a warm grey, never neon
+    --hero-glow-a: var(--fx-cream-rgb);
+    --hero-glow-b: 168, 163, 154;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -18,6 +23,9 @@
 }
 .chakra-ui-light .hero {
     --hero-ink: #14181f;
+    --hero-sheen: #8a857c;
+    --hero-glow-a: 168, 163, 154;
+    --hero-glow-b: 207, 196, 175;
 }
 
 .hero__grid {
@@ -52,7 +60,7 @@
     height: 8px;
     border-radius: 50%;
     background: var(--fx-accent);
-    box-shadow: 0 0 10px rgba(var(--fx-accent-rgb), 0.7);
+    box-shadow: 0 0 10px rgba(var(--fx-accent-rgb), 0.25);
     &::after {
         content: "";
         position: absolute;
@@ -98,8 +106,8 @@
     }
 }
 
-// line 1: solid, with a lime sheen that rolls across letter by letter. The
-// glowing lime glyph is a static copy in ::after (data-char from SplitText)
+// line 1: solid, with a warm sheen that rolls across letter by letter. The
+// glowing glyph is a static copy in ::after (data-char from SplitText)
 // whose opacity is all that animates: animating color/text-shadow on the letter
 // itself repainted the giant type every frame.
 .hero__line--solid .split__piece {
@@ -109,8 +117,8 @@
         position: absolute;
         left: 0;
         top: 0;
-        color: var(--fx-accent-bright);
-        text-shadow: 0 0 0.3em rgba(var(--fx-accent-rgb), 0.45);
+        color: var(--hero-sheen);
+        text-shadow: 0 0 0.3em rgba(var(--hero-glow-a), 0.45);
         opacity: 0;
         pointer-events: none;
         animation: heroSheen 7s var(--fx-ease-in-out) infinite;
@@ -129,8 +137,8 @@
     }
 }
 
-// line 2: outlined; on hover each letter floods lime, one after another — a
-// filled lime copy of the glyph in ::after fades in (opacity only, so the
+// line 2: outlined; on hover each letter floods with the accent, one after
+// another — a filled copy of the glyph in ::after fades in (opacity only, so the
 // outline never repaints)
 @supports (-webkit-text-stroke: 1px) {
     .hero__line--outline {
@@ -213,9 +221,6 @@
     font-family: "Playfair Display", serif;
     font-style: italic;
     font-weight: 600;
-    color: var(--fx-accent-bright);
-}
-.chakra-ui-light .hero__slot {
     color: var(--fx-accent);
 }
 .hero__slot-track {
@@ -298,16 +303,16 @@
         // inside the box, so no edge of it ever shows
         background: radial-gradient(
                 ellipse 34% 34% at 34% 38%,
-                rgba(197, 244, 31, 0.42),
-                rgba(197, 244, 31, 0.22) 40%,
-                rgba(197, 244, 31, 0.08) 70%,
+                rgba(var(--hero-glow-a), 0.22),
+                rgba(var(--hero-glow-a), 0.11) 40%,
+                rgba(var(--hero-glow-a), 0.04) 70%,
                 transparent
             ),
             radial-gradient(
                 ellipse 34% 34% at 66% 64%,
-                rgba(26, 158, 102, 0.45),
-                rgba(26, 158, 102, 0.24) 40%,
-                rgba(26, 158, 102, 0.08) 70%,
+                rgba(var(--hero-glow-b), 0.2),
+                rgba(var(--hero-glow-b), 0.1) 40%,
+                rgba(var(--hero-glow-b), 0.03) 70%,
                 transparent
             );
         animation: fxBreathe 9s ease-in-out infinite;

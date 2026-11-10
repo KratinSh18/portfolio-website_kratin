@@ -22,10 +22,10 @@ interface Props {
     delay?: number;
 }
 
-// Springy lift + soft lime glow; the overshoot curve settles once.
+// Springy lift + soft accent glow; the overshoot curve settles once.
 const hoverStyles = {
     transition: "color 0.3s var(--fx-ease-out), transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease",
-    _hover: { transform: "translateY(-3px)", filter: "drop-shadow(0 6px 14px rgba(var(--fx-accent-rgb), 0.4))" },
+    _hover: { transform: "translateY(-3px)", filter: "drop-shadow(0 6px 14px rgba(var(--fx-accent-rgb), 0.22))" },
     _active: { transform: "scale(0.92)" },
     sx: { "@media (prefers-reduced-motion: reduce)": { "&:hover, &:active": { transform: "none" } } },
 };

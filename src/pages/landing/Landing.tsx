@@ -222,13 +222,13 @@ export const Landing: FC = () => {
                                 h="52px"
                                 px="7"
                                 borderRadius="full"
-                                bg="var(--fx-lime)"
-                                color="var(--fx-on-lime)"
+                                bg="var(--fx-accent)"
+                                color="var(--fx-on-accent)"
                                 fontWeight="800"
                                 className="hero__cta"
-                                // lime fill, near-black text (white on lime is ~1.3:1)
-                                _hover={{ bg: "var(--fx-lime)", boxShadow: "var(--fx-glow-accent)" }}
-                                _active={{ bg: "var(--fx-lime)", transform: "scale(0.96)" }}
+                                // cream fill + near-black text on dark, charcoal + paper on light
+                                _hover={{ bg: "var(--fx-accent)", boxShadow: "var(--fx-glow-accent)" }}
+                                _active={{ bg: "var(--fx-accent)", transform: "scale(0.96)" }}
                             >
                                 See {product.name}
                             </Button>

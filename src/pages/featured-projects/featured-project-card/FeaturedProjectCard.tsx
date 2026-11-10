@@ -1,6 +1,6 @@
 import { FC, PointerEvent } from "react";
 
-import { Box, Flex, Heading, Image, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 
 import { Tags } from "shared/tags/Tags";
@@ -79,8 +79,8 @@ export const FeaturedProjectCard: FC<Props> = ({
     const glareOpacity = useSpring(0, { stiffness: 120, damping: 20 });
     const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.38), rgba(255,255,255,0) 55%)`;
     const link = demo || github || readMore;
-    // the 10px mono meta needs 4.5:1 — primary.400 fell short on the dark glass
-    const metaColor = useColorModeValue("primary.600", "primary.200");
+    // the 10px mono meta: the warm neutral (7:1 on the dark glass, 6:1 on paper)
+    const metaColor = "var(--fx-meta)";
 
     const onMove = (e: PointerEvent<HTMLElement>) => {
         const r = e.currentTarget.getBoundingClientRect();

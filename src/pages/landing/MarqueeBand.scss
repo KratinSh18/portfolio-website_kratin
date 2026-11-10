@@ -24,35 +24,35 @@
     margin-top: clamp(0.75rem, 1.8vw, 1.25rem);
 }
 
-// A — the readable one: brand lime, solid near-black type
+// A — the readable one: an accent fill (cream on dark, charcoal on light)
 .mband__strip--a {
-    background: var(--fx-lime);
-    color: var(--fx-on-lime);
+    background: var(--fx-accent);
+    color: var(--fx-on-accent);
     font-weight: 800;
-    box-shadow: 0 10px 30px rgba(var(--fx-lime-rgb), 0.18);
+    box-shadow: 0 10px 30px rgba(var(--fx-accent-rgb), 0.14);
 }
 
-// B — decorative: dark green-tinted fill with outlined type. A near-opaque
+// B — decorative: a warm dark fill with type outlined in the accent. A near-opaque
 // fill, not backdrop-filter: a blur would re-sample the live WebGL canvas
 // behind it every frame.
 .mband__strip--b {
-    background: linear-gradient(90deg, rgba(30, 44, 8, 0.9), rgba(10, 11, 10, 0.92) 45%, rgba(30, 44, 8, 0.9));
+    background: linear-gradient(90deg, rgba(38, 36, 31, 0.92), rgba(10, 11, 10, 0.92) 45%, rgba(38, 36, 31, 0.92));
     border-block: 1px solid var(--fx-glass-border);
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--fx-accent);
     font-weight: 800;
     .marquee__sep {
-        color: var(--fx-lime);
+        color: var(--fx-accent);
         opacity: 1;
     }
 }
 @supports (-webkit-text-stroke: 1px) {
     .mband__strip--b .marquee__item {
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
+        -webkit-text-stroke: 1px var(--fx-accent);
         -webkit-text-fill-color: transparent;
     }
     .mband__strip--b .marquee__sep {
         -webkit-text-stroke: 0;
-        -webkit-text-fill-color: var(--fx-lime);
+        -webkit-text-fill-color: var(--fx-accent);
     }
 }
 
@@ -61,15 +61,7 @@
 }
 
 .chakra-ui-light .mband__strip--b {
-    background: linear-gradient(90deg, rgba(232, 248, 196, 0.94), rgba(255, 255, 255, 0.94) 45%, rgba(232, 248, 196, 0.94));
-    color: #14181f;
-    .marquee__item {
-        -webkit-text-stroke-color: #14181f;
-    }
-    .marquee__sep {
-        -webkit-text-fill-color: var(--fx-accent);
-        color: var(--fx-accent);
-    }
+    background: linear-gradient(90deg, rgba(242, 232, 213, 0.94), rgba(250, 248, 243, 0.94) 45%, rgba(242, 232, 213, 0.94));
 }
 
 // reduced motion: the ticker stands still, so the readable strip wraps to show

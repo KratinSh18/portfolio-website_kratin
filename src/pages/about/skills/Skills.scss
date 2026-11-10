@@ -4,15 +4,12 @@
 //  1 and 6 wide, so 7 groups fill the grid with no holes.
 // ---------------------------------------------------------------------------
 .skl {
-    --skl-ink: var(--fx-lime);
+    --skl-ink: var(--fx-ink-accent);
 
     display: grid;
     grid-template-columns: 1fr;
     gap: 18px;
     margin-top: 1.75rem;
-}
-.chakra-ui-light .skl {
-    --skl-ink: var(--fx-accent);
 }
 @media (min-width: 768px) {
     .skl {

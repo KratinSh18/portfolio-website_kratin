@@ -74,9 +74,9 @@
     // tooltips, which open below
     margin: -46px 0 0 18px;
     border-radius: 999px;
-    background: var(--fx-lime);
+    background: var(--fx-accent);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-    color: var(--fx-on-lime);
+    color: var(--fx-on-accent);
     font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -84,6 +84,12 @@
     transform: scale(0);
     transform-origin: 0 100%;
     transition: transform 0.35s var(--fx-ease-out);
+}
+
+// over PlayOshi the pill is its lime in both modes, as the section's own fills are
+.fx-cursor.is-kp .fx-cursor__label {
+    background: var(--fx-lime);
+    color: var(--fx-on-lime);
 }
 
 .fx-cursor.is-visible.has-label {

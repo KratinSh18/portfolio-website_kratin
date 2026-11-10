@@ -8,7 +8,7 @@ import { KukuPlayShowcaseId } from "utils/useScroll";
 
 import "shared/fx/FluidBackground.scss";
 
-// The product showcase section burns the lime brighter while on screen.
+// The product showcase section is the one place the liquid turns lime.
 const PRODUCT_SECTION_ID = KukuPlayShowcaseId;
 
 // Internal resolution in CSS px, independent of devicePixelRatio. The flow is
@@ -43,7 +43,8 @@ uniform vec2 u_res;
 uniform float u_time;
 uniform vec2 u_mouse;
 uniform float u_scroll;
-uniform float u_product;
+// PlayOshi's top and bottom edges on screen, as fractions of the height from the top.
+uniform vec2 u_band;
 uniform float u_light;
 
 float hash(vec2 p) {
@@ -129,35 +130,65 @@ void main() {
     vec3 lightDir = normalize(vec3(-0.45, 0.6, 0.65));
     float spec = pow(max(dot(reflect(-lightDir, n), vec3(0.0, 0.0, 1.0)), 0.0), 22.0);
 
-    float cur = smoothstep(0.38, 0.9, f);                       // main lime current
-    float counter = smoothstep(0.45, 0.95, length(q)) * (1.0 - cur); // deep-green counter-current
+    float cur = smoothstep(0.38, 0.9, f);                       // main current
+    float counter = smoothstep(0.45, 0.95, length(q)) * (1.0 - cur); // counter-current
     float hot = smoothstep(0.55, 0.85, r.y) * cur;               // bright core
 
+    // Two palettes over one field. Everywhere: warm smoke, cream and warm grey
+    // at low luminance (ink in oil). Behind PlayOshi only (the band its section
+    // covers on screen): its lime with a teal-green counter-current. Each edge
+    // fades in just inside the section and is pushed further in by the flow
+    // itself (f >= 0), so it reads as ink bleeding in, never a straight seam,
+    // and never reaches outside the section. The palettes cross-fade through
+    // the bare base, one fading down before the other comes up, so the hues
+    // never mix to mud.
+    float yd = 1.0 - uv.y;
+    float band = smoothstep(u_band.x, u_band.x + 0.2, yd - f * 0.14)
+        * (1.0 - smoothstep(u_band.y - 0.2, u_band.y, yd + f * 0.14));
+    float wMono = 1.0 - smoothstep(0.0, 0.6, band);
+    float wLime = smoothstep(0.4, 1.0, band);
+
+    vec3 base = vec3(0.039, 0.043, 0.039);
+    vec3 cream = vec3(0.949, 0.910, 0.835);
+    vec3 stone = vec3(0.659, 0.639, 0.604);
+    vec3 mono = base;
+    mono = mix(mono, cream * 0.11, cur * 0.9);
+    mono = mix(mono, stone * 0.1, counter * 0.6);
+    mono += cream * hot * 0.045;
+    mono += cream * infl * 0.015;
+
     // PlayOshi lime (#c5f41f), a hotter lime for the core, a teal-green
-    // counter-current. Lime is very luminous, so the
-    // weights below are much lower to keep the same dark, readable page.
+    // counter-current, at the showcase's brighter burn. Lime is very luminous,
+    // so the weights are low to keep the same dark, readable page.
     vec3 lime = vec3(0.773, 0.957, 0.122);
     vec3 limeHot = vec3(0.86, 1.0, 0.36);
     vec3 teal = vec3(0.1, 0.62, 0.4);
+    vec3 brand = base;
+    brand = mix(brand, lime * 0.225, cur * 0.9);
+    brand = mix(brand, teal * 0.13, counter * 0.6);
+    brand += limeHot * hot * 0.105;
+    brand += lime * infl * 0.02;
 
-    // Inside the product showcase the lime only burns brighter (same hue).
-    float boost = 1.0 + 0.5 * u_product;
+    vec3 dark = base + (mono - base) * wMono + (brand - base) * wLime;
+    vec3 sheen = mix(vec3(1.0, 0.97, 0.92), vec3(0.92, 1.0, 0.9), wLime);
+    dark += sheen * spec * (0.02 + 0.045 * cur);
 
-    vec3 dark = vec3(0.039, 0.043, 0.039);
-    dark = mix(dark, lime * 0.15 * boost, cur * 0.9);
-    dark = mix(dark, teal * 0.13, counter * 0.6);
-    dark += limeHot * hot * 0.07 * boost;
-    dark += lime * infl * 0.02;
-    dark += vec3(0.92, 1.0, 0.9) * spec * (0.02 + 0.045 * cur);
-
-    // Light: green ink dropped in water on paper — tints only, never dark.
+    // Light: ink dropped in water on paper, tints only, never dark. Warm grey
+    // ink everywhere, PlayOshi's green ink in its section.
     vec3 paper = vec3(0.968, 0.972, 0.962);
-    vec3 inkMain = mix(vec3(0.9, 0.96, 0.74), vec3(0.86, 0.95, 0.6), u_product);
-    vec3 inkCounter = vec3(0.82, 0.93, 0.87);
-    vec3 light = paper;
-    light = mix(light, inkMain, cur * 0.75);
-    light = mix(light, inkCounter, counter * 0.55);
-    light = mix(light, inkMain * 0.94, hot * 0.35);
+    vec3 monoInk = vec3(0.88, 0.86, 0.82);
+    vec3 monoCounter = vec3(0.92, 0.905, 0.875);
+    vec3 monoLight = paper;
+    monoLight = mix(monoLight, monoInk, cur * 0.75);
+    monoLight = mix(monoLight, monoCounter, counter * 0.55);
+    monoLight = mix(monoLight, monoInk * 0.95, hot * 0.35);
+    vec3 limeInk = vec3(0.86, 0.95, 0.6);
+    vec3 limeCounter = vec3(0.82, 0.93, 0.87);
+    vec3 brandLight = paper;
+    brandLight = mix(brandLight, limeInk, cur * 0.75);
+    brandLight = mix(brandLight, limeCounter, counter * 0.55);
+    brandLight = mix(brandLight, limeInk * 0.94, hot * 0.35);
+    vec3 light = paper + (monoLight - paper) * wMono + (brandLight - paper) * wLime;
     light += spec * 0.035;
 
     vec3 col = mix(dark, light, u_light);
@@ -182,7 +213,7 @@ const compile = (gl: WebGLRenderingContext, type: number, src: string): WebGLSha
 interface Gl {
     program: WebGLProgram;
     buffer: WebGLBuffer;
-    u: Record<"res" | "time" | "mouse" | "scroll" | "product" | "light", WebGLUniformLocation | null>;
+    u: Record<"res" | "time" | "mouse" | "scroll" | "band" | "light", WebGLUniformLocation | null>;
 }
 
 const setup = (gl: WebGLRenderingContext): Gl | null => {
@@ -216,34 +247,26 @@ const setup = (gl: WebGLRenderingContext): Gl | null => {
             time: at("u_time"),
             mouse: at("u_mouse"),
             scroll: at("u_scroll"),
-            product: at("u_product"),
+            band: at("u_band"),
             light: at("u_light"),
         },
     };
 };
 
-/** 0..1 — how much of the viewport `visible` px fill (60% = full product boost). */
-const productAmount = (visible: number, vh: number) => Math.min(Math.max(visible / (vh * 0.6), 0), 1);
+// u_band while PlayOshi is off screen: an empty band far above the canvas.
+const NO_BAND = -10;
 
-/** The same, measured now; only for seeding (a layout read, so never per frame). */
-const productInView = (): number => {
-    const el = document.getElementById(PRODUCT_SECTION_ID);
-    if (!el) return 0;
-    const r = el.getBoundingClientRect();
-    const vh = window.innerHeight;
-    return productAmount(Math.min(r.bottom, vh) - Math.max(r.top, 0), vh);
-};
-
-// IntersectionObserver steps for the product section; with the easing in the
-// loop, 2% of the section's height is fine-grained enough.
+// IntersectionObserver steps for the product section: every 2% of its height
+// re-reads its edges, so they never drift from a layout change for long.
 const PRODUCT_THRESHOLDS = Array.from({ length: 51 }, (_, i) => i / 50);
 
 /** Frame-rate independent easing toward a target (k ≈ 1/time-constant in seconds). */
 const approach = (from: number, to: number, k: number, dt: number) => from + (to - from) * (1 - Math.exp(-k * dt));
 
 /**
- * The site's living backdrop: a lime liquid on near-black with a
- * deep teal-green counter-current, rendered by one raw WebGL1 fragment shader. Every
+ * The site's living backdrop: warm smoke on near-black (ink on paper in light
+ * mode) that turns PlayOshi lime with a teal-green counter-current inside its
+ * section, rendered by one raw WebGL1 fragment shader. Every
  * input (time, pointer, scroll, product section, colour mode) is a uniform fed
  * from a single rAF loop — no React state per frame. Falls back to the CSS
  * aurora without WebGL, and draws one still frame under reduced motion.
@@ -294,19 +317,25 @@ export const FluidBackground: FC = () => {
         let lastDraw = 0;
         const touch = window.matchMedia("(pointer: coarse)").matches;
 
-        // The product tint follows an IntersectionObserver instead of a
-        // getBoundingClientRect per frame, which forced a style/layout flush in
-        // the middle of every scroll frame. The section is lazy, so the loop
-        // looks it up (cheap, by id) until it exists, and again if it remounts.
+        // The lime band follows the section's edges in page px, read from an
+        // IntersectionObserver instead of a getBoundingClientRect per frame (which
+        // forced a style/layout flush in the middle of every scroll frame); each
+        // frame only subtracts scrollY. The section is lazy, so the loop looks it
+        // up (cheap, by id) until it exists, and again if it remounts. Reduced
+        // motion keeps the still frame all smoke, as before.
         let productEl: HTMLElement | null = null;
-        let productTarget = reduced ? 0 : productInView();
+        const band = { on: false, top: 0, bottom: 0 };
+        const readBand = (r: DOMRectReadOnly) => {
+            band.top = r.top + window.scrollY;
+            band.bottom = r.bottom + window.scrollY;
+        };
         const io =
             !reduced && typeof IntersectionObserver !== "undefined"
                 ? new IntersectionObserver(
                       (entries) => {
                           const e = entries[entries.length - 1];
-                          const vh = e.rootBounds ? e.rootBounds.height : window.innerHeight;
-                          productTarget = e.isIntersecting ? productAmount(e.intersectionRect.height, vh) : 0;
+                          band.on = e.isIntersecting;
+                          readBand(e.boundingClientRect);
                       },
                       { threshold: PRODUCT_THRESHOLDS }
                   )
@@ -315,11 +344,12 @@ export const FluidBackground: FC = () => {
             if (!io || (productEl && productEl.isConnected)) return;
             if (productEl) {
                 io.unobserve(productEl);
-                productTarget = 0;
+                band.on = false;
             }
             productEl = document.getElementById(PRODUCT_SECTION_ID);
             if (productEl) io.observe(productEl);
         };
+        let viewH = Math.max(canvas.clientHeight, 1);
 
         const s = {
             time: 8 + Math.random() * 40, // start somewhere different each visit
@@ -329,13 +359,17 @@ export const FluidBackground: FC = () => {
             ty: 0.58,
             // Seeded from the live page so a reload mid-page doesn't swoosh into place.
             scroll: reduced ? 0 : window.scrollY / Math.max(window.innerHeight, 1),
-            product: productTarget,
+            bandTop: NO_BAND,
+            bandBottom: NO_BAND,
             light: lightRef.current,
         };
 
         const resize = () => {
             const cw = canvas.clientWidth;
             const ch = canvas.clientHeight;
+            viewH = Math.max(ch, 1);
+            // a resize moves the section without always crossing an IO step
+            if (productEl && productEl.isConnected) readBand(productEl.getBoundingClientRect());
             const scale = Math.min(touch ? RENDER_SCALE_TOUCH : RENDER_SCALE, MAX_SIDE / Math.max(cw, ch, 1));
             const w = Math.max(1, Math.round(cw * scale));
             const h = Math.max(1, Math.round(ch * scale));
@@ -352,7 +386,7 @@ export const FluidBackground: FC = () => {
             gl.uniform1f(res.u.time, s.time);
             gl.uniform2f(res.u.mouse, s.mx, s.my);
             gl.uniform1f(res.u.scroll, s.scroll);
-            gl.uniform1f(res.u.product, s.product);
+            gl.uniform2f(res.u.band, s.bandTop, s.bandBottom);
             gl.uniform1f(res.u.light, s.light);
             gl.drawArrays(gl.TRIANGLES, 0, 3);
             // classList.add rewrites the attribute even when present; once is enough
@@ -372,7 +406,8 @@ export const FluidBackground: FC = () => {
             s.my = approach(s.my, s.ty, 3, dt);
             s.scroll = approach(s.scroll, window.scrollY / Math.max(window.innerHeight, 1), 6, dt);
             watchProduct();
-            s.product = approach(s.product, productTarget, 2.5, dt);
+            s.bandTop = band.on ? (band.top - window.scrollY) / viewH : NO_BAND;
+            s.bandBottom = band.on ? (band.bottom - window.scrollY) / viewH : NO_BAND;
             s.light = approach(s.light, lightRef.current, 12, dt);
             draw();
         };

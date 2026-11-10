@@ -15,9 +15,9 @@
     position: absolute;
     inset: -25%;
     background:
-        radial-gradient(38% 38% at 18% 22%, rgba(197, 244, 31, 0.08), transparent 70%),
-        radial-gradient(42% 42% at 82% 28%, rgba(26, 158, 102, 0.1), transparent 72%),
-        radial-gradient(46% 46% at 62% 88%, rgba(112, 176, 0, 0.08), transparent 70%);
+        radial-gradient(38% 38% at 18% 22%, rgba(242, 232, 213, 0.06), transparent 70%),
+        radial-gradient(42% 42% at 82% 28%, rgba(168, 163, 154, 0.07), transparent 72%),
+        radial-gradient(46% 46% at 62% 88%, rgba(125, 120, 111, 0.07), transparent 70%);
     animation: fxAuroraDrift 30s ease-in-out infinite alternate;
 }
 
@@ -43,9 +43,9 @@
 .chakra-ui-light {
     .fx-aurora__clouds {
         background:
-            radial-gradient(40% 40% at 16% 20%, rgba(197, 244, 31, 0.22), transparent 72%),
-            radial-gradient(44% 44% at 84% 26%, rgba(26, 158, 102, 0.08), transparent 74%),
-            radial-gradient(48% 48% at 64% 90%, rgba(112, 176, 0, 0.1), transparent 72%);
+            radial-gradient(40% 40% at 16% 20%, rgba(207, 196, 175, 0.3), transparent 72%),
+            radial-gradient(44% 44% at 84% 26%, rgba(168, 163, 154, 0.14), transparent 74%),
+            radial-gradient(48% 48% at 64% 90%, rgba(228, 217, 196, 0.3), transparent 72%);
     }
     .fx-aurora__grid {
         background-image: linear-gradient(rgba(80, 90, 110, 0.05) 1px, transparent 1px),

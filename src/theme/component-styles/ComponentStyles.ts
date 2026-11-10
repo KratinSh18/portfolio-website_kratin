@@ -17,20 +17,27 @@ const ButtonStyles: ComponentStyleConfig = {
         fontWeight: "bold",
     },
     variants: {
-        // primary = a lime fill: near-black text (white on lime is ~1.3:1)
+        // primary = cream fill + near-black text on dark, charcoal fill + paper text on light
         solid: (props: any) =>
             props.colorScheme === "primary"
-                ? {
-                      bg: "primary.300",
-                      color: "gray.900",
-                      _hover: { bg: "primary.200", _disabled: { bg: "primary.300" } },
-                      _active: { bg: "primary.400" },
-                  }
+                ? props.colorMode === "dark"
+                    ? {
+                          bg: "primary.100",
+                          color: "gray.900",
+                          _hover: { bg: "primary.50", _disabled: { bg: "primary.100" } },
+                          _active: { bg: "primary.200" },
+                      }
+                    : {
+                          bg: "primary.900",
+                          color: "gray.50",
+                          _hover: { bg: "primary.700", _disabled: { bg: "primary.900" } },
+                          _active: { bg: "primary.800" },
+                      }
                 : { color: "white" },
-        // link buttons ("Show more"): 500 is 2.7:1 on white, so the deep green there
+        // link buttons ("Show more"): cream on dark, charcoal on light
         link: (props: any) =>
             props.colorScheme === "primary"
-                ? { color: props.colorMode === "dark" ? "primary.300" : "primary.600" }
+                ? { color: props.colorMode === "dark" ? "primary.100" : "primary.900" }
                 : {},
         secondary: (props: any) => {
             return {
@@ -66,17 +73,15 @@ const ButtonStyles: ComponentStyleConfig = {
     },
 };
 
+// Colour no longer marks a link (the page is monochrome), so an underline does.
 const LinkStyles: ComponentStyleConfig = {
-    baseStyle: (props) => {
-        let color = "primary.600";
-
-        if (props.colorMode === "dark") color = "primary.300";
-
-        return {
-            fontWeight: 700,
-            color,
-        };
-    },
+    baseStyle: (props) => ({
+        fontWeight: 700,
+        color: props.colorMode === "dark" ? "primary.100" : "primary.900",
+        textDecoration: "underline",
+        textDecorationThickness: "1px",
+        textUnderlineOffset: "0.2em",
+    }),
 };
 
 export const components = {

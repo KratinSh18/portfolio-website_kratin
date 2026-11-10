@@ -3,7 +3,7 @@ import { CSSProperties, FC, useEffect, useRef } from "react";
 import "shared/fx/ScrollProgress.scss";
 
 /**
- * Slim scroll-progress bar across the top of the page: a deep green→lime track
+ * Slim scroll-progress bar across the top of the page: a warm grey→accent track
  * revealed by a sliding window (so the colours stay pinned to page position
  * instead of squashing like scaleX would) with a glowing head riding its edge.
  * The scroll handler is passive + rAF-throttled and writes one CSS variable,
