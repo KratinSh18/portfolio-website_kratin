@@ -110,7 +110,7 @@
             "title": "Authoring studio",
             "summary": "Turns a pasted script or PDF into acts",
             "bullets": [
-                { "title": "AI script splitter", "detail": "Long scripts go act by act, no cap" },
+                { "title": "AI script splitter, first version", "detail": "Long scripts go act by act" },
                 { "title": "Live progress on AI jobs", "detail": "The bar moves as the AI writes" },
                 { "title": "Mood pictures per character", "detail": "The face in a chat follows the mood" },
                 { "title": "Versioned saves, picture history" },

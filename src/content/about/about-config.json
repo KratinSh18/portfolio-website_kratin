@@ -40,7 +40,7 @@
                 { "title": "Built the native iOS app", "detail": "Submitted to the App Store" },
                 { "title": "AI story engine", "detail": "A turn lands in seconds" },
                 { "title": "3 payment rails, one coin ledger" },
-                { "title": "AI authoring studio", "detail": "Script or PDF in, acts out" }
+                { "title": "AI authoring studio", "detail": "Built the first version" }
             ],
             "tags": [
                 "Python",
