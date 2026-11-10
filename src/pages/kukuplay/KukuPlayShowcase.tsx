@@ -3,7 +3,7 @@ import { FC, ReactNode, useEffect, useRef, useState } from "react";
 import { Box, Container } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconType } from "react-icons";
-import { FaAndroid, FaApple, FaArrowRight, FaGlobe, FaPenNib } from "react-icons/fa";
+import { FaAndroid, FaApple, FaArrowRight, FaGlobe, FaGooglePlay, FaPenNib } from "react-icons/fa";
 
 import showcase from "content/kukuplay/showcase.json";
 import { configs, withProduct } from "shared/content/Content";
@@ -30,7 +30,6 @@ type Chapter = typeof showcase.chapters[number];
 type Point = string | { title: string; detail?: string };
 
 const { product } = configs;
-const host = product.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
 const platformIcons: Record<string, IconType> = { android: FaAndroid, ios: FaApple, web: FaGlobe, admin: FaPenNib };
@@ -82,18 +81,34 @@ const Intro: FC<{ reduced: boolean }> = ({ reduced }) => (
                     })}
                 </ul>
 
-                <Magnetic strength={0.3}>
-                    <a
-                        className="kp-visit"
-                        href={product.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-cursor="Open"
-                    >
-                        {showcase.visit} {host}
-                        <FaArrowRight aria-hidden="true" />
-                    </a>
-                </Magnetic>
+                {/* web first: it opens from anywhere; the Play listing is US-only for now */}
+                <div className="kp-links">
+                    <Magnetic strength={0.3}>
+                        <a
+                            className="kp-visit"
+                            href={product.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-cursor="Open"
+                        >
+                            {showcase.webLink}
+                            <FaArrowRight aria-hidden="true" />
+                        </a>
+                    </Magnetic>
+                    <Magnetic strength={0.3}>
+                        <a
+                            className="kp-visit kp-visit--ghost"
+                            href={product.playUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-cursor="Open"
+                        >
+                            <FaGooglePlay aria-hidden="true" />
+                            {showcase.playLink}
+                        </a>
+                    </Magnetic>
+                </div>
+                <p className="kp-availability">{showcase.availability}</p>
             </Float3D>
 
             <Float3D direction="right" depth={0.4} amount={0.15}>
