@@ -1,8 +1,8 @@
 import { ColorHues } from "@chakra-ui/react";
 
 /**
- * Warm stone: cream (100) down to charcoal (900). The site is monochrome; lime
- * belongs to the PlayOshi section only (its own tokens in fx.scss). Text
+ * Warm stone: cream (100) down to charcoal (900), the page-wide chrome. Each
+ * section's colour lives in its own accent tokens (fx.scss [data-tone], .kp). Text
  * slots: 50-300 read on the dark page, 600+ on paper. Cream fills carry
  * near-black text, charcoal fills carry paper.
  */

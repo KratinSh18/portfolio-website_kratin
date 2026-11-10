@@ -1,9 +1,9 @@
 // ============================================================================
 //  FX SYSTEM — "Liquid Glass" (professional)
-//  A monochrome site: warm cream on near-black (dark) and charcoal on paper
-//  (light). Lime is PlayOshi's own colour and lives ONLY in its section
-//  (.kp / #page-playoshi), where the accent tokens are re-pointed to it, so
-//  the product is the one splash of colour on the page.
+//  Warm cream on near-black (dark) and charcoal on paper (light) for the
+//  page-wide chrome. Each section re-points the accent tokens to its own
+//  colour: terracotta (hero + marquee), PlayOshi's lime (.kp), mustard (work)
+//  and teal (about + footer). See the [data-tone] blocks below.
 //
 //  Contrast: text ON an accent fill uses --fx-on-accent (near-black on cream,
 //  paper on charcoal). Glows stay soft (cream at 0.10-0.25), nothing neon.
@@ -86,10 +86,10 @@
 //  back at the brand colours (lime on the dark page, deep greens on light).
 //  Custom properties resolve where they are declared, so each one is
 //  re-declared here rather than re-pointing --fx-cream alone. The cursor is
-//  page-wide, so it takes .is-kp (Cursor.tsx) while it is over the section.
+//  page-wide, so it carries the data-tone of the section under it (Cursor.tsx).
 // ---------------------------------------------------------------------------
 .kp,
-.fx-cursor.is-kp {
+.fx-cursor[data-tone="playoshi"] {
     --fx-accent: var(--fx-lime);
     --fx-accent-rgb: var(--fx-lime-rgb);
     --fx-ink-accent: var(--fx-lime);
@@ -104,7 +104,7 @@
     --fx-glass-border-hot: rgba(var(--fx-lime-rgb), 0.5);
 }
 .chakra-ui-light .kp,
-.chakra-ui-light .fx-cursor.is-kp {
+.chakra-ui-light .fx-cursor[data-tone="playoshi"] {
     // deep greens: 7.1:1 and 5:1 on white
     --fx-accent: #3f6212;
     --fx-accent-rgb: 63, 98, 18;
@@ -119,6 +119,112 @@
     --fx-glass-border-hot: rgba(63, 98, 18, 0.42);
     --fx-glass-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
     --fx-text-soft: rgba(15, 23, 42, 0.64);
+}
+
+// ---------------------------------------------------------------------------
+//  Section tones (App.tsx wraps each section in [data-tone]; the cursor root
+//  carries the tone of the section under it, so these match it too). Same
+//  idea as .kp: every accent token re-declared on the wrapper. The shared
+//  block derives the soft/glow/hot tokens from each tone's own
+//  --fx-accent-rgb, which resolves on the same element. The tone is an
+//  accent only: body and meta text stay neutral.
+// ---------------------------------------------------------------------------
+[data-tone="hero"],
+[data-tone="work"],
+[data-tone="about"] {
+    --fx-ink-accent: var(--fx-accent);
+    --fx-on-accent: #0a0b0a;
+    --fx-accent-soft: rgba(var(--fx-accent-rgb), 0.14);
+    --fx-glow-accent: 0 0 0.5rem rgba(var(--fx-accent-rgb), 0.28), 0 0 2.2rem rgba(var(--fx-accent-rgb), 0.14);
+    --fx-glass-border-hot: rgba(var(--fx-accent-rgb), 0.5);
+    // chips, tags and skill pills wear a faint tone edge at rest
+    --fx-chip-border: rgba(var(--fx-accent-rgb), 0.3);
+}
+// terracotta: 6.8:1 on the page
+[data-tone="hero"] {
+    --fx-accent: #e8775a;
+    --fx-accent-rgb: 232, 119, 90;
+    --fx-accent-bright: #f29a80;
+    --fx-accent-deep: #a84a32;
+    --fx-accent-deep-rgb: 168, 74, 50;
+    --fx-glass: rgba(21, 17, 16, 0.76);
+    --fx-glass-strong: rgba(15, 12, 11, 0.9);
+}
+// mustard: 11:1
+[data-tone="work"] {
+    --fx-accent: #f2c14e;
+    --fx-accent-rgb: 242, 193, 78;
+    --fx-accent-bright: #f7d580;
+    --fx-accent-deep: #b8860b;
+    --fx-accent-deep-rgb: 184, 134, 11;
+    --fx-glass: rgba(20, 18, 15, 0.76);
+    --fx-glass-strong: rgba(14, 13, 11, 0.9);
+}
+// teal: 10:1
+[data-tone="about"] {
+    --fx-accent: #4fd1c5;
+    --fx-accent-rgb: 79, 209, 197;
+    --fx-accent-bright: #86e2d9;
+    --fx-accent-deep: #1f8a80;
+    --fx-accent-deep-rgb: 31, 138, 128;
+    --fx-glass: rgba(15, 20, 19, 0.76);
+    --fx-glass-strong: rgba(11, 14, 14, 0.9);
+}
+
+// Light: the deep shade of each hue on paper; the gradient tail ("deep") is
+// the bright dark-mode tone, as PlayOshi's light tail is its lime-green.
+.chakra-ui-light [data-tone="hero"],
+.chakra-ui-light [data-tone="work"],
+.chakra-ui-light [data-tone="about"] {
+    --fx-on-accent: #f6f7f5;
+    --fx-accent-soft: rgba(var(--fx-accent-rgb), 0.1);
+    --fx-glow-accent: 0 0 0.5rem rgba(var(--fx-accent-rgb), 0.2), 0 0 2rem rgba(var(--fx-accent-deep-rgb), 0.24);
+    --fx-glass-border: rgba(var(--fx-accent-rgb), 0.16);
+    --fx-glass-border-hot: rgba(var(--fx-accent-rgb), 0.42);
+    --fx-chip-border: rgba(var(--fx-accent-rgb), 0.26);
+}
+// 6.8:1 on paper
+.chakra-ui-light [data-tone="hero"] {
+    --fx-accent: #9a3412;
+    --fx-accent-rgb: 154, 52, 18;
+    --fx-accent-bright: #c2410c;
+    --fx-accent-deep: #e8775a;
+    --fx-accent-deep-rgb: 232, 119, 90;
+    --fx-glass: rgba(255, 252, 250, 0.78);
+    --fx-glass-strong: rgba(255, 253, 252, 0.9);
+}
+// 4.6:1 as a fill under paper text; small text takes the deeper #854d0e (6.4:1)
+.chakra-ui-light [data-tone="work"] {
+    --fx-accent: #a16207;
+    --fx-accent-rgb: 161, 98, 7;
+    --fx-ink-accent: #854d0e;
+    --fx-accent-bright: #b45309;
+    --fx-accent-deep: #f2c14e;
+    --fx-accent-deep-rgb: 242, 193, 78;
+    --fx-glass: rgba(255, 253, 248, 0.78);
+    --fx-glass-strong: rgba(255, 254, 251, 0.9);
+}
+// 5.1:1 on paper, but ~4.2:1 on the liquid's mint, so small text takes the
+// deeper #115e59 (7:1 on paper, 5.8:1 on the mint)
+.chakra-ui-light [data-tone="about"] {
+    --fx-accent: #0f766e;
+    --fx-accent-rgb: 15, 118, 110;
+    --fx-ink-accent: #115e59;
+    --fx-accent-bright: #0d9488;
+    --fx-accent-deep: #4fd1c5;
+    --fx-accent-deep-rgb: 79, 209, 197;
+    --fx-glass: rgba(250, 255, 254, 0.78);
+    --fx-glass-strong: rgba(252, 255, 255, 0.9);
+}
+
+// Chakra's keyboard focus ring (theme token shadows.outline, emitted by Chakra as
+// --hp-shadows-outline on :root, blue by default). A var() resolves where it is
+// declared, so it is declared on every element that re-points --fx-accent-rgb:
+// body (cream / charcoal chrome), each section wrapper and PlayOshi.
+body,
+[data-tone],
+.kp {
+    --hp-shadows-outline: 0 0 0 3px rgba(var(--fx-accent-rgb), 0.6);
 }
 
 // ---------------------------------------------------------------------------
@@ -137,7 +243,7 @@
 //  transparent (→ invisible text). Default = dark mode (white text).
 // ---------------------------------------------------------------------------
 .fx-gradient-text {
-    // ~50/50 white → accent (cream; lime inside PlayOshi) in dark mode.
+    // ~50/50 white → accent (the section's tone) in dark mode.
     background: linear-gradient(92deg, #ffffff 0%, #ffffff 40%, var(--fx-accent) 80%, var(--fx-accent) 100%);
     background-size: 100% 100%;
     -webkit-background-clip: text;
@@ -200,7 +306,7 @@
     padding: 0.34rem 0.8rem;
     border-radius: 999px;
     background: var(--fx-glass);
-    border: 1px solid var(--fx-glass-border);
+    border: 1px solid var(--fx-chip-border, var(--fx-glass-border));
     font-size: 0.74rem;
     line-height: 1;
     white-space: nowrap;

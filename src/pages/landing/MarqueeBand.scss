@@ -24,7 +24,7 @@
     margin-top: clamp(0.75rem, 1.8vw, 1.25rem);
 }
 
-// A — the readable one: an accent fill (cream on dark, charcoal on light)
+// A — the readable one: a fill in the section's tone (terracotta)
 .mband__strip--a {
     background: var(--fx-accent);
     color: var(--fx-on-accent);
@@ -32,11 +32,12 @@
     box-shadow: 0 10px 30px rgba(var(--fx-accent-rgb), 0.14);
 }
 
-// B — decorative: a warm dark fill with type outlined in the accent. A near-opaque
+// B — decorative: a dark fill warmed by the tone at its ends, type outlined in it. A near-opaque
 // fill, not backdrop-filter: a blur would re-sample the live WebGL canvas
 // behind it every frame.
 .mband__strip--b {
-    background: linear-gradient(90deg, rgba(38, 36, 31, 0.92), rgba(10, 11, 10, 0.92) 45%, rgba(38, 36, 31, 0.92));
+    background: linear-gradient(90deg, rgba(var(--fx-accent-rgb), 0.12), transparent 45%, rgba(var(--fx-accent-rgb), 0.12)),
+        rgba(10, 11, 10, 0.92);
     border-block: 1px solid var(--fx-glass-border);
     color: var(--fx-accent);
     font-weight: 800;
@@ -61,7 +62,8 @@
 }
 
 .chakra-ui-light .mband__strip--b {
-    background: linear-gradient(90deg, rgba(242, 232, 213, 0.94), rgba(250, 248, 243, 0.94) 45%, rgba(242, 232, 213, 0.94));
+    background: linear-gradient(90deg, rgba(var(--fx-accent-rgb), 0.1), transparent 45%, rgba(var(--fx-accent-rgb), 0.1)),
+        rgba(250, 248, 243, 0.94);
 }
 
 // reduced motion: the ticker stands still, so the readable strip wraps to show

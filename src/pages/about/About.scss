@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-//  About — photo with tilt/glare + duotone, giant name
+//  About — photo with tilt/glare in a teal frame, giant name, in the teal tone
 // ---------------------------------------------------------------------------
 .abt {
     position: relative;
@@ -13,6 +13,17 @@
     max-width: 420px;
     margin: 0 auto;
 }
+// an offset outline in the tone behind the photo (static, outside the tilt)
+.abt__photo-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 1.4rem;
+    border: 1.5px solid rgba(var(--fx-accent-rgb), 0.5);
+    transform: translate(14px, 14px);
+    pointer-events: none;
+}
 @media (min-width: 768px) {
     .abt__photo-wrap {
         margin: 0;
@@ -22,54 +33,34 @@
     position: relative;
     overflow: hidden;
     border-radius: 1.4rem;
-    border: 1px solid var(--fx-glass-border);
+    border: 1px solid rgba(var(--fx-accent-rgb), 0.4);
     box-shadow: var(--fx-glass-shadow);
 }
 .abt__photo img {
     display: block;
     width: 100%;
     height: auto;
-    transition: filter 0.8s var(--fx-ease-out), transform 0.8s var(--fx-ease-out);
+    transition: transform 0.8s var(--fx-ease-out);
 }
 .abt__photo.is-tilt {
     transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
     transition: transform 0.5s var(--fx-ease-out);
     will-change: transform;
 }
-.abt__duo,
 .abt__glare {
     position: absolute;
     inset: 0;
     pointer-events: none;
-}
-.abt__duo {
-    display: none;
-}
-.abt__glare {
     background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, 0.35), transparent 50%);
     mix-blend-mode: overlay;
     opacity: 0;
     transition: opacity 0.5s var(--fx-ease-out);
 }
-// Mouse devices: a warm sepia monochrome at rest, full colour on hover.
-// Touch devices never hover, so they always get the plain colour photo.
+// The photo stays in its own colours (its warm stage light against the teal
+// frame read better than a tinted monochrome); mouse hover zooms and lights it.
 @media (hover: hover) and (pointer: fine) {
-    .abt__photo img {
-        filter: grayscale(1) contrast(1.08) brightness(0.95);
-    }
-    .abt__duo {
-        display: block;
-        background: linear-gradient(160deg, #f2e8d5 0%, #8a7358 55%, #cfc4af 100%);
-        mix-blend-mode: color;
-        opacity: 0.55; // a warm tint, not a full sepia wash
-        transition: opacity 0.8s var(--fx-ease-out);
-    }
     .abt__photo:hover img {
-        filter: none;
         transform: scale(1.04);
-    }
-    .abt__photo:hover .abt__duo {
-        opacity: 0;
     }
     .abt__photo:hover .abt__glare {
         opacity: 1;
@@ -80,7 +71,7 @@
 .abt__eyebrow {
     font-size: 0.72rem;
     font-weight: 700;
-    color: var(--fx-text-soft);
+    color: var(--fx-ink-accent);
 }
 .abt__name {
     display: block;
@@ -91,6 +82,10 @@
     line-height: 0.95;
     letter-spacing: -0.02em;
     text-transform: uppercase;
+}
+// the surname in the tone (SplitText wraps each word in its own span)
+.abt__name .split > span:last-child {
+    color: var(--fx-accent);
 }
 .abt__tagline {
     list-style: none;
@@ -108,7 +103,6 @@
 
 @media (prefers-reduced-motion: reduce) {
     .abt__photo img,
-    .abt__duo,
     .abt__glare {
         transition: none;
     }

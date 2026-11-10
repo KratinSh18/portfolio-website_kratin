@@ -5,11 +5,11 @@
 // ---------------------------------------------------------------------------
 .hero {
     --hero-ink: #ffffff;
-    // the rolling sheen on line 1: a warm cream pass over the white name
-    --hero-sheen: var(--fx-cream);
-    // the portrait's glow: faint cream + a warm grey, never neon
-    --hero-glow-a: var(--fx-cream-rgb);
-    --hero-glow-b: 168, 163, 154;
+    // the rolling sheen on line 1: a terracotta pass over the white name
+    --hero-sheen: var(--fx-accent);
+    // the portrait's glow: the tone and its deep shade, faint, never neon
+    --hero-glow-a: var(--fx-accent-rgb);
+    --hero-glow-b: var(--fx-accent-deep-rgb);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -23,9 +23,6 @@
 }
 .chakra-ui-light .hero {
     --hero-ink: #14181f;
-    --hero-sheen: #8a857c;
-    --hero-glow-a: 168, 163, 154;
-    --hero-glow-b: 207, 196, 175;
 }
 
 .hero__grid {
@@ -137,12 +134,12 @@
     }
 }
 
-// line 2: outlined; on hover each letter floods with the accent, one after
+// line 2: outlined in the tone; on hover each letter floods with it, one after
 // another — a filled copy of the glyph in ::after fades in (opacity only, so the
 // outline never repaints)
 @supports (-webkit-text-stroke: 1px) {
     .hero__line--outline {
-        -webkit-text-stroke: 0.022em var(--hero-ink);
+        -webkit-text-stroke: 0.022em var(--fx-accent);
         -webkit-text-fill-color: transparent;
     }
     .hero__line--outline .split__piece {
@@ -351,7 +348,7 @@
         position: absolute;
         inset: 0;
         border-radius: inherit;
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+        box-shadow: inset 0 0 0 1.5px rgba(var(--fx-accent-rgb), 0.45);
         pointer-events: none;
     }
 }
@@ -377,7 +374,8 @@
         font-family: "JetBrains Mono", ui-monospace, monospace;
         font-size: 12px;
         font-weight: 500;
-        fill: var(--fx-text-soft);
+        fill: var(--fx-ink-accent);
+        opacity: 0.8;
     }
 }
 @keyframes heroSpin {
@@ -410,6 +408,10 @@
         outline: 2px solid var(--fx-accent-bright);
         outline-offset: 4px;
     }
+}
+// light: the bright terracotta is under 4.5:1 on the hero's peach liquid at this size
+.chakra-ui-light .hero__cue:hover {
+    color: var(--fx-ink-accent);
 }
 .hero__cue-line {
     position: relative;

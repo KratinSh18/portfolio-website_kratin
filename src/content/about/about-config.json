@@ -54,10 +54,11 @@
             "id": "exp-1",
             "company": "Kuku FM · WoWTV",
             "position": "Performance marketing manager",
-            "duration": "June 2026 - Aug 2026",
+            "duration": "Jun 2026 - Jul 2026",
             "description": [
                 {
-                    "title": "Ran all Google Ads for WoWTV"
+                    "title": "Ran all Google Ads for WoWTV",
+                    "detail": "200+ campaigns launched"
                 },
                 {
                     "title": "Tracked CAC and D0-D7 funnels",
@@ -79,7 +80,7 @@
             "id": "exp-2",
             "company": "Medinos (Taskar)",
             "position": "Product manager intern",
-            "duration": "May 2025 - June 2025",
+            "duration": "May 2025 - Jul 2025",
             "description": [
                 {
                     "title": "UX feedback on the mobile app"
@@ -98,7 +99,11 @@
                 "UI/UX",
                 "Information architecture",
                 "Web crawling"
-            ]
+            ],
+            "link": {
+                "label": "Certificate",
+                "url": "https://drive.google.com/file/d/1Pqxuuy0PExI6sl7qKTLkghOovs7EVHs0/view?usp=drive_link"
+            }
         }
     ],
     "skills": [

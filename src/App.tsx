@@ -73,17 +73,23 @@ export const App: FC = () => {
                     max-width containers. The id boxes stay untransformed so offsetTop /
                     scrollIntoView / useScroll keep working. */}
                 <Box position="relative" zIndex={1} overflowX="clip">
-                    {/* 96px clears the floating nav pill (~82px) and keeps the hero above the fold on laptops */}
-                    <Container px={px} pt="96px">
-                        <Landing />
-                    </Container>
+                    {/* Each section wears its own tone (fx.scss [data-tone]); the cursor and the
+                        liquid follow it. The tone wrappers stay untransformed too. */}
+                    <Box data-tone="hero">
+                        {/* 96px clears the floating nav pill (~82px) and keeps the hero above the fold on laptops */}
+                        <Container px={px} pt="96px">
+                            <Landing />
+                        </Container>
 
-                    <MarqueeBand />
+                        <MarqueeBand />
+                    </Box>
 
                     <Box id={WorkPageId}>
-                        <KukuPlayShowcase />
+                        <Box data-tone="playoshi">
+                            <KukuPlayShowcase />
+                        </Box>
 
-                        <Container px={px}>
+                        <Container px={px} data-tone="work">
                             <Float3D direction="up">
                                 <PageHeader index="02" label="Work Experience" />
                             </Float3D>
@@ -101,7 +107,7 @@ export const App: FC = () => {
                         </Container>
                     </Box>
 
-                    <Container px={px}>
+                    <Container px={px} data-tone="about">
                         <Box id={AboutPageId}>
                             <Float3D direction="up">
                                 <PageHeader index="05" label="About Me" />

@@ -15,11 +15,11 @@
     margin-bottom: 0.9rem;
     font-size: 0.75rem;
     letter-spacing: 0.22em;
-    // cream on near-black, charcoal on light (lime inside PlayOshi)
+    // the section's tone (cream in none), its text-safe shade on light
     color: var(--fx-accent-bright);
 }
 .chakra-ui-light .page-header__kicker {
-    color: var(--fx-accent);
+    color: var(--fx-ink-accent);
 }
 
 .page-header__line {

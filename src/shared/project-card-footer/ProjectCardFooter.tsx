@@ -24,11 +24,15 @@ interface Props extends GitHubButtonProps, ReadMoreProps, LiveDemoProps {
 }
 
 // Lift + soft accent glow on hover, quick shrink on press; flat under reduced motion.
+// In sx, not _hover/_active: Chakra merges style props over the variant shallowly, so
+// a _hover prop would drop the variant's own hover/press fill.
 const buttonHover = {
     transition: "background 0.25s ease, box-shadow 0.3s ease, transform 0.25s var(--fx-ease-out)",
-    _hover: { transform: "translateY(-2px)", boxShadow: "var(--fx-glow-accent)" },
-    _active: { transform: "scale(0.96)" },
-    sx: { "@media (prefers-reduced-motion: reduce)": { "&:hover, &:active": { transform: "none" } } },
+    sx: {
+        "&:hover": { transform: "translateY(-2px)", boxShadow: "var(--fx-glow-accent)" },
+        "&:active": { transform: "scale(0.96)" },
+        "@media (prefers-reduced-motion: reduce)": { "&:hover, &:active": { transform: "none" } },
+    },
 };
 
 export const ReadMore: FC<ReadMoreProps> = ({ readMore }) => {
@@ -51,44 +55,47 @@ export const ReadMore: FC<ReadMoreProps> = ({ readMore }) => {
     ) : null;
 };
 
+// One component per breakpoint, never <Button as={IconButton|Button}>: that nests a
+// second Button whose default solid variant paints the hover/press fill under the
+// outer variant's text colour (white on mustard).
 export const GitHubButton: FC<GitHubButtonProps> = ({ github, display }) => {
-    const as = useBreakpointValue({ base: IconButton, lg: Button });
-
-    return github ? (
-        <Button
-            as={as}
-            variant="secondary"
-            py="5"
-            display={display}
-            aria-label="GitHub"
-            data-cursor="Code"
-            leftIcon={<GitHubIcon />}
-            icon={<GitHubIcon />}
-            onClick={() => open(github)}
-            {...buttonHover}
-        >
+    const iconOnly = useBreakpointValue({ base: true, lg: false });
+    if (!github) return null;
+    const props = {
+        variant: "secondary",
+        py: "5",
+        display,
+        "aria-label": "GitHub",
+        "data-cursor": "Code",
+        onClick: () => open(github),
+        ...buttonHover,
+    };
+    return iconOnly ? (
+        <IconButton {...props} icon={<GitHubIcon />} />
+    ) : (
+        <Button {...props} leftIcon={<GitHubIcon />}>
             GitHub
         </Button>
-    ) : null;
+    );
 };
 
 export const LiveDemo: FC<LiveDemoProps> = ({ demo, display }) => {
-    const as = useBreakpointValue({ base: IconButton, lg: Button });
-
-    return demo ? (
-        <Button
-            as={as}
-            display={display}
-            aria-label="Live demo"
-            data-cursor="Open"
-            leftIcon={<LinkIcon fontSize="14pt" />}
-            icon={<LinkIcon fontSize="14pt" />}
-            onClick={() => open(demo)}
-            {...buttonHover}
-        >
+    const iconOnly = useBreakpointValue({ base: true, lg: false });
+    if (!demo) return null;
+    const props = {
+        display,
+        "aria-label": "Live demo",
+        "data-cursor": "Open",
+        onClick: () => open(demo),
+        ...buttonHover,
+    };
+    return iconOnly ? (
+        <IconButton {...props} icon={<LinkIcon fontSize="14pt" />} />
+    ) : (
+        <Button {...props} leftIcon={<LinkIcon fontSize="14pt" />}>
             Live demo
         </Button>
-    ) : null;
+    );
 };
 
 export const ProjectCardFooter: FC<Props> = ({ readMore, github, demo, pt = "8" }) => {

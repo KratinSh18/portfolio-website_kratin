@@ -169,6 +169,19 @@ const TimelineItem: FC<ItemProps> = ({ exp, index, wide, reduced }) => {
                             </a>
                         </Magnetic>
                     )}
+                    {exp.link && (
+                        <Magnetic strength={0.3}>
+                            <a
+                                className="xptl__dive fx-mono"
+                                href={exp.link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                data-cursor="Open"
+                            >
+                                {exp.link.label} <span aria-hidden="true">↗</span>
+                            </a>
+                        </Magnetic>
+                    )}
                 </div>
             </motion.article>
         </li>

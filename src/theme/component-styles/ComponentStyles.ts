@@ -17,27 +17,21 @@ const ButtonStyles: ComponentStyleConfig = {
         fontWeight: "bold",
     },
     variants: {
-        // primary = cream fill + near-black text on dark, charcoal fill + paper text on light
+        // primary = the accent tokens: cream / charcoal in the chrome, the section's tone inside one
         solid: (props: any) =>
             props.colorScheme === "primary"
-                ? props.colorMode === "dark"
-                    ? {
-                          bg: "primary.100",
-                          color: "gray.900",
-                          _hover: { bg: "primary.50", _disabled: { bg: "primary.100" } },
-                          _active: { bg: "primary.200" },
-                      }
-                    : {
-                          bg: "primary.900",
-                          color: "gray.50",
-                          _hover: { bg: "primary.700", _disabled: { bg: "primary.900" } },
-                          _active: { bg: "primary.800" },
-                      }
+                ? {
+                      bg: "var(--fx-accent)",
+                      color: "var(--fx-on-accent)",
+                      _hover: { bg: "var(--fx-accent-bright)", _disabled: { bg: "var(--fx-accent)" } },
+                      _active: { bg: "var(--fx-accent)" },
+                  }
                 : { color: "white" },
-        // link buttons ("Show more"): cream on dark, charcoal on light
+        // link buttons ("Show more"): the accent as text, pressed too (Chakra's own
+        // link variant merges in under this one and would press to primary.500/700)
         link: (props: any) =>
             props.colorScheme === "primary"
-                ? { color: props.colorMode === "dark" ? "primary.100" : "primary.900" }
+                ? { color: "var(--fx-ink-accent)", _active: { color: "var(--fx-ink-accent)" } }
                 : {},
         secondary: (props: any) => {
             return {
@@ -73,15 +67,15 @@ const ButtonStyles: ComponentStyleConfig = {
     },
 };
 
-// Colour no longer marks a link (the page is monochrome), so an underline does.
+// An underline marks a link; the colour is the accent (the section's tone inside one).
 const LinkStyles: ComponentStyleConfig = {
-    baseStyle: (props) => ({
+    baseStyle: {
         fontWeight: 700,
-        color: props.colorMode === "dark" ? "primary.100" : "primary.900",
+        color: "var(--fx-ink-accent)",
         textDecoration: "underline",
         textDecorationThickness: "1px",
         textUnderlineOffset: "0.2em",
-    }),
+    },
 };
 
 export const components = {

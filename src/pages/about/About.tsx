@@ -59,7 +59,6 @@ export const About: FC = () => {
                             onPointerLeave={tiltable ? untilt : undefined}
                         >
                             <img src={mainPicture} alt={`Portrait of ${name}`} width={1280} height={1600} />
-                            <span className="abt__duo" aria-hidden="true" />
                             <span className="abt__glare" aria-hidden="true" />
                         </div>
                     </Box>

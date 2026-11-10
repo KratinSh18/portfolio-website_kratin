@@ -47,7 +47,15 @@ export const MenuDrawer: FC<Props> = ({ onSectionClick, currentPage, ...props })
     const items = [
         { label: "Work", cursor: "Go", active: currentPage === WorkPageId, onClick: () => toSection(WorkPageId) },
         { label: "About", cursor: "Go", active: currentPage === AboutPageId, onClick: () => toSection(AboutPageId) },
-        { label: "Resume", cursor: "Open", active: false, onClick: onResumeOpen },
+        {
+            label: "Resume",
+            cursor: "Open",
+            active: false,
+            onClick: () => {
+                onClose();
+                onResumeOpen();
+            },
+        },
     ];
 
     return (

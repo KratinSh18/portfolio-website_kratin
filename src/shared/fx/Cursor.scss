@@ -87,7 +87,7 @@
 }
 
 // over PlayOshi the pill is its lime in both modes, as the section's own fills are
-.fx-cursor.is-kp .fx-cursor__label {
+.fx-cursor[data-tone="playoshi"] .fx-cursor__label {
     background: var(--fx-lime);
     color: var(--fx-on-lime);
 }
